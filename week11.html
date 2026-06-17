@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>บทที่ 11: สตริงและการประมวลผลข้อความ | Computer Programming</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2322d3ee'/%3E%3Ctext x='50' y='68' font-size='48' text-anchor='middle' fill='%23071018' font-family='monospace'%3E%26lt;/%26gt;%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="nav-logo"><span class="logo-dot">&lt;/&gt;</span> Computer Programming</a>
+      <ul class="nav-links">
+        <li><a href="#objectives">วัตถุประสงค์</a></li>
+        <li><a href="#basics">สตริงคือ char[]</a></li>
+        <li><a href="#inspector">เครื่องส่อง \0</a></li>
+        <li><a href="#methods">คลัง string.h</a></li>
+        <li><a href="#applied">ตรวจรหัสสินค้า</a></li>
+        <li><a href="#quiz">แบบทดสอบ</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <canvas id="binary-canvas"></canvas>
+    <div class="container">
+      <div class="hero-kicker reveal">สัปดาห์ที่ 9</div>
+      <h1 class="reveal" data-delay="0.1">บทที่ 11<br><span class="grad-text">สตริงและการประมวลผลข้อความ</span></h1>
+      <p class="hero-desc reveal" data-delay="0.2">
+        ความลับที่บทที่แล้วทิ้งไว้: ข้อความในภาษาซีก็คือ "อาร์เรย์ของ char" —
+        ดัชนีใช้ท่าเดียวกับบทที่ 10 เป๊ะ บวกแขกพิเศษหนึ่งตัวชื่อ \0 ที่คอยปิดท้ายทุกข้อความ
+        วันนี้เพิ่มอาวุธจากคลัง string.h: วัดความยาว คัดลอก เปรียบเทียบ และตรวจรูปแบบข้อความ
+      </p>
+      <div class="hero-badges reveal" data-delay="0.3">
+        <span class="badge">⏱️ <b>ใช้เวลาเรียน ~2.5 ชั่วโมง</b></span>
+        <span class="badge">🔎 <b>เครื่องส่อง char array + เครื่องตรวจรหัสสินค้า</b></span>
+        <span class="badge">📝 <b>แบบทดสอบ 10 ข้อ</b></span>
+      </div>
+      <div class="btn-row reveal" data-delay="0.4">
+        <a href="#objectives" class="btn btn-primary">เริ่มบทเรียน ↓</a>
+        <a href="week10.html" class="btn btn-ghost">← บทที่ 10</a>
+      </div>
+    </div>
+    <div class="scroll-hint">เลื่อนลงเพื่อเริ่มเรียน<br>⌄</div>
+  </header>
+
+  <section class="section" id="objectives">
+    <div class="container">
+      <span class="section-tag reveal">Learning Objectives</span>
+      <h2 class="section-title reveal">วัตถุประสงค์การเรียนรู้</h2>
+      <div class="obj-list">
+        <div class="obj-item reveal">อธิบายโครงสร้างสตริงภาษาซี: อาร์เรย์ของ char ที่ปิดท้ายด้วย \0 ได้</div>
+        <div class="obj-item reveal" data-delay="0.05">ประกาศสตริง รับค่าด้วย scanf %s และแสดงผลด้วย printf %s ได้</div>
+        <div class="obj-item reveal" data-delay="0.1">ใช้ฟังก์ชันหลักจาก string.h: strlen, strcpy, strcat, strcmp ได้ถูกต้อง</div>
+        <div class="obj-item reveal" data-delay="0.15">วนอ่านสตริงทีละตัวอักษรด้วยลูป และใช้ ctype.h (isdigit, isupper) ตรวจชนิดอักขระได้</div>
+        <div class="obj-item reveal" data-delay="0.2">เขียนโปรแกรมตรวจรูปแบบข้อความ เช่น รหัสสินค้า รหัสนักศึกษา ได้</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" id="basics">
+    <div class="container">
+      <span class="section-tag reveal">Strings as char Arrays</span>
+      <h2 class="section-title reveal">🔤 สตริง = ขบวนรถไฟของ char ที่มีโบกี้ปิดท้าย</h2>
+      <p class="section-sub reveal">
+        ประกาศ: <b style="color:var(--cyan)">char code[20] = "ENGINE";</b> —
+        คอมไพเลอร์แอบเติมอักขระพิเศษ <b style="color:var(--amber)">\0 (null) ปิดท้าย</b> ให้เสมอ
+        เพื่อบอกทุกฟังก์ชันว่า "ข้อความจบตรงนี้" — จองที่จึงต้องเผื่อ \0 หนึ่งช่องเสมอ
+      </p>
+
+      <div class="grid grid-2" style="align-items:start">
+        <div class="code-card reveal" style="margin:0">
+          <div class="code-head"><span>ตัวอย่างที่ 11.1 — string_basics.c</span><div class="dots"><span></span><span></span><span></span></div></div>
+          <pre><code><span style="color:#a78bfa">#include</span> <span style="color:#fbbf24">&lt;string.h&gt;</span>   <span style="color:#6b7280">// คลังฟังก์ชันสตริง</span>
+
+<span style="color:#a78bfa">char</span> code[<span style="color:#a78bfa">20</span>] = <span style="color:#fbbf24">"ENGINE"</span>;
+<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"%s\n"</span>, code);        <span style="color:#6b7280">// ทั้งข้อความใช้ %s</span>
+<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"%c\n"</span>, code[<span style="color:#a78bfa">0</span>]);     <span style="color:#6b7280">// ตัวเดียวใช้ %c</span>
+<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"%d\n"</span>, strlen(code)); <span style="color:#6b7280">// ความยาว (ไม่นับ \0)</span>
+code[<span style="color:#a78bfa">0</span>] = <span style="color:#fbbf24">'A'</span>;                <span style="color:#6b7280">// แก้ทีละตัวได้!</span>
+<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"%s\n"</span>, code);</code></pre>
+          <button class="run-btn" data-output="ENGINE&#10;E&#10;6&#10;ANGINE">▶ คอมไพล์และรัน</button>
+          <div class="code-output"></div>
+        </div>
+        <div class="card reveal" data-delay="0.1" style="margin:0">
+          <h3 style="margin-bottom:14px">⚠️ สองกับดักประจำบท</h3>
+          <p style="line-height:1.9">
+          1️⃣ <b style="color:#fca5a5">กำหนดค่าใหม่ทั้งก้อนด้วย = ไม่ได้</b><br>
+          <code style="color:#fca5a5">code = "MOTOR";</code> 💥 คอมไพล์ไม่ผ่าน! (code คืออาร์เรย์ ย้ายบ้านไม่ได้)<br>
+          ต้องใช้ <code style="color:var(--green)">strcpy(code, "MOTOR");</code><br><br>
+          2️⃣ <b style="color:#fca5a5">รับค่าด้วย scanf ไม่ต้องใส่ &amp;</b><br>
+          <code style="color:var(--green)">scanf("%s", name);</code> — ชื่ออาร์เรย์ "เป็นตำแหน่ง" อยู่แล้ว
+          (ข้อยกเว้นที่สัญญาไว้ตั้งแต่บทที่ 5!) และ %s หยุดรับที่ช่องว่างแรก</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="inspector">
+    <div class="container">
+      <span class="section-tag reveal">The \0 Inspector</span>
+      <h2 class="section-title reveal">🔎 เครื่องส่อง char array — เห็น \0 ด้วยตาตัวเอง</h2>
+      <p class="section-sub reveal">
+        พิมพ์ข้อความ (อังกฤษ/ตัวเลข) แล้วดูว่าในหน่วยความจำหน้าตาเป็นอย่างไร:
+        ตัวอักษรเรียงตามดัชนี และโบกี้สุดท้ายคือ <b style="color:var(--amber)">\0</b> เสมอ
+        — สังเกตความต่างระหว่าง strlen กับขนาดที่ต้องจองจริง
+      </p>
+
+      <div class="widget reveal">
+        <div class="widget-controls">
+          <label>char s[ ] = "<input type="text" id="slText" value="COMPUTER" maxlength="12" style="width:160px">"</label>
+        </div>
+        <div class="machine" id="slBoxes" style="margin-top:10px;gap:6px"></div>
+        <div class="widget-result" id="slResult" style="text-align:center;margin-top:16px">—</div>
+      </div>
+
+      <div class="card reveal" style="margin-top:30px">
+        <div class="icon">🧠</div>
+        <h3>\0 สำคัญขนาดไหน?</h3>
+        <p>printf("%s") และ strlen ทำงานด้วยวิธีเดียวกัน: <b style="color:var(--text)">วิ่งไปเรื่อย ๆ จนกว่าจะเจอ \0</b> —
+        ถ้า \0 หาย (เช่น จองที่ไม่พอ) มันจะวิ่งเลยเขตไปอ่านหน่วยความจำข้างเคียงจนกว่าจะบังเอิญเจอศูนย์
+        ได้ข้อความขยะยาวพรืด — บั๊กสตริงเกือบทั้งหมดของภาษาซีคือเรื่อง \0 กับที่ไม่พอ</p>
+      </div>
+
+      <div class="code-card reveal" style="margin-top:30px">
+        <div class="code-head"><span>ตัวอย่างที่ 11.2 — count_char.c (วนจนกว่าจะเจอ \0)</span><div class="dots"><span></span><span></span><span></span></div></div>
+        <pre><code><span style="color:#a78bfa">char</span> word[] = <span style="color:#fbbf24">"BANANA"</span>;
+<span style="color:#a78bfa">int</span> count = <span style="color:#a78bfa">0</span>;
+<span style="color:#a78bfa">for</span> (<span style="color:#a78bfa">int</span> i = <span style="color:#a78bfa">0</span>; word[i] != <span style="color:#fbbf24">'\0'</span>; i++) {   <span style="color:#6b7280">// วนจนชน \0 พอดี</span>
+    <span style="color:#a78bfa">if</span> (word[i] == <span style="color:#fbbf24">'A'</span>) count++;
+}
+<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"ใน %s มีตัว A อยู่ %d ตัว\n"</span>, word, count);</code></pre>
+        <button class="run-btn" data-output="ใน BANANA มีตัว A อยู่ 3 ตัว">▶ คอมไพล์และรัน</button>
+        <div class="code-output"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" id="methods">
+    <div class="container">
+      <span class="section-tag reveal">The string.h Toolbox</span>
+      <h2 class="section-title reveal">🧰 กล่องเครื่องมือจาก &lt;string.h&gt;</h2>
+      <p class="section-sub reveal">
+        สี่ฟังก์ชันหลักที่ใช้คู่กับสตริงทุกโปรแกรม — จุดที่พลาดบ่อยที่สุด:
+        <b style="color:var(--amber)">เปรียบเทียบข้อความต้องใช้ strcmp ไม่ใช่ ==</b>
+      </p>
+
+      <div class="grid grid-2" style="align-items:start">
+        <div style="overflow-x:auto" class="reveal">
+          <table class="data-table op-table">
+            <thead><tr><th>ฟังก์ชัน</th><th>หน้าที่</th><th>ตัวอย่าง</th></tr></thead>
+            <tbody>
+              <tr><td>strlen(s)</td><td>นับความยาว (ไม่รวม \0)</td><td>strlen("ENGINE") → 6</td></tr>
+              <tr><td>strcpy(a, b)</td><td>คัดลอก b ทับลง a</td><td>strcpy(code, "MOTOR");</td></tr>
+              <tr><td>strcat(a, b)</td><td>ต่อ b ท้าย a</td><td>strcat(name, "-01");</td></tr>
+              <tr><td>strcmp(a, b)</td><td>เทียบเนื้อหา — เท่ากันได้ 0!</td><td>strcmp(pass, "1234") == 0</td></tr>
+              <tr><td>isdigit(c)</td><td>c เป็นตัวเลข? (ctype.h)</td><td>isdigit(s[3])</td></tr>
+              <tr><td>isupper(c)</td><td>c เป็นพิมพ์ใหญ่? (ctype.h)</td><td>isupper(s[0])</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="code-card reveal" data-delay="0.1" style="margin:0">
+          <div class="code-head"><span>ตัวอย่างที่ 11.3 — password.c (strcmp ของจริง)</span><div class="dots"><span></span><span></span><span></span></div></div>
+          <pre><code><span style="color:#a78bfa">char</span> pass[<span style="color:#a78bfa">20</span>];
+<span style="color:#22d3ee">scanf</span>(<span style="color:#fbbf24">"%s"</span>, pass);          <span style="color:#6b7280">// อาร์เรย์ไม่ใส่ &</span>
+<span style="color:#a78bfa">if</span> (<span style="color:#22d3ee">strcmp</span>(pass, <span style="color:#fbbf24">"eng1234"</span>) == <span style="color:#a78bfa">0</span>) {
+    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"เข้าสู่ระบบสำเร็จ\n"</span>);
+} <span style="color:#a78bfa">else</span> {
+    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"รหัสผ่านไม่ถูกต้อง\n"</span>);
+}</code></pre>
+          <button class="run-btn" data-stdin="eng1234" data-output="(ผู้ใช้พิมพ์: eng1234)&#10;เข้าสู่ระบบสำเร็จ">▶ คอมไพล์และรัน</button>
+          <div class="code-output"></div>
+        </div>
+      </div>
+
+      <div class="grid grid-2" style="margin-top:30px">
+        <div class="card reveal">
+          <div class="icon">🚫</div>
+          <h3>ทำไม == ใช้ไม่ได้?</h3>
+          <p><code style="color:#fca5a5">if (pass == "1234")</code> คอมไพล์ผ่านแต่ "เทียบตำแหน่งกล่อง" ไม่ใช่เนื้อหา — ได้เท็จแทบทุกครั้ง
+          ต้องใช้ <code style="color:var(--green)">strcmp(a, b) == 0</code> (คืน 0 เมื่อเนื้อหาเท่ากัน — จุดที่สวนความรู้สึกที่สุดของบทนี้!)</p>
+        </div>
+        <div class="card reveal" data-delay="0.1">
+          <div class="icon">📐</div>
+          <h3>จัดรูปแบบรายงานด้วย printf</h3>
+          <p>จัดคอลัมน์ให้ตรง: <code style="color:var(--amber)">%-10s</code> ข้อความชิดซ้ายกว้าง 10 ช่อง ·
+          <code style="color:var(--amber)">%8.2f</code> ตัวเลขชิดขวากว้าง 8 ทศนิยม 2 —
+          <code style="color:var(--green)">printf("%-10s %8.2f\n", "Motor", 1250.5);</code> คือหัวใจตารางรายงานทุกใบ</p>
+        </div>
+      </div>
+
+      <div class="code-card reveal" style="margin-top:30px">
+        <div class="code-head"><span>ตัวอย่างที่ 11.4 — strcat_len.c (ต่อข้อความ + วัดความยาว)</span><div class="dots"><span></span><span></span><span></span></div></div>
+        <pre><code><span style="color:#a78bfa">char</span> code[<span style="color:#a78bfa">20</span>] = <span style="color:#fbbf24">"PUMP"</span>;       <span style="color:#6b7280">// จองเผื่อไว้ 20 ช่อง</span>
+<span style="color:#22d3ee">strcat</span>(code, <span style="color:#fbbf24">"-01"</span>);          <span style="color:#6b7280">// ต่อท้ายด้วย strcat (ห้ามใช้ +)</span>
+<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"รหัสเครื่อง: %s\n"</span>, code);
+<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"ยาว %d ตัวอักษร\n"</span>, (<span style="color:#a78bfa">int</span>) <span style="color:#22d3ee">strlen</span>(code));</code></pre>
+        <button class="run-btn" data-output="รหัสเครื่อง: PUMP-01&#10;ยาว 7 ตัวอักษร">▶ คอมไพล์และรัน</button>
+        <div class="code-output"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="applied">
+    <div class="container">
+      <span class="section-tag reveal">Putting It Together</span>
+      <h2 class="section-title reveal">🏷️ ใช้งานจริง: เครื่องตรวจรหัสสินค้า</h2>
+      <p class="section-sub reveal">
+        คลังสินค้ากำหนดรหัสรูปแบบ <b style="color:var(--cyan)">XX-9999</b> (ตัวอักษรใหญ่ 2 ตัว, ขีด, ตัวเลข 4 หลัก)
+        — พิมพ์รหัสแล้วดูโปรแกรมไล่ตรวจทีละกฎด้วยเครื่องมือของบทนี้ล้วน ๆ: strlen, ดัชนี, isupper, isdigit
+      </p>
+
+      <div class="grid grid-2" style="align-items:start">
+        <div class="card reveal" style="margin:0">
+          <h3 style="margin-bottom:14px">🧪 ลองพิมพ์รหัส</h3>
+          <div class="widget" style="padding:20px;margin-top:0">
+            <div class="widget-controls" style="margin-bottom:14px">
+              <input type="text" id="pcInput" value="AB-1234" maxlength="12" style="width:100%;max-width:240px;text-align:center;font-size:1.2rem">
+            </div>
+            <div class="cond-list" id="pcRules" style="max-width:none">
+              <div class="cond-item" data-rule="0">strlen(code) == 7</div>
+              <div class="cond-item" data-rule="1">isupper(code[0]) &amp;&amp; isupper(code[1])</div>
+              <div class="cond-item" data-rule="2">code[2] == '-'</div>
+              <div class="cond-item" data-rule="3">isdigit(code[3]) ... isdigit(code[6])</div>
+            </div>
+            <div class="flow-desc" id="pcVerdict" style="margin-top:16px">—</div>
+          </div>
+        </div>
+        <div class="code-card reveal" data-delay="0.1" style="margin:0">
+          <div class="code-head"><span>ตัวอย่างที่ 11.5 — validate_code.c (โค้ดเบื้องหลังเครื่องนี้)</span><div class="dots"><span></span><span></span><span></span></div></div>
+          <pre><code><span style="color:#a78bfa">#include</span> <span style="color:#fbbf24">&lt;string.h&gt;</span>
+<span style="color:#a78bfa">#include</span> <span style="color:#fbbf24">&lt;ctype.h&gt;</span>
+
+<span style="color:#a78bfa">int</span> <span style="color:#22d3ee">is_valid</span>(<span style="color:#a78bfa">char</span> code[]) {
+    <span style="color:#a78bfa">if</span> (<span style="color:#22d3ee">strlen</span>(code) != <span style="color:#a78bfa">7</span>) <span style="color:#a78bfa">return</span> <span style="color:#a78bfa">0</span>;
+    <span style="color:#a78bfa">if</span> (!<span style="color:#22d3ee">isupper</span>(code[<span style="color:#a78bfa">0</span>]) || !<span style="color:#22d3ee">isupper</span>(code[<span style="color:#a78bfa">1</span>])) <span style="color:#a78bfa">return</span> <span style="color:#a78bfa">0</span>;
+    <span style="color:#a78bfa">if</span> (code[<span style="color:#a78bfa">2</span>] != <span style="color:#fbbf24">'-'</span>) <span style="color:#a78bfa">return</span> <span style="color:#a78bfa">0</span>;
+    <span style="color:#a78bfa">for</span> (<span style="color:#a78bfa">int</span> i = <span style="color:#a78bfa">3</span>; i &lt;= <span style="color:#a78bfa">6</span>; i++)
+        <span style="color:#a78bfa">if</span> (!<span style="color:#22d3ee">isdigit</span>(code[i])) <span style="color:#a78bfa">return</span> <span style="color:#a78bfa">0</span>;
+    <span style="color:#a78bfa">return</span> <span style="color:#a78bfa">1</span>;
+}
+
+<span style="color:#a78bfa">int</span> <span style="color:#22d3ee">main</span>() {
+    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"AB-1234 → %d\n"</span>, is_valid(<span style="color:#fbbf24">"AB-1234"</span>));
+    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"ab-1234 → %d\n"</span>, is_valid(<span style="color:#fbbf24">"ab-1234"</span>));
+    <span style="color:#a78bfa">return</span> <span style="color:#a78bfa">0</span>;
+}</code></pre>
+          <button class="run-btn" data-output="AB-1234 → 1&#10;ab-1234 → 0">▶ คอมไพล์และรัน</button>
+          <div class="code-output"></div>
+        </div>
+      </div>
+      <p class="section-sub reveal" style="margin-top:24px">
+        สังเกตว่าใช้ความรู้ครบทุกบท: ฟังก์ชันคืน 1/0 (บท 9) + ดัชนีอาร์เรย์ (บท 10) + ลูปและเงื่อนไข (บท 6–7) —
+        รหัสนักศึกษา เลขครุภัณฑ์ ทะเบียนรถ เลขพัสดุ ล้วนตรวจด้วยท่าเดียวกันนี้
+      </p>
+    </div>
+  </section>
+
+  <section class="section alt" id="quiz">
+    <div class="container">
+      <span class="section-tag reveal">Check Your Understanding</span>
+      <h2 class="section-title reveal">📝 แบบทดสอบท้ายบท (10 ข้อ)</h2>
+      <p class="section-sub reveal">จุดพลาดบ่อย: ลืมเผื่อช่อง \0 · ใช้ == แทน strcmp · ลืมว่า strcmp เท่ากันได้ 0</p>
+      <div class="prequiz reveal">
+        <div class="prequiz-head">📘 อ่านก่อนสอบ · สรุปประเด็นสำคัญ</div>
+        <p class="prequiz-intro">ความลับของบทนี้: สตริง = อาร์เรย์ char + ตัวปิดท้าย \0 — จึงต้องเผื่อช่อง +1 และใช้ฟังก์ชันเฉพาะ ห้ามใช้ = หรือ ==</p>
+        <div class="pq-item">
+          <span class="pq-num">1</span>
+          <div class="pq-text"><h4>สตริงคืออาร์เรย์ของ char + \0</h4><p>สตริงคือชุดอักขระจบด้วยตัวปิดท้ายพิเศษ <code>\0</code> (null) · เก็บ "ENGINE" 6 ตัว ต้องมีอย่างน้อย <b>7 ช่อง</b> (เผื่อ \0)</p><p><pre class="pq-code">char s[7] = "ENGINE";
+<span class="cm">// E N G I N E \0</span></pre></p></div>
+        </div>
+        <div class="pq-item">
+          <span class="pq-num">2</span>
+          <div class="pq-text"><h4>strlen ไม่นับ \0</h4><p><code>strlen("MOTOR-01")</code> = <b>8</b> (นับเฉพาะตัวอักษรที่เห็น ไม่รวม \0)</p></div>
+        </div>
+        <div class="pq-item">
+          <span class="pq-num">3</span>
+          <div class="pq-text"><h4>เปลี่ยนค่า/เทียบสตริง ต้องใช้ฟังก์ชัน</h4><p><b>ห้าม</b>ใช้ <code>=</code> กำหนดค่า หรือ <code>==</code> เทียบสตริง ต้องใช้ <code>strcpy</code>/<code>strcmp</code></p><p><pre class="pq-code">strcpy(name, "MIXER");        <span class="cm">// เปลี่ยนค่า</span>
+if (strcmp(pass, "eng1234") == 0) <span class="cm">// 0 = ตรงกัน</span></pre></p></div>
+        </div>
+        <div class="pq-item">
+          <span class="pq-num">4</span>
+          <div class="pq-text"><h4>รับข้อความ + แก้ทีละตัว</h4><p>รับด้วย <code>scanf("%s", s)</code> (ชื่ออาร์เรย์ไม่ต้องมี &amp;) · แก้อักขระเดี่ยวผ่านดัชนี <code>s[0] = 'X';</code></p></div>
+        </div>
+        <div class="pq-item">
+          <span class="pq-num">5</span>
+          <div class="pq-text"><h4>ctype: ตรวจชนิดอักขระ</h4><p><code>isdigit(c)</code>, <code>isupper(c)</code> มาจาก <code>&lt;ctype.h&gt;</code> คืนค่าจริง/เท็จ · ใช้วนนับอักขระในสตริงได้</p></div>
+        </div>
+        <div class="pq-item tip">
+          <span class="pq-num">💡</span>
+          <div class="pq-text"><h4>จุดที่ข้อสอบชอบถาม</h4><p>สองจุดตาย: ลืมเผื่อช่อง <b>+1</b> สำหรับ \0 และเทียบสตริงด้วย <code>==</code> (ต้องใช้ <code>strcmp</code>) — โจทย์ตรวจรูปแบบรหัสสินค้าออกบ่อย</p></div>
+        </div>
+      </div>
+      <div id="quizWrap"></div>
+      <div class="quiz-score" id="quizScore"></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <span class="section-tag reveal">Summary & Assignment</span>
+      <h2 class="section-title reveal">🎯 สรุปบทเรียน</h2>
+      <div class="grid grid-2" style="margin-bottom:50px">
+        <div class="card reveal">
+          <div class="icon">🔤</div>
+          <h3>สิ่งที่ได้เรียน</h3>
+          <p>สตริง = อาร์เรย์ char ปิดท้ายด้วย \0 (จองที่เผื่อ 1 ช่องเสมอ) · printf/scanf ใช้ %s — scanf กับอาร์เรย์ไม่ใส่ &amp; · แก้ทีละตัวได้ แต่ทั้งก้อนต้อง strcpy · strlen นับไม่รวม \0 · strcmp == 0 คือเท่ากัน (ห้ามใช้ ==!) · ตรวจอักขระด้วย isdigit/isupper จาก ctype.h</p>
+        </div>
+        <div class="card reveal" data-delay="0.1">
+          <div class="icon">🔮</div>
+          <h3>เชื่อมไปสัปดาห์หน้า</h3>
+          <p>สตริงที่เรียนวันนี้คือกุญแจของสัปดาห์ที่ 10: อ่าน-เขียนไฟล์ — ข้อมูลจริงจากเครื่องจักร/คลังสินค้า มาเป็นไฟล์ข้อความทั้งนั้น เราจะอ่านมันทีละบรรทัดแล้วสรุปรายงานอัตโนมัติ</p>
+        </div>
+      </div>
+      <div class="assign-box reveal">
+        <h3>📌 งานมอบหมายสัปดาห์ที่ 9</h3>
+        <ol>
+          <li>เขียนฟังก์ชัน int count_vowels(char text[]) นับสระภาษาอังกฤษ (a e i o u ไม่สนตัวพิมพ์) — ทดสอบกับชื่อตัวเองภาษาอังกฤษ</li>
+          <li>เขียนโปรแกรมรับชื่อด้วย scanf("%s") แล้วแสดง: ความยาว ตัวอักษรแรก ตัวอักษรสุดท้าย (ดัชนี strlen-1) และชื่อแบบกลับหลังด้วยลูปถอยหลัง</li>
+          <li>เขียนระบบรหัสผ่าน: วน do-while ถามจนกว่า strcmp กับรหัสที่ตั้งไว้จะได้ 0 พร้อมนับจำนวนครั้งที่ผิด</li>
+          <li>โจทย์สาขา: เขียนฟังก์ชันตรวจรหัสนักศึกษา/เลขครุภัณฑ์ของจริงในสาขาตัวเอง ตามแนว validate_code.c (กำหนดกติกาเอง อย่างน้อย 3 กฎ)</li>
+          <li>ทำแบบทดสอบท้ายบทให้ได้อย่างน้อย 8/10 แล้วแคปหน้าจอส่งใน LMS</li>
+        </ol>
+      </div>
+      <div class="btn-row reveal" style="margin-top:46px;justify-content:center">
+        <a href="week10.html" class="btn btn-ghost">← บทที่ 10</a>
+        <a href="exercises.html#w11" class="btn btn-ghost">📚 แบบฝึกหัดบทนี้</a>
+        <a href="week12.html" class="btn btn-primary">สัปดาห์ที่ 10: ไฟล์และการจัดการข้อมูล →</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <p>บทที่ 11: สตริงและการประมวลผลข้อความ — รายวิชาการเขียนโปรแกรมคอมพิวเตอร์</p>
+      <p class="credits">จัดทำเพื่อการศึกษา</p>
+    </div>
+  </footer>
+
+  <button id="toTop" title="กลับขึ้นด้านบน">↑</button>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/week11.js"></script>
+  <script src="js/runner.js"></script>
+  <script src="js/quiz.js"></script>
+</body>
+</html>

@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>บทที่ 6: โครงสร้างควบคุมแบบเลือกทำ | Computer Programming</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2322d3ee'/%3E%3Ctext x='50' y='68' font-size='48' text-anchor='middle' fill='%23071018' font-family='monospace'%3E%26lt;/%26gt;%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="nav-logo"><span class="logo-dot">&lt;/&gt;</span> Computer Programming</a>
+      <ul class="nav-links">
+        <li><a href="#objectives">วัตถุประสงค์</a></li>
+        <li><a href="#if">if</a></li>
+        <li><a href="#ifelse">if–else</a></li>
+        <li><a href="#elif">else if</a></li>
+        <li><a href="#switch">switch</a></li>
+        <li><a href="#nested">เงื่อนไขซ้อน</a></li>
+        <li><a href="#applied">ใช้งานจริง</a></li>
+        <li><a href="#quiz">แบบทดสอบ</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <canvas id="binary-canvas"></canvas>
+    <div class="container">
+      <div class="hero-kicker reveal">สัปดาห์ที่ 4</div>
+      <h1 class="reveal" data-delay="0.1">บทที่ 6<br><span class="grad-text">โครงสร้างควบคุมแบบเลือกทำ</span></h1>
+      <p class="hero-desc reveal" data-delay="0.2">
+        ข้าวหลามตัดที่วาดในบทที่ 3 และนิพจน์ตรรกะ 1/0 ที่ฝึกในบทที่ 5 มารวมร่างกันวันนี้ —
+        if, else if, else และ switch คือเครื่องมือที่ทำให้โปรแกรม "ตัดสินใจเองได้"
+        และเป็นโครงสร้างที่สองจากสามโครงสร้างพื้นฐานของทุกโปรแกรมในโลก
+      </p>
+      <div class="hero-badges reveal" data-delay="0.3">
+        <span class="badge">⏱️ <b>ใช้เวลาเรียน ~2.5 ชั่วโมง</b></span>
+        <span class="badge">🎓 <b>เครื่องตัดเกรดแบบไล่เงื่อนไขสด ๆ</b></span>
+        <span class="badge">📝 <b>แบบทดสอบ 10 ข้อ</b></span>
+      </div>
+      <div class="btn-row reveal" data-delay="0.4">
+        <a href="#objectives" class="btn btn-primary">เริ่มบทเรียน ↓</a>
+        <a href="week05.html" class="btn btn-ghost">← บทที่ 5</a>
+      </div>
+    </div>
+    <div class="scroll-hint">เลื่อนลงเพื่อเริ่มเรียน<br>⌄</div>
+  </header>
+
+  <section class="section" id="objectives">
+    <div class="container">
+      <span class="section-tag reveal">Learning Objectives</span>
+      <h2 class="section-title reveal">วัตถุประสงค์การเรียนรู้</h2>
+      <div class="obj-list">
+        <div class="obj-item reveal">เขียนคำสั่ง if พร้อมเงื่อนไขใน ( ) และบล็อกใน { } ได้ถูกต้อง</div>
+        <div class="obj-item reveal" data-delay="0.05">เขียนโปรแกรมสองทางเลือกด้วย if–else ได้</div>
+        <div class="obj-item reveal" data-delay="0.1">เขียนโปรแกรมหลายทางเลือกด้วย if–else if–else และอธิบายว่าทำไมลำดับเงื่อนไขจึงสำคัญ</div>
+        <div class="obj-item reveal" data-delay="0.15">ใช้ switch–case กับทางเลือกแบบค่าตายตัว และอธิบายหน้าที่ของ break ได้</div>
+        <div class="obj-item reveal" data-delay="0.2">เขียนเงื่อนไขซ้อน (nested if) และประยุกต์กับโจทย์จริง เช่น การตัดเกรดและค่าไฟฟ้าแบบขั้นบันได</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" id="if">
+    <div class="container">
+      <span class="section-tag reveal">The if Statement</span>
+      <h2 class="section-title reveal">🔶 if — ข้าวหลามตัดฉบับโค้ดจริง</h2>
+      <p class="section-sub reveal">
+        โครงสร้าง: <b style="color:var(--cyan)">if (เงื่อนไข) { คำสั่ง }</b>
+        — เงื่อนไขอยู่ใน <b style="color:var(--amber)">( )</b> เสมอ ถ้าค่าเป็นจริง (ไม่ใช่ 0)
+        ทำบล็อกใน <b style="color:var(--amber)">{ }</b> ถ้าเป็น 0 ข้ามไปเลย
+      </p>
+
+      <div class="code-card reveal">
+        <div class="code-head"><span>ตัวอย่างที่ 6.1 — speed.c (สมมุติผู้ใช้พิมพ์ 120)</span><div class="dots"><span></span><span></span><span></span></div></div>
+        <pre><code><span style="color:#a78bfa">int</span> speed;
+<span style="color:#22d3ee">scanf</span>(<span style="color:#fbbf24">"%d"</span>, &amp;speed);
+<span style="color:#a78bfa">if</span> (speed &gt; <span style="color:#a78bfa">90</span>) {
+    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"เกินกำหนด! โดนใบสั่ง\n"</span>);   <span style="color:#6b7280">// อยู่ใน { } = อยู่ใน if</span>
+    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"ค่าปรับ 1,000 บาท\n"</span>);
+}
+<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"ขับขี่ปลอดภัยนะครับ\n"</span>);        <span style="color:#6b7280">// นอก { } = ทำเสมอ</span></code></pre>
+        <button class="run-btn" data-stdin="120" data-output="(ผู้ใช้พิมพ์: 120)&#10;เกินกำหนด! โดนใบสั่ง&#10;ค่าปรับ 1,000 บาท&#10;ขับขี่ปลอดภัยนะครับ">▶ คอมไพล์และรัน</button>
+        <div class="code-output"></div>
+      </div>
+
+      <div class="grid grid-3" style="margin-top:36px">
+        <div class="card reveal">
+          <div class="icon">🧱</div>
+          <h3>{ } คือขอบเขตของเงื่อนไข</h3>
+          <p>ภาษาซีใช้วงเล็บปีกกาบอกว่าบรรทัดไหนอยู่ใน if — ถ้ามีคำสั่งเดียวละ { } ได้
+          แต่มือใหม่ <b style="color:var(--cyan)">ควรใส่เสมอ</b> กันบั๊กตอนเพิ่มบรรทัดทีหลัง</p>
+        </div>
+        <div class="card reveal" data-delay="0.05">
+          <div class="icon">☠️</div>
+          <h3>อย่าใส่ ; ท้าย if!</h3>
+          <p><code style="color:#fca5a5">if (speed &gt; 90);</code> — เซมิโคลอนตัวนั้นคือ "คำสั่งว่าง"
+          ทำให้เงื่อนไข <b style="color:#fca5a5">จบทันที</b> และบล็อกข้างล่างทำงานเสมอ!
+          คอมไพล์ผ่านด้วย — เป็นบั๊กเงียบสุดคลาสสิกของภาษาซี</p>
+        </div>
+        <div class="card reveal" data-delay="0.1">
+          <div class="icon">🔗</div>
+          <h3>ต่อจากบทที่แล้วเป๊ะ ๆ</h3>
+          <p>ในวงเล็บใส่อะไรก็ได้ที่ให้ค่า 1/0: <code style="color:var(--green)">speed &gt; 90</code>,
+          <code style="color:var(--green)">n % 2 == 0</code>, <code style="color:var(--green)">a &gt; 0 &amp;&amp; b &gt; 0</code> — ทุกตัวจากบทที่ 5 ใช้ได้หมด</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="ifelse">
+    <div class="container">
+      <span class="section-tag reveal">Two-way Selection</span>
+      <h2 class="section-title reveal">⚖️ if–else — สองทาง เลือกทางเดียวเสมอ</h2>
+      <p class="section-sub reveal">
+        เมื่อต้องทำ "อย่างใดอย่างหนึ่ง" เสมอ ใช้ else รับกรณีที่เงื่อนไขเป็นเท็จ —
+        เหมือนผังงาน BMI ที่แตกสองทางจากข้าวหลามตัดแล้วไหลมารวมกันก่อนจบ
+      </p>
+
+      <div class="grid grid-2" style="align-items:start">
+        <div class="code-card reveal" style="margin:0">
+          <div class="code-head"><span>ตัวอย่างที่ 6.2 — even_odd.c (สมมุติผู้ใช้พิมพ์ 7)</span><div class="dots"><span></span><span></span><span></span></div></div>
+          <pre><code><span style="color:#a78bfa">int</span> n;
+<span style="color:#22d3ee">scanf</span>(<span style="color:#fbbf24">"%d"</span>, &amp;n);
+<span style="color:#a78bfa">if</span> (n % <span style="color:#a78bfa">2</span> == <span style="color:#a78bfa">0</span>) {
+    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"%d เป็นเลขคู่\n"</span>, n);
+} <span style="color:#a78bfa">else</span> {
+    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"%d เป็นเลขคี่\n"</span>, n);
+}</code></pre>
+          <button class="run-btn" data-stdin="7" data-output="(ผู้ใช้พิมพ์: 7)&#10;7 เป็นเลขคี่">▶ คอมไพล์และรัน</button>
+          <div class="code-output"></div>
+        </div>
+        <div class="card reveal" data-delay="0.1" style="margin:0">
+          <h3 style="margin-bottom:14px">🧠 สามกฎทองของ else</h3>
+          <p style="line-height:2">
+          1️⃣ else ไม่มีเงื่อนไขของตัวเอง — มันคือ "กรณีที่เหลือทั้งหมด" (เขียน else (x &lt; 50) ไม่ได้)<br>
+          2️⃣ else ต้องตามหลังบล็อก } ของ if คู่ของมันทันที<br>
+          3️⃣ สองบล็อกนี้ทำได้ "ทางเดียวเท่านั้น" ไม่มีทางทำทั้งคู่ —
+          เหมือนตัวจำลองผังงานบทที่ 3 ที่เส้นทางจริง/เท็จ ไม่เคยถูกเดินพร้อมกัน</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" id="elif">
+    <div class="container">
+      <span class="section-tag reveal">Multi-way Selection</span>
+      <h2 class="section-title reveal">🎓 if–else if–else — เลือกหลายทาง: เครื่องตัดเกรด</h2>
+      <p class="section-sub reveal">
+        เมื่อทางเลือกมีมากกว่าสอง ใช้ <b style="color:var(--cyan)">else if</b> ต่อกี่ชั้นก็ได้ —
+        คอมไพเลอร์ไล่ตรวจ <b style="color:var(--text)">จากบนลงล่าง เจอจริงตัวแรกทำแล้วออกจากโครงสร้างทันที</b>
+        ใส่คะแนนแล้วกด "ตรวจเกรด ▶" ดูการไล่เงื่อนไขแบบสด ๆ
+      </p>
+
+      <div class="flow-wrap reveal">
+        <div class="flow-panel" style="margin:0">
+          <h3>🎛️ แผงควบคุม</h3>
+          <div class="widget-controls" style="justify-content:flex-start">
+            <label>คะแนน (0–100) = <input type="number" id="gradeScore" value="75" min="0" max="100" style="width:90px"></label>
+          </div>
+          <div class="btn-row" style="margin-bottom:8px">
+            <button class="btn btn-primary" id="gradeCheck">ตรวจเกรด ▶</button>
+          </div>
+          <div class="cond-list">
+            <div class="cond-item" data-grade="A">if (score &gt;= 80)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// เกรด A</div>
+            <div class="cond-item" data-grade="B">else if (score &gt;= 70)&nbsp;// เกรด B</div>
+            <div class="cond-item" data-grade="C">else if (score &gt;= 60)&nbsp;// เกรด C</div>
+            <div class="cond-item" data-grade="D">else if (score &gt;= 50)&nbsp;// เกรด D</div>
+            <div class="cond-item" data-grade="F">else&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// เกรด F</div>
+          </div>
+        </div>
+        <div class="flow-panel" style="margin:0;display:flex;flex-direction:column;justify-content:center">
+          <h3 style="text-align:center">ผลการตัดเกรด</h3>
+          <div class="grade-display grad-text" id="gradeDisplay">?</div>
+          <div class="flow-desc" id="gradeDesc">ใส่คะแนนแล้วกดตรวจ — สังเกตว่าเงื่อนไขที่เป็นเท็จจะจางลง และโปรแกรมหยุดที่เงื่อนไขจริงตัวแรก</div>
+        </div>
+      </div>
+
+      <div class="card reveal" style="margin-top:30px">
+        <div class="icon">🚨</div>
+        <h3>ลำดับเงื่อนไขสำคัญมาก!</h3>
+        <p>ลองสลับเอา <code style="color:#fca5a5">if (score &gt;= 50)</code> ขึ้นบรรทัดแรกดูสิ — คนได้ 95 คะแนนจะโดนตัดเกรด D!
+        เพราะ 95 ≥ 50 เป็นจริง โปรแกรมเจอจริงตัวแรกก็หยุดเลย ไม่สนใจว่าข้างล่างมีเงื่อนไขที่ "จริงกว่า" รออยู่
+        — กฎ: <b style="color:var(--text)">เรียงจากเงื่อนไขที่แคบ/สูงสุดลงไปกว้างสุดเสมอ</b></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="switch">
+    <div class="container">
+      <span class="section-tag reveal">The switch Statement</span>
+      <h2 class="section-title reveal">🎛️ switch–case — เมนูทางเลือกฉบับภาษาซี</h2>
+      <p class="section-sub reveal">
+        เมื่อทางเลือกเป็น "ค่าตายตัว" (เมนู 1 2 3, เกรด A B C) ภาษาซีมีเครื่องมือเฉพาะ:
+        <b style="color:var(--cyan)">switch (ตัวแปร)</b> กระโดดไป <b style="color:var(--cyan)">case</b> ที่ค่าตรงทันที
+        — แต่มีกติกาเหล็ก: <b style="color:#fca5a5">จบทุก case ด้วย break;</b> ไม่งั้นไหลทะลุลงไปทำ case ถัดไปด้วย!
+      </p>
+
+      <div class="grid grid-2" style="align-items:start">
+        <div class="code-card reveal" style="margin:0">
+          <div class="code-head"><span>ตัวอย่างที่ 6.3 — menu.c เครื่องดื่มอัตโนมัติ (ผู้ใช้กด 2)</span><div class="dots"><span></span><span></span><span></span></div></div>
+          <pre><code><span style="color:#a78bfa">int</span> menu;
+<span style="color:#22d3ee">scanf</span>(<span style="color:#fbbf24">"%d"</span>, &amp;menu);
+<span style="color:#a78bfa">switch</span> (menu) {
+    <span style="color:#a78bfa">case</span> <span style="color:#a78bfa">1</span>:
+        <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"กาแฟร้อน 35 บาท\n"</span>);
+        <span style="color:#a78bfa">break</span>;
+    <span style="color:#a78bfa">case</span> <span style="color:#a78bfa">2</span>:
+        <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"ชาเย็น 30 บาท\n"</span>);
+        <span style="color:#a78bfa">break</span>;
+    <span style="color:#a78bfa">case</span> <span style="color:#a78bfa">3</span>:
+        <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"โกโก้ 40 บาท\n"</span>);
+        <span style="color:#a78bfa">break</span>;
+    <span style="color:#a78bfa">default</span>:
+        <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"ไม่มีเมนูนี้\n"</span>);
+}</code></pre>
+          <button class="run-btn" data-stdin="2" data-output="(ผู้ใช้พิมพ์: 2)&#10;ชาเย็น 30 บาท">▶ คอมไพล์และรัน</button>
+          <div class="code-output"></div>
+        </div>
+        <div class="reveal" data-delay="0.1">
+          <div class="card" style="margin-bottom:20px">
+            <h3 style="margin-bottom:14px">🆚 switch vs else if — เลือกอันไหน?</h3>
+            <p style="line-height:1.9"><b style="color:var(--cyan)">switch</b>: ค่าตายตัวเป๊ะ ๆ (เมนู 1 2 3, ตัวอักษร 'A' 'B') — อ่านง่าย เร็ว<br>
+            <b style="color:var(--violet)">else if</b>: เงื่อนไขเป็น "ช่วง" (score &gt;= 80) หรือซับซ้อน — switch ทำไม่ได้<br><br>
+            ⚠️ switch ใช้ได้กับ int และ char เท่านั้น — ใช้กับ float หรือช่วงค่าไม่ได้<br>
+            💡 <b style="color:var(--cyan)">default</b> คือ else ของ switch: รับทุกค่าที่ไม่ตรง case ไหนเลย</p>
+          </div>
+          <div class="card">
+            <div class="icon">🕳️</div>
+            <h3>ลืม break = ไหลทะลุ (fall-through)</h3>
+            <p>ถ้า case 2 ไม่มี break; โปรแกรมจะพิมพ์ "ชาเย็น" แล้ว <b style="color:#fca5a5">ไหลลงไปพิมพ์ "โกโก้" ต่อทันที</b>
+            โดยไม่ตรวจค่าอะไรอีก — ข้อสอบชอบหลอกจุดนี้ที่สุดในเรื่อง switch</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" id="nested">
+    <div class="container">
+      <span class="section-tag reveal">Nested Conditions</span>
+      <h2 class="section-title reveal">🪆 เงื่อนไขซ้อนเงื่อนไข (Nested if)</h2>
+      <p class="section-sub reveal">
+        ใส่ if ไว้ "ข้างใน" { } ของ if อีกชั้นได้ — ใช้เมื่อการตัดสินใจมีลำดับขั้น
+        เช่น ตรวจสิทธิ์เช่ารถ: ต้องอายุถึง "ก่อน" แล้วค่อยดูใบขับขี่
+      </p>
+
+      <div class="grid grid-2" style="align-items:start">
+        <div class="code-card reveal" style="margin:0">
+          <div class="code-head"><span>ตัวอย่างที่ 6.4 — rental.c อายุ 20 / มีใบขับขี่ (license = 1)</span><div class="dots"><span></span><span></span><span></span></div></div>
+          <pre><code><span style="color:#a78bfa">int</span> age = <span style="color:#a78bfa">20</span>;
+<span style="color:#a78bfa">int</span> has_license = <span style="color:#a78bfa">1</span>;   <span style="color:#6b7280">// 1 = มี, 0 = ไม่มี</span>
+<span style="color:#a78bfa">if</span> (age &gt;= <span style="color:#a78bfa">18</span>) {
+    <span style="color:#a78bfa">if</span> (has_license) {
+        <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"เช่ารถได้\n"</span>);
+    } <span style="color:#a78bfa">else</span> {
+        <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"อายุถึง แต่ต้องมีใบขับขี่\n"</span>);
+    }
+} <span style="color:#a78bfa">else</span> {
+    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"อายุไม่ถึง 18 ปี\n"</span>);
+}</code></pre>
+          <button class="run-btn" data-output="เช่ารถได้">▶ คอมไพล์และรัน</button>
+          <div class="code-output"></div>
+        </div>
+        <div class="card reveal" data-delay="0.1" style="margin:0">
+          <h3 style="margin-bottom:14px">🆚 ซ้อน vs &amp;&amp; — เลือกอันไหน?</h3>
+          <p style="line-height:1.9">ถ้าผลลัพธ์ "ผ่าน/ไม่ผ่าน" เหมือนกันหมด ใช้ &amp;&amp; สั้นกว่า:<br>
+          <code style="color:var(--green)">if (age &gt;= 18 &amp;&amp; has_license)</code><br><br>
+          แต่ถ้าต้องการ <b style="color:var(--text)">ข้อความปฏิเสธต่างกัน</b> ในแต่ละกรณี
+          (อายุไม่ถึง vs ไม่มีใบขับขี่) ต้องซ้อนเพื่อแยกแขนงให้ครบ —
+          กฎง่าย ๆ: <b style="color:var(--cyan)">ผลเหมือนใช้ &amp;&amp; ผลต่างใช้ซ้อน</b><br><br>
+          💡 สังเกต <code style="color:var(--green)">if (has_license)</code> — ไม่ต้องเขียน == 1 เพราะ 1 ก็คือจริงอยู่แล้ว<br>
+          ⚠️ ซ้อนเกิน 3 ชั้นเริ่มอ่านยาก ควรคิดโครงสร้างใหม่</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="applied">
+    <div class="container">
+      <span class="section-tag reveal">Putting It Together</span>
+      <h2 class="section-title reveal">⚡ ใช้งานจริง: ค่าไฟฟ้าแบบขั้นบันได</h2>
+      <p class="section-sub reveal">
+        จำงานวาดผังงานค่าไฟในบทที่ 3 ได้ไหม? วันนี้อัปเกรดเป็น 3 ขั้นบันไดด้วย else if —
+        ยิ่งใช้มาก หน่วยที่เกินมายิ่งแพง ลองเลื่อนจำนวนหน่วยแล้วดูว่าโปรแกรมเข้าเงื่อนไขไหน
+      </p>
+
+      <div class="grid grid-2" style="align-items:start">
+        <div class="code-card reveal" style="margin:0">
+          <div class="code-head"><span>ตัวอย่างที่ 6.5 — electric_bill.c</span><div class="dots"><span></span><span></span><span></span></div></div>
+          <pre><code><span style="color:#a78bfa">int</span> units;
+<span style="color:#a78bfa">float</span> bill;
+<span style="color:#22d3ee">scanf</span>(<span style="color:#fbbf24">"%d"</span>, &amp;units);
+<span style="color:#a78bfa">if</span> (units &lt;= <span style="color:#a78bfa">150</span>) {
+    bill = units * <span style="color:#a78bfa">3.25</span>;
+} <span style="color:#a78bfa">else</span> <span style="color:#a78bfa">if</span> (units &lt;= <span style="color:#a78bfa">400</span>) {
+    bill = <span style="color:#a78bfa">150</span> * <span style="color:#a78bfa">3.25</span> + (units - <span style="color:#a78bfa">150</span>) * <span style="color:#a78bfa">4.22</span>;
+} <span style="color:#a78bfa">else</span> {
+    bill = <span style="color:#a78bfa">150</span> * <span style="color:#a78bfa">3.25</span> + <span style="color:#a78bfa">250</span> * <span style="color:#a78bfa">4.22</span> + (units - <span style="color:#a78bfa">400</span>) * <span style="color:#a78bfa">4.42</span>;
+}
+<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"ค่าไฟ %.2f บาท\n"</span>, bill);</code></pre>
+          <button class="run-btn" data-stdin="220" data-output="ค่าไฟ 782.90 บาท">▶ คอมไพล์และรัน</button>
+          <div class="code-output"></div>
+        </div>
+        <div class="card reveal" data-delay="0.1" style="margin:0">
+          <h3 style="margin-bottom:14px">💡 ลองเครื่องจริง</h3>
+          <div class="widget" style="padding:20px;margin-top:0">
+            <div class="widget-controls" style="margin-bottom:6px">
+              <label>หน่วยไฟฟ้า = <input type="number" id="billUnits" value="220" min="0" style="width:110px"></label>
+            </div>
+            <input type="range" id="billSlider" min="0" max="600" value="220" style="width:100%;margin-bottom:14px">
+            <div class="widget-result" id="billResult" style="line-height:2">— กำลังคำนวณ —</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-3" style="margin-top:36px">
+        <div class="card reveal">
+          <div class="icon">🚚</div>
+          <h3>โลจิสติกส์</h3>
+          <p>ค่าส่งตามน้ำหนัก: ≤ 1 กก. 40 บาท, ≤ 5 กก. 60 บาท, เกินนั้น 60 + กก.ละ 10 —
+          โครงเดียวกับค่าไฟเป๊ะ แค่เปลี่ยนตัวเลข</p>
+        </div>
+        <div class="card reveal" data-delay="0.05">
+          <div class="icon">🏭</div>
+          <h3>อุตสาหการ</h3>
+          <p>คัดเกรดชิ้นงานจากค่าความคลาดเคลื่อน: &lt; 0.01 มม. เกรด A, &lt; 0.05 เกรด B, เกินนั้น Reject —
+          if–else if ตัวเดียวคุมเครื่อง QC ทั้งไลน์</p>
+        </div>
+        <div class="card reveal" data-delay="0.1">
+          <div class="icon">💻</div>
+          <h3>คอมพิวเตอร์</h3>
+          <p>เมนูทุกระบบคือ switch ยักษ์: กด 1 ฝากเงิน กด 2 ถอน กด 0 ออก — สัปดาห์ที่ 11 โปรเจกต์ของคุณก็จะมีหน้าตาแบบนี้</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" id="quiz">
+    <div class="container">
+      <span class="section-tag reveal">Check Your Understanding</span>
+      <h2 class="section-title reveal">📝 แบบทดสอบท้ายบท (10 ข้อ)</h2>
+      <p class="section-sub reveal">จำหลักไว้: ไล่บนลงล่าง เจอจริงแล้วหยุด · ; ท้าย if คือหายนะ · switch ต้องมี break</p>
+      <div class="prequiz reveal">
+        <div class="prequiz-head">📘 อ่านก่อนสอบ · สรุปประเด็นสำคัญ</div>
+        <p class="prequiz-intro">บทนี้เน้น "ลำดับเงื่อนไข" และกับดักไวยากรณ์ของ if/switch — ระวัง 2 กับดักคลาสสิก: ; หลัง if และลืม break</p>
+        <div class="pq-item">
+          <span class="pq-num">1</span>
+          <div class="pq-text"><h4>บล็อก { } กำหนดขอบเขตของ if</h4><p>คำสั่งที่อยู่ใน <code>{ }</code> เท่านั้นที่ถือเป็นบล็อกของ if ถ้าไม่ใส่ปีกกา จะคุมแค่บรรทัดเดียว</p></div>
+        </div>
+        <div class="pq-item">
+          <span class="pq-num">2</span>
+          <div class="pq-text"><h4>กับดัก: ใส่ ; หลังเงื่อนไข if</h4><p><code>if (speed &gt; 90);</code> — เซมิโคลอนทำให้ if มี "บล็อกว่าง" บล็อกถัดมาจึงทำงาน<b>ทุกครั้ง</b>ไม่ว่าเงื่อนไขจริงหรือเท็จ</p><p><pre class="pq-code">if (speed &gt; 90);     <span class="cm">// ผิด! มี ; เกิน</span>
+{ printf("ใบสั่ง"); }  <span class="cm">// พิมพ์เสมอ</span></pre></p></div>
+        </div>
+        <div class="pq-item">
+          <span class="pq-num">3</span>
+          <div class="pq-text"><h4>if–else if–else ทำงานบล็อกเดียว</h4><p>ทั้งชุดจะมีบล็อกถูกทำงาน <b>เพียง 1 บล็อก</b> · <b>ลำดับเงื่อนไขสำคัญมาก</b> เช่นตัดเกรด ถ้าเอา D (>=50) ขึ้นก่อน คน 95 คะแนนจะได้ D เพราะเข้าเงื่อนไขแรกที่จริง</p><p><pre class="pq-code">if (score &gt;= 80) ...  <span class="cm">// A — ต้องเช็คมากไปน้อย</span>
+else if (score &gt;= 70) ... <span class="cm">// 68 → ตกมาได้ C</span></pre></p></div>
+        </div>
+        <div class="pq-item">
+          <span class="pq-num">4</span>
+          <div class="pq-text"><h4>switch–case และ break</h4><p>เหมาะกับการเทียบค่า "เท่ากับ" หลายค่าแบบเจาะจง (เช่นเมนู 1/2/3) · <b>ลืม break</b> จะ "ไหลลง" ทำ case ถัดไปต่อ (fall-through)</p><p><pre class="pq-code">switch (menu) {
+  case 1: ...; break;   <span class="cm">// ขาด break = ไหลลง case 2</span>
+  default: ...;
+}</pre></p></div>
+        </div>
+        <div class="pq-item">
+          <span class="pq-num">5</span>
+          <div class="pq-text"><h4>เงื่อนไขซ้อนด้วย &&</h4><p>รวมหลายเงื่อนไขที่ต้องจริงพร้อมกัน เช่น <code>age &gt;= 18 &amp;&amp; has_license == 1</code></p></div>
+        </div>
+        <div class="pq-item tip">
+          <span class="pq-num">💡</span>
+          <div class="pq-text"><h4>จุดที่ข้อสอบชอบถาม</h4><p>สองกับดักที่ออกบ่อย: <b>;</b> หลัง <code>if(...)</code> และ <b>ลืม break</b> ใน switch — กับโจทย์ "สลับลำดับเงื่อนไขแล้วผลเปลี่ยน"</p></div>
+        </div>
+      </div>
+      <div id="quizWrap"></div>
+      <div class="quiz-score" id="quizScore"></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <span class="section-tag reveal">Summary & Assignment</span>
+      <h2 class="section-title reveal">🎯 สรุปบทเรียน</h2>
+      <div class="grid grid-2" style="margin-bottom:50px">
+        <div class="card reveal">
+          <div class="icon">🔶</div>
+          <h3>สิ่งที่ได้เรียน</h3>
+          <p>if (เงื่อนไข) { บล็อก } — เงื่อนไขใน ( ) บล็อกใน { } ห้ามใส่ ; ท้าย if · if–else เลือกหนึ่งจากสองทาง · else if ไล่บนลงล่าง เจอจริงแล้วหยุด ลำดับจึงสำคัญ · switch–case สำหรับค่าตายตัว ต้องมี break ไม่งั้นไหลทะลุ · ซ้อนเมื่อผลต่าง ใช้ &amp;&amp; เมื่อผลเหมือน</p>
+        </div>
+        <div class="card reveal" data-delay="0.1">
+          <div class="icon">🔮</div>
+          <h3>เชื่อมไปสัปดาห์หน้า</h3>
+          <p>ครบสองโครงสร้างแล้ว: ลำดับ ✓ เงื่อนไข ✓ — สัปดาห์ที่ 5 ปิดท้ายด้วยตัวสุดท้ายที่ทรงพลังที่สุด: การวนซ้ำ (for / while / do-while) สั่งงานซ้ำพันรอบด้วยโค้ดสามบรรทัด แล้วสัปดาห์ที่ 6 สอบกลางภาค!</p>
+        </div>
+      </div>
+      <div class="assign-box reveal">
+        <h3>📌 งานมอบหมายสัปดาห์ที่ 4</h3>
+        <ol>
+          <li>เขียนโปรแกรมรับค่า BMI ต่อยอดจาก bmi.c บทที่ 4: แยกผล 4 ระดับด้วย else if (&lt; 18.5 ผอม, &lt; 23 ปกติ, &lt; 25 ท้วม, ≥ 25 อ้วน) พร้อมคำแนะนำแต่ละระดับ</li>
+          <li>เขียนโปรแกรมตัดเกรดของจริงตามเกณฑ์รายวิชานี้ (A ≥ 80, B+ ≥ 75, B ≥ 70, C+ ≥ 65, C ≥ 60, D+ ≥ 55, D ≥ 50, F) — ระวังเรียงลำดับเงื่อนไขให้ถูก</li>
+          <li>เขียนเมนูร้านเครื่องดื่ม 4 เมนูด้วย switch–case (มี default รับเมนูผิด) แล้วลองลบ break ออกหนึ่งตัว สังเกตและอธิบายอาการไหลทะลุ</li>
+          <li>โจทย์สาขา: เขียนโปรแกรมคิดค่าบริการแบบขั้นบันไดของงานในสาขาตัวเอง (ค่าส่งพัสดุ, ค่าเช่าเครื่องจักร ฯลฯ) อย่างน้อย 3 ขั้น พร้อมผังงานประกอบ</li>
+          <li>ทำแบบทดสอบท้ายบทให้ได้อย่างน้อย 8/10 แล้วแคปหน้าจอส่งใน LMS</li>
+        </ol>
+      </div>
+      <div class="btn-row reveal" style="margin-top:46px;justify-content:center">
+        <a href="week05.html" class="btn btn-ghost">← บทที่ 5</a>
+        <a href="exercises.html#w06" class="btn btn-ghost">📚 แบบฝึกหัดบทนี้</a>
+        <a href="week07.html" class="btn btn-primary">สัปดาห์ที่ 5: โครงสร้างควบคุมแบบวนซ้ำ →</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <p>บทที่ 6: โครงสร้างควบคุมแบบเลือกทำ — รายวิชาการเขียนโปรแกรมคอมพิวเตอร์</p>
+      <p class="credits">จัดทำเพื่อการศึกษา · อิงเอกสารประกอบการสอนบทที่ 6</p>
+    </div>
+  </footer>
+
+  <button id="toTop" title="กลับขึ้นด้านบน">↑</button>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/week06.js"></script>
+  <script src="js/runner.js"></script>
+  <script src="js/quiz.js"></script>
+</body>
+</html>

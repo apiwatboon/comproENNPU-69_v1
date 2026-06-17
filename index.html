@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>การเขียนโปรแกรมคอมพิวเตอร์ | Computer Programming</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2322d3ee'/%3E%3Ctext x='50' y='68' font-size='48' text-anchor='middle' fill='%23071018' font-family='monospace'%3E%26lt;/%26gt;%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ===== Navbar ===== -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="nav-logo"><span class="logo-dot">&lt;/&gt;</span> Computer Programming</a>
+      <ul class="nav-links">
+        <li><a href="#about">เกี่ยวกับรายวิชา</a></li>
+        <li><a href="#weeks">แผนการสอน 14 สัปดาห์</a></li>
+        <li><a href="week01.html">▶ เริ่มเรียนบทที่ 1</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ===== Hero ===== -->
+  <header class="hero">
+    <canvas id="binary-canvas"></canvas>
+    <div class="container">
+      <div class="hero-kicker reveal">รายวิชาสำหรับนักศึกษาวิศวกรรมศาสตร์</div>
+      <h1 class="reveal" data-delay="0.1">การเขียนโปรแกรม<span class="grad-text">คอมพิวเตอร์</span><br>Computer Programming</h1>
+      <p class="hero-desc reveal" data-delay="0.2">
+        เรียนรู้พื้นฐานการเขียนโปรแกรมตั้งแต่ศูนย์ — จากประวัติศาสตร์ของเครื่องคำนวณยุคโบราณ
+        สู่การเขียนโค้ดแก้ปัญหาทางวิศวกรรมจริง ครบทั้งภาคทฤษฎีและปฏิบัติ ตลอด 14 สัปดาห์
+      </p>
+      <div class="hero-badges reveal" data-delay="0.3">
+        <span class="badge">🎓 <b>วิศวกรรมคอมพิวเตอร์</b></span>
+        <span class="badge">🚚 <b>วิศวกรรมโลจิสติกส์</b></span>
+        <span class="badge">🏭 <b>วิศวกรรมอุตสาหการ</b></span>
+        <span class="badge">📅 <b>14 สัปดาห์</b></span>
+      </div>
+      <div class="btn-row reveal" data-delay="0.4">
+        <a href="week01.html" class="btn btn-primary">🚀 เริ่มเรียนบทที่ 1 — ประวัติคอมพิวเตอร์</a>
+        <a href="exercises.html" class="btn btn-ghost">📚 คลังแบบฝึกหัด 110 ข้อ</a>
+        <a href="#weeks" class="btn btn-ghost">📋 ดูแผนการสอนทั้งเทอม</a>
+      </div>
+    </div>
+    <div class="scroll-hint">เลื่อนลงเพื่อดูรายละเอียด<br>⌄</div>
+  </header>
+
+  <!-- ===== เกี่ยวกับรายวิชา ===== -->
+  <section class="section" id="about">
+    <div class="container">
+      <span class="section-tag reveal">Course Overview</span>
+      <h2 class="section-title reveal">วิชานี้เรียนอะไรบ้าง?</h2>
+      <p class="section-sub reveal">
+        รายวิชานี้ปูพื้นฐานการคิดเชิงคำนวณ (Computational Thinking) และการเขียนโปรแกรม
+        สำหรับนักศึกษาวิศวกรรมทุกสาขา โดยไม่จำเป็นต้องมีพื้นฐานมาก่อน
+      </p>
+      <div class="grid grid-3">
+        <div class="card reveal">
+          <div class="icon">🧠</div>
+          <h3>คิดอย่างเป็นระบบ</h3>
+          <p>ฝึกแตกปัญหาใหญ่เป็นขั้นตอนย่อย ออกแบบอัลกอริทึมและผังงาน (Flowchart) ก่อนลงมือเขียนโค้ดจริง</p>
+        </div>
+        <div class="card reveal" data-delay="0.1">
+          <div class="icon">⌨️</div>
+          <h3>ลงมือเขียนโค้ดจริง</h3>
+          <p>เรียนรู้ตัวแปร เงื่อนไข ลูป ฟังก์ชัน และโครงสร้างข้อมูล ผ่านโจทย์ปฏิบัติทุกสัปดาห์</p>
+        </div>
+        <div class="card reveal" data-delay="0.2">
+          <div class="icon">🏗️</div>
+          <h3>ประยุกต์กับงานวิศวกรรม</h3>
+          <p>ตัวอย่างและโปรเจกต์อิงปัญหาจริงของแต่ละสาขา ทั้งระบบอัตโนมัติ โลจิสติกส์ และการผลิต</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== แผน 14 สัปดาห์ ===== -->
+  <section class="section alt" id="weeks">
+    <div class="container">
+      <span class="section-tag reveal">Course Schedule</span>
+      <h2 class="section-title reveal">แผนการสอน <span class="grad-text">14 สัปดาห์</span></h2>
+      <p class="section-sub reveal">คลิกที่สัปดาห์ที่เปิดให้เรียนเพื่อเข้าสู่บทเรียนแบบ Interactive</p>
+
+      <div class="grid grid-2">
+        <a href="week01.html" class="week-link reveal">
+          <div class="week-card available">
+            <div class="week-num">1-1</div>
+            <div>
+              <h3>ประวัติความเป็นมาของคอมพิวเตอร์</h3>
+              <p>จากลูกคิดสู่ AI — วิวัฒนาการคอมพิวเตอร์ 5 ยุค, กฎของมัวร์, จุดกำเนิดของการเขียนโปรแกรม</p>
+            </div>
+            <span class="week-status open">เปิดเรียนแล้ว</span>
+          </div>
+        </a>
+        <a href="week02.html" class="week-link reveal">
+          <div class="week-card available">
+            <div class="week-num">1-2</div>
+            <div>
+              <h3>องค์ประกอบของระบบคอมพิวเตอร์</h3>
+              <p>ฮาร์ดแวร์ ซอฟต์แวร์ ระบบเลขฐาน และขั้นตอนการพัฒนาโปรแกรม</p>
+            </div>
+            <span class="week-status open">เปิดเรียนแล้ว</span>
+          </div>
+        </a>
+        <a href="week03.html" class="week-link reveal">
+          <div class="week-card available">
+            <div class="week-num">1-3</div>
+            <div>
+              <h3>อัลกอริทึมและผังงาน</h3>
+              <p>การวิเคราะห์ปัญหา, Pseudocode, Flowchart และการคิดเชิงคำนวณ</p>
+            </div>
+            <span class="week-status open">เปิดเรียนแล้ว</span>
+          </div>
+        </a>
+        <a href="week04.html" class="week-link reveal">
+          <div class="week-card available">
+            <div class="week-num">2</div>
+            <div>
+              <h3>เริ่มต้นเขียนโปรแกรมแรก</h3>
+              <p>โครงสร้างโปรแกรม ตัวแปร ชนิดข้อมูล และการแสดงผล</p>
+            </div>
+            <span class="week-status open">เปิดเรียนแล้ว</span>
+          </div>
+        </a>
+        <a href="week05.html" class="week-link reveal">
+          <div class="week-card available">
+            <div class="week-num">3</div>
+            <div>
+              <h3>ตัวดำเนินการและนิพจน์</h3>
+              <p>การคำนวณทางคณิตศาสตร์ ตรรกะ และการรับข้อมูลจากผู้ใช้</p>
+            </div>
+            <span class="week-status open">เปิดเรียนแล้ว</span>
+          </div>
+        </a>
+        <a href="week06.html" class="week-link reveal">
+          <div class="week-card available">
+            <div class="week-num">4</div>
+            <div>
+              <h3>โครงสร้างควบคุมแบบเลือกทำ</h3>
+              <p>if, if-else, การซ้อนเงื่อนไข และการเลือกหลายทาง</p>
+            </div>
+            <span class="week-status open">เปิดเรียนแล้ว</span>
+          </div>
+        </a>
+        <a href="week07.html" class="week-link reveal">
+          <div class="week-card available">
+            <div class="week-num">5</div>
+            <div>
+              <h3>โครงสร้างควบคุมแบบวนซ้ำ</h3>
+              <p>for, while, ลูปซ้อน และเทคนิคการวนซ้ำแก้ปัญหาวิศวกรรม</p>
+            </div>
+            <span class="week-status open">เปิดเรียนแล้ว</span>
+          </div>
+        </a>
+        <a href="week08.html" class="week-link reveal">
+          <div class="week-card available">
+            <div class="week-num">6</div>
+            <div>
+              <h3>สอบกลางภาค</h3>
+              <p>ทบทวนและวัดผลเนื้อหาสัปดาห์ที่ 1–5</p>
+            </div>
+            <span class="week-status open">เปิดเรียนแล้ว</span>
+          </div>
+        </a>
+        <a href="week09.html" class="week-link reveal">
+          <div class="week-card available">
+            <div class="week-num">7</div>
+            <div>
+              <h3>ฟังก์ชัน</h3>
+              <p>การแบ่งโปรแกรมเป็นส่วนย่อย พารามิเตอร์ การคืนค่า และขอบเขตตัวแปร</p>
+            </div>
+            <span class="week-status open">เปิดเรียนแล้ว</span>
+          </div>
+        </a>
+        <a href="week10.html" class="week-link reveal">
+          <div class="week-card available">
+            <div class="week-num">8</div>
+            <div>
+              <h3>อาร์เรย์และลิสต์</h3>
+              <p>การจัดเก็บข้อมูลชุด การวนอ่าน ค้นหา และจัดเรียงข้อมูล</p>
+            </div>
+            <span class="week-status open">เปิดเรียนแล้ว</span>
+          </div>
+        </a>
+        <a href="week11.html" class="week-link reveal">
+          <div class="week-card available">
+            <div class="week-num">9</div>
+            <div>
+              <h3>สตริงและการประมวลผลข้อความ</h3>
+              <p>การจัดการข้อความ การค้นหา/แทนที่ และการจัดรูปแบบผลลัพธ์</p>
+            </div>
+            <span class="week-status open">เปิดเรียนแล้ว</span>
+          </div>
+        </a>
+        <a href="week12.html" class="week-link reveal">
+          <div class="week-card available">
+            <div class="week-num">10</div>
+            <div>
+              <h3>ไฟล์และการจัดการข้อมูล</h3>
+              <p>อ่าน/เขียนไฟล์ ประมวลผลข้อมูล CSV และรายงานผลทางวิศวกรรม</p>
+            </div>
+            <span class="week-status open">เปิดเรียนแล้ว</span>
+          </div>
+        </a>
+        <a href="week13.html" class="week-link reveal">
+          <div class="week-card available">
+            <div class="week-num">11</div>
+            <div>
+              <h3>โปรเจกต์ประยุกต์ทางวิศวกรรม</h3>
+              <p>เวิร์กชอปโปรเจกต์กลุ่มตามโจทย์ของแต่ละสาขาวิชา</p>
+            </div>
+            <span class="week-status open">เปิดเรียนแล้ว</span>
+          </div>
+        </a>
+        <a href="week14.html" class="week-link reveal">
+          <div class="week-card available">
+            <div class="week-num">12</div>
+            <div>
+              <h3>นำเสนอโปรเจกต์ + ทบทวนปลายภาค</h3>
+              <p>นำเสนอผลงาน สรุปบทเรียนทั้งเทอม และเตรียมสอบปลายภาค</p>
+            </div>
+            <span class="week-status open">เปิดเรียนแล้ว</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer">
+    <div class="container">
+      <p>สื่อการสอนรายวิชาการเขียนโปรแกรมคอมพิวเตอร์ — สำหรับนักศึกษาวิศวกรรมคอมพิวเตอร์ วิศวกรรมโลจิสติกส์ และวิศวกรรมอุตสาหการ</p>
+      <p class="credits">รูปภาพประกอบจาก Wikimedia Commons (Public Domain / Creative Commons) เพื่อการศึกษา</p>
+    </div>
+  </footer>
+
+  <button id="toTop" title="กลับขึ้นด้านบน">↑</button>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

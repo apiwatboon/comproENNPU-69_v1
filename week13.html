@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>สัปดาห์ที่ 11: โปรเจกต์ประยุกต์ทางวิศวกรรม | Computer Programming</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2322d3ee'/%3E%3Ctext x='50' y='68' font-size='48' text-anchor='middle' fill='%23071018' font-family='monospace'%3E%26lt;/%26gt;%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="nav-logo"><span class="logo-dot">&lt;/&gt;</span> Computer Programming</a>
+      <ul class="nav-links">
+        <li><a href="#brief">กติกา</a></li>
+        <li><a href="#tracks">โจทย์ 3 สาขา</a></li>
+        <li><a href="#structure">โครงสร้างโค้ด</a></li>
+        <li><a href="#milestones">แผนงาน</a></li>
+        <li><a href="#rubric">เกณฑ์คะแนน</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <canvas id="binary-canvas"></canvas>
+    <div class="container">
+      <div class="hero-kicker reveal">สัปดาห์ที่ 11 — เวิร์กชอป</div>
+      <h1 class="reveal" data-delay="0.1">โปรเจกต์ประยุกต์<br><span class="grad-text">ทางวิศวกรรม</span></h1>
+      <p class="hero-desc reveal" data-delay="0.2">
+        12 สัปดาห์ของเครื่องมือ มาถึงเวทีจริง: จับกลุ่ม เลือกโจทย์ของสาขาตัวเอง
+        แล้วสร้างโปรแกรมที่ "ใช้งานได้จริง" หนึ่งระบบ — สัปดาห์นี้คือเวิร์กชอปลงมือทำในคาบ
+        มีอาจารย์เดินให้คำปรึกษา สัปดาห์หน้านำเสนอ
+      </p>
+      <div class="hero-badges reveal" data-delay="0.3">
+        <span class="badge">👥 <b>กลุ่มละ 3–4 คน</b></span>
+        <span class="badge">🛠️ <b>โจทย์เลือกได้ 9 หัวข้อ 3 สาขา</b></span>
+        <span class="badge">🎤 <b>นำเสนอสัปดาห์ที่ 12</b></span>
+      </div>
+      <div class="btn-row reveal" data-delay="0.4">
+        <a href="#brief" class="btn btn-primary">อ่านกติกา ↓</a>
+        <a href="week12.html" class="btn btn-ghost">← บทที่ 12</a>
+      </div>
+    </div>
+    <div class="scroll-hint">เลื่อนลงเพื่อเริ่ม<br>⌄</div>
+  </header>
+
+  <section class="section" id="brief">
+    <div class="container">
+      <span class="section-tag reveal">Project Brief</span>
+      <h2 class="section-title reveal">📋 กติกาโปรเจกต์</h2>
+      <div class="grid grid-3">
+        <div class="card reveal">
+          <div class="icon">🎯</div>
+          <h3>เป้าหมาย</h3>
+          <p>โปรแกรมภาษาซีที่แก้ปัญหาจริงของสาขาตัวเอง 1 ระบบ ทำงานผ่านเมนูข้อความ (รับคำสั่ง–ทำงาน–วนกลับมาถามใหม่) คอมไพล์ผ่านและใช้งานได้จริงตั้งแต่ต้นจนจบโดยไม่พัง</p>
+        </div>
+        <div class="card reveal" data-delay="0.05">
+          <div class="icon">🧰</div>
+          <h3>ต้องใช้ครบ 5 อย่าง</h3>
+          <p>① ฟังก์ชันอย่างน้อย 4 ตัว · ② เงื่อนไข if–else if หรือ switch · ③ ลูป for/while/do-while · ④ อาร์เรย์เก็บข้อมูล · ⑤ อ่านหรือเขียนไฟล์/CSV อย่างน้อย 1 จุด — ครบ = ใช้ทุกบทที่เรียนมา</p>
+        </div>
+        <div class="card reveal" data-delay="0.1">
+          <div class="icon">📦</div>
+          <h3>สิ่งที่ต้องส่ง</h3>
+          <p>โค้ด .c พร้อมคอมเมนต์ · ไฟล์ข้อมูลตัวอย่าง (.csv/.txt) · ผังงานของฟังก์ชันหลัก 1 ผัง (ทักษะบทที่ 3!) · สไลด์นำเสนอ 5–8 หน้า — ส่งใน LMS ก่อนคาบสัปดาห์ที่ 12</p>
+        </div>
+      </div>
+      <div class="card reveal" style="margin-top:26px">
+        <div class="icon">👥</div>
+        <h3>แบ่งบทบาทในทีมให้ชัด</h3>
+        <p><b style="color:var(--cyan)">หัวหน้าทีม</b> คุมแผน รวมโค้ด ตัดสินใจ · <b style="color:var(--violet)">นักพัฒนา</b> เขียนฟังก์ชันตามที่แบ่งกัน (แบ่งเป็นฟังก์ชันได้เพราะบทที่ 9!) ·
+        <b style="color:var(--green)">นักทดสอบ+เอกสาร</b> ลองป้อนข้อมูลแปลก ๆ ให้โปรแกรมพัง แล้วรายงานให้แก้ พร้อมทำสไลด์ — ทุกคนต้องอธิบายโค้ดทุกส่วนได้ตอนถาม-ตอบ</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" id="tracks">
+    <div class="container">
+      <span class="section-tag reveal">Choose Your Track</span>
+      <h2 class="section-title reveal">🛤️ โจทย์ตามสาขา — เลือก 1 จาก 9 (หรือเสนอเองได้)</h2>
+      <p class="section-sub reveal">ทุกโจทย์ออกแบบให้ทำได้ด้วยความรู้บทที่ 1–12 พอดี — โจทย์เสนอเองต้องผ่านความเห็นชอบจากอาจารย์ภายในคาบนี้</p>
+      <div class="grid grid-3">
+        <div class="card reveal">
+          <div class="icon">💻</div>
+          <h3>วิศวกรรมคอมพิวเตอร์</h3>
+          <p style="line-height:1.9">
+          <b style="color:var(--cyan)">C1.</b> ระบบจัดการคะแนนนักศึกษา: บันทึก/แก้ไขคะแนนลง CSV ตัดเกรดอัตโนมัติ สรุปสถิติห้อง<br><br>
+          <b style="color:var(--cyan)">C2.</b> ระบบยืม–คืนอุปกรณ์แล็บ: เช็คของว่าง บันทึกผู้ยืม เตือนเกินกำหนด<br><br>
+          <b style="color:var(--cyan)">C3.</b> เกมทายคำศัพท์คอมพิวเตอร์: คลังคำในไฟล์ จับเวลานับคะแนน เก็บสถิติผู้เล่น</p>
+        </div>
+        <div class="card reveal" data-delay="0.05">
+          <div class="icon">🚚</div>
+          <h3>วิศวกรรมโลจิสติกส์</h3>
+          <p style="line-height:1.9">
+          <b style="color:var(--cyan)">L1.</b> ระบบคลังสินค้า: รับเข้า–จ่ายออก แจ้งเตือนสต๊อกต่ำ รายงานมูลค่าคงคลังจาก CSV<br><br>
+          <b style="color:var(--cyan)">L2.</b> เครื่องคิดค่าส่งพัสดุ: อัตราขั้นบันไดตามน้ำหนัก+ปลายทาง ออกใบเสร็จเป็นไฟล์<br><br>
+          <b style="color:var(--cyan)">L3.</b> วางแผนบรรทุกรถ: อ่านรายการพัสดุ จัดลงรถตามพิกัดน้ำหนัก สรุปจำนวนเที่ยว</p>
+        </div>
+        <div class="card reveal" data-delay="0.1">
+          <div class="icon">🏭</div>
+          <h3>วิศวกรรมอุตสาหการ</h3>
+          <p style="line-height:1.9">
+          <b style="color:var(--cyan)">I1.</b> ระบบบันทึกผล QC: เก็บค่าวัดชิ้นงาน เทียบพิกัดความเผื่อ สรุปร้อยละของเสียรายวัน<br><br>
+          <b style="color:var(--cyan)">I2.</b> เครื่องคำนวณ OEE: อ่าน log เครื่องจักรจาก CSV คำนวณ Availability × Performance × Quality<br><br>
+          <b style="color:var(--cyan)">I3.</b> ระบบเบิกวัตถุดิบเข้าไลน์ผลิต: ตัดสต๊อกตามสูตรการผลิต เตือนเมื่อไม่พอ</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="structure">
+    <div class="container">
+      <span class="section-tag reveal">Recommended Skeleton</span>
+      <h2 class="section-title reveal">🏗️ โครงสร้างโค้ดแนะนำ — ทุกโจทย์ใช้โครงเดียวกัน</h2>
+      <p class="section-sub reveal">
+        สังเกตว่าทุกระบบในชีวิตจริงคือ "ลูปเมนู" ห่อฟังก์ชันย่อย — คัดลอกโครงนี้ไปเริ่มได้เลย
+        แล้วค่อย ๆ เติมเนื้อในทีละฟังก์ชัน ทดสอบทีละชิ้น
+      </p>
+
+      <div class="code-card reveal">
+        <div class="code-head"><span>project_skeleton.c</span><div class="dots"><span></span><span></span><span></span></div></div>
+        <pre><code><span style="color:#a78bfa">#include</span> <span style="color:#fbbf24">&lt;stdio.h&gt;</span>
+<span style="color:#a78bfa">#include</span> <span style="color:#fbbf24">&lt;string.h&gt;</span>
+
+<span style="color:#a78bfa">int</span> <span style="color:#22d3ee">load_data</span>(<span style="color:#a78bfa">char</span> names[][<span style="color:#a78bfa">30</span>], <span style="color:#a78bfa">int</span> qty[]) {   <span style="color:#6b7280">// อ่าน CSV เข้าอาร์เรย์ คืนจำนวนแถว (บท 12)</span>
+    ...
+}
+
+<span style="color:#a78bfa">void</span> <span style="color:#22d3ee">add_item</span>(<span style="color:#a78bfa">char</span> names[][<span style="color:#a78bfa">30</span>], <span style="color:#a78bfa">int</span> qty[], <span style="color:#a78bfa">int</span> *n) {   <span style="color:#6b7280">// เพิ่มรายการใหม่ (บท 10)</span>
+    ...
+}
+
+<span style="color:#a78bfa">void</span> <span style="color:#22d3ee">show_report</span>(<span style="color:#a78bfa">char</span> names[][<span style="color:#a78bfa">30</span>], <span style="color:#a78bfa">int</span> qty[], <span style="color:#a78bfa">int</span> n) {   <span style="color:#6b7280">// สรุปสถิติ + จัดคอลัมน์ (บท 5, 11)</span>
+    ...
+}
+
+<span style="color:#a78bfa">void</span> <span style="color:#22d3ee">save_data</span>(<span style="color:#a78bfa">char</span> names[][<span style="color:#a78bfa">30</span>], <span style="color:#a78bfa">int</span> qty[], <span style="color:#a78bfa">int</span> n) {   <span style="color:#6b7280">// เขียนกลับลงไฟล์ (บท 12)</span>
+    ...
+}
+
+<span style="color:#a78bfa">int</span> <span style="color:#22d3ee">main</span>() {
+    <span style="color:#a78bfa">char</span> names[<span style="color:#a78bfa">100</span>][<span style="color:#a78bfa">30</span>];
+    <span style="color:#a78bfa">int</span> qty[<span style="color:#a78bfa">100</span>];
+    <span style="color:#a78bfa">int</span> n = load_data(names, qty);
+    <span style="color:#a78bfa">int</span> choice;
+    <span style="color:#a78bfa">do</span> {                                       <span style="color:#6b7280">// ลูปเมนูด้วย do-while (บท 7)</span>
+        <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"1=ดูข้อมูล 2=เพิ่ม 3=รายงาน 0=ออก : "</span>);
+        <span style="color:#22d3ee">scanf</span>(<span style="color:#fbbf24">"%d"</span>, &amp;choice);
+        <span style="color:#a78bfa">switch</span> (choice) {                      <span style="color:#6b7280">// เมนู = switch (บท 6)</span>
+            <span style="color:#a78bfa">case</span> <span style="color:#a78bfa">2</span>: add_item(names, qty, &amp;n); <span style="color:#a78bfa">break</span>;
+            <span style="color:#a78bfa">case</span> <span style="color:#a78bfa">3</span>: show_report(names, qty, n); <span style="color:#a78bfa">break</span>;
+        }
+    } <span style="color:#a78bfa">while</span> (choice != <span style="color:#a78bfa">0</span>);
+    save_data(names, qty, n);                  <span style="color:#6b7280">// บันทึกก่อนจบ</span>
+    <span style="color:#a78bfa">return</span> <span style="color:#a78bfa">0</span>;
+}</code></pre>
+      </div>
+
+      <div class="grid grid-3" style="margin-top:36px">
+        <div class="card reveal">
+          <div class="icon">🪜</div>
+          <h3>ทำทีละขั้น อย่าทำทีเดียวหมด</h3>
+          <p>เริ่มจากเมนูเปล่า ๆ ที่วนได้ → เติม load_data → เติมทีละเมนู — โปรแกรมต้อง "รันได้เสมอ" ทุกสิ้นวัน อย่าเขียน 200 บรรทัดแล้วค่อยรันครั้งแรก</p>
+        </div>
+        <div class="card reveal" data-delay="0.05">
+          <div class="icon">🧪</div>
+          <h3>ทดสอบแบบคนใจร้าย</h3>
+          <p>ป้อนตัวหนังสือตอนที่ขอตัวเลข เลือกเมนูที่ไม่มี ไฟล์หาย — โปรแกรมที่ดีต้องไม่พัง (ทักษะบทที่ 12: ข้าม + แจ้งเตือน)</p>
+        </div>
+        <div class="card reveal" data-delay="0.1">
+          <div class="icon">💬</div>
+          <h3>คอมเมนต์ = คะแนน</h3>
+          <p>หัวฟังก์ชันทุกตัวเขียนหนึ่งบรรทัด: รับอะไร คืนอะไร — กรรมการอ่านโค้ดไม่ออกภายใน 3 นาที = เสียคะแนนคุณภาพโค้ดแน่นอน</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" id="milestones">
+    <div class="container">
+      <span class="section-tag reveal">Two-Week Plan</span>
+      <h2 class="section-title reveal">🗓️ แผนงาน 2 สัปดาห์ — ติ๊กตามความคืบหน้าของกลุ่ม</h2>
+      <p class="section-sub reveal">รายการถูกจำไว้ในเครื่อง ใช้เป็นกระดานติดตามของกลุ่มได้เลย — ถ้าจบคาบนี้แล้วยังไม่ผ่าน 4 ข้อแรก รีบปรึกษาอาจารย์ด่วน</p>
+      <div class="checklist reveal" id="projChecklist">
+        <label class="check-item"><input type="checkbox" data-ck="0"><span>【คาบนี้】 ตั้งกลุ่ม แบ่งบทบาท และเลือกโจทย์ได้แล้ว</span></label>
+        <label class="check-item"><input type="checkbox" data-ck="1"><span>【คาบนี้】 เขียนรายการฟีเจอร์ (อย่างน้อย 4 เมนู) และออกแบบคอลัมน์ของไฟล์ข้อมูล</span></label>
+        <label class="check-item"><input type="checkbox" data-ck="2"><span>【คาบนี้】 วาดผังงานของฟังก์ชันหลัก 1 ผัง</span></label>
+        <label class="check-item"><input type="checkbox" data-ck="3"><span>【คาบนี้】 โครงลูปเมนูรันได้บนเครื่องของทุกคนในกลุ่ม</span></label>
+        <label class="check-item"><input type="checkbox" data-ck="4"><span>【วัน 1–2】 load_data และ save_data ทำงานได้กับไฟล์ตัวอย่าง</span></label>
+        <label class="check-item"><input type="checkbox" data-ck="5"><span>【วัน 3–4】 ฟีเจอร์หลักครบทุกเมนู ทดสอบเส้นทางปกติผ่าน</span></label>
+        <label class="check-item"><input type="checkbox" data-ck="6"><span>【วัน 5】 ทดสอบแบบใจร้าย: ป้อนข้อมูลผิด ไฟล์หาย เมนูมั่ว — แก้จนไม่พัง</span></label>
+        <label class="check-item"><input type="checkbox" data-ck="7"><span>【วัน 6】 ใส่คอมเมนต์ครบทุกฟังก์ชัน + ตรวจว่าใช้ครบ 5 อย่างตามกติกา</span></label>
+        <label class="check-item"><input type="checkbox" data-ck="8"><span>【วัน 7】 ทำสไลด์ 5–8 หน้า และซ้อมนำเสนอจับเวลา 8 นาที</span></label>
+        <label class="check-item"><input type="checkbox" data-ck="9"><span>【ก่อนคาบหน้า】 ส่งทุกไฟล์ใน LMS เรียบร้อย</span></label>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="pjFill"></div></div>
+      <div class="progress-text" id="pjText">คืบหน้า 0 จาก 10 ขั้น</div>
+    </div>
+  </section>
+
+  <section class="section" id="rubric">
+    <div class="container">
+      <span class="section-tag reveal">Grading Rubric</span>
+      <h2 class="section-title reveal">📏 เกณฑ์ให้คะแนน (100 คะแนน)</h2>
+      <p class="section-sub reveal">อ่านก่อนเขียนโค้ด — รู้ว่ากรรมการดูอะไร จะได้ลงแรงถูกที่</p>
+      <div style="overflow-x:auto" class="reveal">
+        <table class="rubric">
+          <thead><tr><th style="width:22%">หัวข้อ</th><th style="width:12%">น้ำหนัก</th><th>ได้คะแนนเต็มเมื่อ...</th></tr></thead>
+          <tbody>
+            <tr><td><b style="color:var(--cyan)">ความถูกต้องของโปรแกรม</b></td><td>35</td><td>ทุกเมนูทำงานถูกต้อง รับมือข้อมูลผิดได้ไม่พัง ข้อมูลบันทึก–อ่านกลับครบถ้วน</td></tr>
+            <tr><td><b style="color:var(--cyan)">การใช้แนวคิดครบถ้วน</b></td><td>25</td><td>ใช้ครบ 5 อย่างตามกติกา และใช้ "ถูกที่" — ฟังก์ชันแบ่งงานสมเหตุสมผล ไม่ใช่แปะให้ครบเฉย ๆ</td></tr>
+            <tr><td><b style="color:var(--cyan)">คุณภาพโค้ด</b></td><td>15</td><td>ตั้งชื่อสื่อความหมาย คอมเมนต์หัวฟังก์ชันครบ ไม่มีโค้ดซ้ำซ้อนที่ควรเป็นฟังก์ชัน</td></tr>
+            <tr><td><b style="color:var(--cyan)">การนำเสนอ + ถามตอบ</b></td><td>15</td><td>เดโมสด 8 นาทีราบรื่น อธิบายเหตุผลการออกแบบได้ ทุกคนตอบคำถามส่วนของตัวเองได้</td></tr>
+            <tr><td><b style="color:var(--cyan)">เอกสารประกอบ</b></td><td>10</td><td>ผังงานตรงกับโค้ดจริง สไลด์ครบ ปัญหา–วิธีแก้–สิ่งที่ได้เรียนรู้ชัดเจน</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card reveal" style="margin-top:26px">
+        <div class="icon">⚖️</div>
+        <h3>กติกาความซื่อสัตย์</h3>
+        <p>ใช้ AI ช่วยได้ "เพื่อเรียนรู้" แต่ทุกคนต้องอธิบายทุกบรรทัดที่ส่งได้ — กรรมการจะสุ่มถาม "บรรทัดนี้ทำงานอย่างไร ถ้าลบจะเกิดอะไร" ตอบไม่ได้ = คะแนนส่วนถามตอบเป็นศูนย์ทั้งกลุ่ม</p>
+      </div>
+      <div class="btn-row reveal" style="margin-top:46px;justify-content:center">
+        <a href="week12.html" class="btn btn-ghost">← บทที่ 12</a>
+        <a href="week14.html" class="btn btn-primary">สัปดาห์ที่ 12: นำเสนอ + ทบทวนปลายภาค →</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <p>สัปดาห์ที่ 11: โปรเจกต์ประยุกต์ทางวิศวกรรม — รายวิชาการเขียนโปรแกรมคอมพิวเตอร์</p>
+      <p class="credits">จัดทำเพื่อการศึกษา</p>
+    </div>
+  </footer>
+
+  <button id="toTop" title="กลับขึ้นด้านบน">↑</button>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/week13.js"></script>
+</body>
+</html>

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>คลังแบบฝึกหัด 110 ข้อ | Computer Programming</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2322d3ee'/%3E%3Ctext x='50' y='68' font-size='48' text-anchor='middle' fill='%23071018' font-family='monospace'%3E%26lt;/%26gt;%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="nav-logo"><span class="logo-dot">&lt;/&gt;</span> Computer Programming</a>
+      <ul class="nav-links">
+        <li><a href="index.html">หน้ารายวิชา</a></li>
+        <li><a href="#w01">บท 1–3</a></li>
+        <li><a href="#w04">บท 4–7</a></li>
+        <li><a href="#w09">บท 9–12</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="hero" style="min-height:72vh">
+    <canvas id="binary-canvas"></canvas>
+    <div class="container">
+      <div class="hero-kicker reveal">ฝึกฝนตามจังหวะของตัวเอง</div>
+      <h1 class="reveal" data-delay="0.1">คลังแบบฝึกหัด<br><span class="grad-text">110 ข้อ · 11 บท</span></h1>
+      <p class="hero-desc reveal" data-delay="0.2">
+        บทละ 10 ข้อ ไล่จาก ⭐ พื้นฐาน ถึง ⭐⭐⭐ ท้าทาย — เลือกทำข้อที่ตรงกับจุดที่อยากเก่งขึ้น
+        ติ๊กข้อที่ทำเสร็จแล้วได้ ระบบจะจำไว้ในเครื่องของคุณ กลับมาทำต่อเมื่อไรก็ได้
+      </p>
+      <div class="hero-badges reveal" data-delay="0.3">
+        <span class="badge">⭐ <b>พื้นฐาน 4 ข้อ/บท</b></span>
+        <span class="badge">⭐⭐ <b>ปานกลาง 4 ข้อ/บท</b></span>
+        <span class="badge">⭐⭐⭐ <b>ท้าทาย 2 ข้อ/บท</b></span>
+      </div>
+      <div class="btn-row reveal" data-delay="0.4">
+        <a href="#progress" class="btn btn-primary">เริ่มเลือกข้อ ↓</a>
+        <a href="index.html" class="btn btn-ghost">← กลับหน้ารายวิชา</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="section" id="progress">
+    <div class="container">
+      <span class="section-tag reveal">Your Progress</span>
+      <h2 class="section-title reveal">ความคืบหน้าของคุณ</h2>
+      <div class="progress-bar"><div class="progress-fill" id="exFill"></div></div>
+      <div class="progress-text" id="exText">ทำแล้ว 0 จาก 110 ข้อ</div>
+
+      <div class="btn-row" id="exFilter" style="justify-content:center;margin-top:30px">
+        <button class="btn btn-primary" data-f="all">แสดงทั้งหมด</button>
+        <button class="btn btn-ghost" data-f="1">เฉพาะ ⭐ พื้นฐาน</button>
+        <button class="btn btn-ghost" data-f="2">เฉพาะ ⭐⭐ ปานกลาง</button>
+        <button class="btn btn-ghost" data-f="3">เฉพาะ ⭐⭐⭐ ท้าทาย</button>
+      </div>
+
+      <div class="gen-chip-row" style="justify-content:center;margin-top:26px">
+        <a class="gen-chip" href="#w01">บท 1 ประวัติ</a>
+        <a class="gen-chip" href="#w02">บท 2 ระบบ/เลขฐาน</a>
+        <a class="gen-chip" href="#w03">บท 3 ผังงาน</a>
+        <a class="gen-chip" href="#w04">บท 4 ภาษาซีแรก</a>
+        <a class="gen-chip" href="#w05">บท 5 ตัวดำเนินการ</a>
+        <a class="gen-chip" href="#w06">บท 6 if/switch</a>
+        <a class="gen-chip" href="#w07">บท 7 ลูป</a>
+        <a class="gen-chip" href="#w09">บท 9 ฟังก์ชัน</a>
+        <a class="gen-chip" href="#w10">บท 10 อาร์เรย์</a>
+        <a class="gen-chip" href="#w11">บท 11 สตริง</a>
+        <a class="gen-chip" href="#w12">บท 12 ไฟล์</a>
+      </div>
+      <p class="section-sub reveal" style="margin-top:26px;text-align:center">
+        💡 แนวทางส่ง: ข้อเขียนโปรแกรม ส่งไฟล์ .c + แคปผลรัน · ข้อวาด/วิเคราะห์ ส่งภาพถ่ายหรือเอกสาร — ตามที่ตกลงใน LMS
+      </p>
+    </div>
+  </section>
+
+  <section class="section alt" id="w01">
+    <div class="container">
+      <h2 class="section-title reveal">บทที่ 1: ประวัติคอมพิวเตอร์ <span class="week-status open" id="cnt-w01" style="margin-left:10px">0/10</span></h2>
+      <p class="section-sub reveal"><a href="week01.html" style="color:var(--cyan)">↩ ทบทวนบทเรียนก่อนทำ</a></p>
+      <div class="checklist">
+        <label class="check-item" data-d="1"><input type="checkbox" data-ex="w01-01"><span><b style="color:var(--cyan)">1.1</b> ⭐ เรียงลำดับวิวัฒนาการคอมพิวเตอร์ทั้ง 5 ยุค พร้อมระบุเทคโนโลยีหลักประจำยุค ยุคละ 1 บรรทัด</span></label>
+        <label class="check-item" data-d="1"><input type="checkbox" data-ex="w01-02"><span><b style="color:var(--cyan)">1.2</b> ⭐ ยกตัวอย่างอุปกรณ์รอบตัว 5 ชิ้นที่มี "คอมพิวเตอร์ฝังอยู่" (ไม่นับ PC/มือถือ) พร้อมบอกว่ามันประมวลผลอะไร</span></label>
+        <label class="check-item" data-d="1"><input type="checkbox" data-ex="w01-03"><span><b style="color:var(--cyan)">1.3</b> ⭐ อธิบายความแตกต่างระหว่าง "เครื่องคิดเลข" กับ "คอมพิวเตอร์" — ทำไมการโปรแกรมได้จึงเป็นจุดเปลี่ยน</span></label>
+        <label class="check-item" data-d="1"><input type="checkbox" data-ex="w01-04"><span><b style="color:var(--cyan)">1.4</b> ⭐ สืบค้น 4 บุคคลสำคัญ: Charles Babbage, Ada Lovelace, Alan Turing, Dennis Ritchie (ผู้สร้างภาษาซี!) — แต่ละคนฝากอะไรไว้ให้วงการ คนละ 1–2 บรรทัด</span></label>
+        <label class="check-item" data-d="2"><input type="checkbox" data-ex="w01-05"><span><b style="color:var(--cyan)">1.5</b> ⭐⭐ กฎของมัวร์: ชิปปี 2000 มีทรานซิสเตอร์ 1 ล้านตัว ถ้าเพิ่ม 2 เท่าทุก 2 ปี ปี 2010 จะมีประมาณกี่ตัว — แสดงวิธีคิดทีละรอบ</span></label>
+        <label class="check-item" data-d="2"><input type="checkbox" data-ex="w01-06"><span><b style="color:var(--cyan)">1.6</b> ⭐⭐ ทำตารางเปรียบเทียบ ENIAC กับสมาร์ตโฟนปัจจุบัน อย่างน้อย 4 ด้าน (ขนาด น้ำหนัก ความเร็ว การใช้พลังงาน)</span></label>
+        <label class="check-item" data-d="2"><input type="checkbox" data-ex="w01-07"><span><b style="color:var(--cyan)">1.7</b> ⭐⭐ วาดไทม์ไลน์ประวัติคอมพิวเตอร์ฉบับย่อ 8 เหตุการณ์สำคัญ พร้อมปี ค.ศ. และเหตุผลที่เลือกแต่ละเหตุการณ์ (อย่าลืมปี 1972 กำเนิดภาษาซี!)</span></label>
+        <label class="check-item" data-d="2"><input type="checkbox" data-ex="w01-08"><span><b style="color:var(--cyan)">1.8</b> ⭐⭐ "โปรแกรมแรกของโลก" เขียนขึ้นก่อนคอมพิวเตอร์เครื่องแรกเกือบร้อยปี — สืบค้นว่าใครเขียน เขียนให้เครื่องอะไร และโปรแกรมนั้นคำนวณอะไร</span></label>
+        <label class="check-item" data-d="3"><input type="checkbox" data-ex="w01-09"><span><b style="color:var(--cyan)">1.9</b> ⭐⭐⭐ เขียนวิเคราะห์ครึ่งหน้า: หากกฎของมัวร์ถึงขีดจำกัดทางฟิสิกส์จริง อุตสาหกรรมจะไปต่อทางไหน (ชิปเฉพาะทาง, ควอนตัม, ซอฟต์แวร์ที่ฉลาดขึ้น ฯลฯ) พร้อมจุดยืนของตัวเอง</span></label>
+        <label class="check-item" data-d="3"><input type="checkbox" data-ex="w01-10"><span><b style="color:var(--cyan)">1.10</b> ⭐⭐⭐ ค้นคว้ากรณีจริง 2 กรณีที่คอมพิวเตอร์เปลี่ยนวิธีทำงานในสาขาวิศวกรรมของคุณ (คอม/โลจิสติกส์/อุตสาหการ) พร้อมอ้างอิงแหล่งที่มา</span></label>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="w02">
+    <div class="container">
+      <h2 class="section-title reveal">บทที่ 2: องค์ประกอบระบบ + เลขฐาน <span class="week-status open" id="cnt-w02" style="margin-left:10px">0/10</span></h2>
+      <p class="section-sub reveal"><a href="week02.html" style="color:var(--cyan)">↩ ทบทวนบทเรียนก่อนทำ</a></p>
+      <div class="checklist">
+        <label class="check-item" data-d="1"><input type="checkbox" data-ex="w02-01"><span><b style="color:var(--cyan)">2.1</b> ⭐ จำแนก 10 รายการนี้เป็น ฮาร์ดแวร์ / ซอฟต์แวร์ / บุคลากร / ข้อมูล: CPU, Word, RAM, ผู้ดูแลระบบ, SSD, Windows 11, ยอดขายเดือนนี้, เมาส์, Chrome, ช่างซ่อมบำรุง</span></label>
+        <label class="check-item" data-d="1"><input type="checkbox" data-ex="w02-02"><span><b style="color:var(--cyan)">2.2</b> ⭐ แปลงฐานสอง → ฐานสิบ: 101₂, 1110₂, 10101₂ (แสดงค่าประจำหลัก)</span></label>
+        <label class="check-item" data-d="1"><input type="checkbox" data-ex="w02-03"><span><b style="color:var(--cyan)">2.3</b> ⭐ แปลงฐานสิบ → ฐานสอง: 9, 27, 64, 200 (แสดงวิธีหารสองเอาเศษ)</span></label>
+        <label class="check-item" data-d="1"><input type="checkbox" data-ex="w02-04"><span><b style="color:var(--cyan)">2.4</b> ⭐ เรียงหน่วยความจำจากเร็วสุดไปช้าสุด: SSD, Register, RAM, Cache — พร้อมเหตุผลหนึ่งบรรทัดว่าทำไมต้องมีหลายชั้น</span></label>
+        <label class="check-item" data-d="2"><input type="checkbox" data-ex="w02-05"><span><b style="color:var(--cyan)">2.5</b> ⭐⭐ ไฟล์ภาพขนาด 3 MB คิดเป็นกี่ KB? กี่ Byte? กี่ bit? (1 MB = 1,024 KB, 1 KB = 1,024 Byte)</span></label>
+        <label class="check-item" data-d="2"><input type="checkbox" data-ex="w02-06"><span><b style="color:var(--cyan)">2.6</b> ⭐⭐ เลข 8 บิตเก็บค่ามากสุดได้เท่าไร แล้ว 16 บิตล่ะ — สรุปเป็นสูตร 2ⁿ − 1 และอธิบายว่าทำไมต้องลบหนึ่ง</span></label>
+        <label class="check-item" data-d="2"><input type="checkbox" data-ex="w02-07"><span><b style="color:var(--cyan)">2.7</b> ⭐⭐ วาดแผนภาพเส้นทางข้อมูลเมื่อผู้ใช้กด "บันทึกไฟล์": จากคีย์บอร์ด ผ่านหน่วยใดบ้าง จนถึง SSD — ติดป้ายชื่อหน่วยให้ครบ</span></label>
+        <label class="check-item" data-d="2"><input type="checkbox" data-ex="w02-08"><span><b style="color:var(--cyan)">2.8</b> ⭐⭐ บวกเลขฐานสอง 1011₂ + 110₂ ด้วยมือ (แสดงการทด) แล้วตรวจคำตอบโดยแปลงเป็นฐานสิบทั้งสองฝั่ง</span></label>
+        <label class="check-item" data-d="3"><input type="checkbox" data-ex="w02-09"><span><b style="color:var(--cyan)">2.9</b> ⭐⭐⭐ ออกแบบสเปกคอมพิวเตอร์ให้ผู้ใช้ 3 แบบ: งานเอกสาร / ตัดต่อวิดีโอ / เขียนแบบ CAD — เลือก CPU, RAM, Storage พร้อมเหตุผลอิงหน้าที่ของแต่ละหน่วย</span></label>
+        <label class="check-item" data-d="3"><input type="checkbox" data-ex="w02-10"><span><b style="color:var(--cyan)">2.10</b> ⭐⭐⭐ ค้นคว้าและอธิบาย: ทำไมคอมพิวเตอร์จึงใช้เลขฐานสองแทนฐานสิบ — เชื่อมโยงถึงระดับฮาร์ดแวร์ (ทรานซิสเตอร์ / ระดับแรงดันไฟ)</span></label>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" id="w03">
+    <div class="container">
+      <h2 class="section-title reveal">บทที่ 3: อัลกอริทึมและผังงาน <span class="week-status open" id="cnt-w03" style="margin-left:10px">0/10</span></h2>
+      <p class="section-sub reveal"><a href="week03.html" style="color:var(--cyan)">↩ ทบทวนบทเรียนก่อนทำ</a></p>
+      <div class="checklist">
+        <label class="check-item" data-d="1"><input type="checkbox" data-ex="w03-01"><span><b style="color:var(--cyan)">3.1</b> ⭐ เขียนอัลกอริทึม "ชงบะหมี่กึ่งสำเร็จรูป 1 ถ้วย" 8–12 ขั้น ให้ชัดเจนจนคนไม่เคยทำตามได้ (ระวังคำกำกวมอย่าง "พอประมาณ")</span></label>
+        <label class="check-item" data-d="1"><input type="checkbox" data-ex="w03-02"><span><b style="color:var(--cyan)">3.2</b> ⭐ วาดผังงานคำนวณพื้นที่สี่เหลี่ยมผืนผ้า: รับกว้างและยาว แสดงพื้นที่ — ใช้สัญลักษณ์ให้ถูกทั้ง 4 แบบ</span></label>
+        <label class="check-item" data-d="1"><input type="checkbox" data-ex="w03-03"><span><b style="color:var(--cyan)">3.3</b> ⭐ ระบุสัญลักษณ์ผังงานที่ถูกต้องของ: "รับอายุผู้ใช้" / "อายุ ≥ 18?" / "ภาษี = ราคา × 0.07" / "จบโปรแกรม"</span></label>
+        <label class="check-item" data-d="1"><input type="checkbox" data-ex="w03-04"><span><b style="color:var(--cyan)">3.4</b> ⭐ เขียนรหัสเทียม (Pseudocode) ตรวจเลขคู่–คี่ ด้วยแนวคิดเศษจากการหารสอง</span></label>
+        <label class="check-item" data-d="2"><input type="checkbox" data-ex="w03-05"><span><b style="color:var(--cyan)">3.5</b> ⭐⭐ วาดผังงานหาค่าน้อยที่สุดของตัวเลข 3 จำนวน (มีข้าวหลามตัดมากกว่า 1 จุด)</span></label>
+        <label class="check-item" data-d="2"><input type="checkbox" data-ex="w03-06"><span><b style="color:var(--cyan)">3.6</b> ⭐⭐ วาดผังงานค่าโดยสารแท็กซี่: 2 กม.แรกเหมา 35 บาท กิโลเมตรถัดไปกม.ละ 6 บาท — ทดสอบผังด้วยระยะ 1, 2 และ 10 กม.</span></label>
+        <label class="check-item" data-d="2"><input type="checkbox" data-ex="w03-07"><span><b style="color:var(--cyan)">3.7</b> ⭐⭐ เขียน Pseudocode หาผลรวม 1 ถึง 100 ด้วยการวนซ้ำ (มี SET, WHILE/FOR, เงื่อนไขจบ ครบ)</span></label>
+        <label class="check-item" data-d="2"><input type="checkbox" data-ex="w03-08"><span><b style="color:var(--cyan)">3.8</b> ⭐⭐ ไล่ Trace ผังงาน BMI ของบทเรียน ด้วย weight = 45, height = 1.70 — ทำตารางค่าตัวแปรทุกขั้นจนถึงข้อความสรุป</span></label>
+        <label class="check-item" data-d="3"><input type="checkbox" data-ex="w03-09"><span><b style="color:var(--cyan)">3.9</b> ⭐⭐⭐ อัลกอริทึมถอนเงิน ATM ต่อไปนี้มีจุดบกพร่องอย่างน้อย 2 จุด จงหาและแก้: ① รับจำนวนเงิน ② จ่ายธนบัตร ③ ถ้าเงินในบัญชีไม่พอ กลับไปข้อ 1 ④ จบ</span></label>
+        <label class="check-item" data-d="3"><input type="checkbox" data-ex="w03-10"><span><b style="color:var(--cyan)">3.10</b> ⭐⭐⭐ วาดผังงานกระบวนการจริงในสาขาของคุณ 10–15 ขั้น ที่มีทั้งเงื่อนไขและการวนซ้ำ (เช่น ตรวจรับสินค้าเข้าคลัง, QC ชิ้นงานทั้งล็อต)</span></label>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="w04">
+    <div class="container">
+      <h2 class="section-title reveal">บทที่ 4: เริ่มต้นเขียนโปรแกรมภาษาซี <span class="week-status open" id="cnt-w04" style="margin-left:10px">0/10</span></h2>
+      <p class="section-sub reveal"><a href="week04.html" style="color:var(--cyan)">↩ ทบทวนบทเรียนก่อนทำ</a></p>
+      <div class="checklist">
+        <label class="check-item" data-d="1"><input type="checkbox" data-ex="w04-01"><span><b style="color:var(--cyan)">4.1</b> ⭐ เขียนโปรแกรมภาษาซีเต็มโครง (#include, main, return 0) แสดง ชื่อ รหัสนักศึกษา และสาขา คนละบรรทัดด้วย printf และ \n</span></label>
+        <label class="check-item" data-d="1"><input type="checkbox" data-ex="w04-02"><span><b style="color:var(--cyan)">4.2</b> ⭐ โค้ด 3 จุดนี้คอมไพล์ไม่ผ่าน จงแก้และอธิบายว่าผิดเพราะอะไร: <code>Printf("Hi");</code> · <code>printf("ok")</code> ไม่มี ; · <code>int 2score = 5;</code></span></label>
+        <label class="check-item" data-d="1"><input type="checkbox" data-ex="w04-03"><span><b style="color:var(--cyan)">4.3</b> ⭐ ประกาศตัวแปรครบ 4 ชนิด (int, float, double, char) แล้ว printf ทุกตัวด้วยตัวกำหนดรูปแบบที่ถูกคู่ (%d %f %lf %c)</span></label>
+        <label class="check-item" data-d="1"><input type="checkbox" data-ex="w04-04"><span><b style="color:var(--cyan)">4.4</b> ⭐ ทำนายผลด้วยมือก่อนรันตรวจ: int x = 5; x = x + 2; x = x * 3; printf("%d", x);</span></label>
+        <label class="check-item" data-d="2"><input type="checkbox" data-ex="w04-05"><span><b style="color:var(--cyan)">4.5</b> ⭐⭐ เขียนประโยคแนะนำตัวประโยคเดียวด้วย printf เดียว สอดตัวแปรอย่างน้อย 3 ตัวสามชนิด: อายุ (%d), เกรดเฉลี่ย (%.2f), กรุ๊ปเลือด (%c)</span></label>
+        <label class="check-item" data-d="2"><input type="checkbox" data-ex="w04-06"><span><b style="color:var(--cyan)">4.6</b> ⭐⭐ ตั้งชื่อตัวแปรที่ถูกกฎภาษาซีและสื่อความหมาย พร้อมเลือกชนิดให้เหมาะ: ราคารวม, จำนวนนักศึกษา, โซนคลัง (อักษรเดี่ยว), สถานะสมาชิก (1/0), เกรดเฉลี่ยสะสม</span></label>
+        <label class="check-item" data-d="2"><input type="checkbox" data-ex="w04-07"><span><b style="color:var(--cyan)">4.7</b> ⭐⭐ int a = 5, b = 9; — เขียนโปรแกรมสลับค่าสองตัวแปรด้วยตัวแปร temp ช่วย แสดงค่าก่อนและหลังสลับ (ท่าเดียวกับที่จะใช้ใน Bubble Sort บทที่ 10!)</span></label>
+        <label class="check-item" data-d="2"><input type="checkbox" data-ex="w04-08"><span><b style="color:var(--cyan)">4.8</b> ⭐⭐ float price = 49.987; — ทำนายผลของ %f, %.2f และ %.1f ก่อนรันตรวจ แล้วอธิบายกติกาการปัดเศษที่เห็น</span></label>
+        <label class="check-item" data-d="3"><input type="checkbox" data-ex="w04-09"><span><b style="color:var(--cyan)">4.9</b> ⭐⭐⭐ วาด "นามบัตร ASCII" ด้วย printf หลายบรรทัด: กรอบจากอักขระ = และ | ข้างในมีชื่อ สาขา อีเมล จัดให้ขอบตรงทุกบรรทัด</span></label>
+        <label class="check-item" data-d="3"><input type="checkbox" data-ex="w04-10"><span><b style="color:var(--cyan)">4.10</b> ⭐⭐⭐ ทดลองจริงแล้วสรุปเป็นตาราง: int x = 7.9; / float y = 7; / char c = 65; — แต่ละตัวเก็บค่าอะไรจริง ๆ printf ออกมาได้อะไร (ลอง c ทั้ง %c และ %d!) อธิบายการแปลงชนิดอัตโนมัติที่เกิดขึ้น</span></label>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" id="w05">
+    <div class="container">
+      <h2 class="section-title reveal">บทที่ 5: ตัวดำเนินการและการรับค่า <span class="week-status open" id="cnt-w05" style="margin-left:10px">0/10</span></h2>
+      <p class="section-sub reveal"><a href="week05.html" style="color:var(--cyan)">↩ ทบทวนบทเรียนก่อนทำ</a></p>
+      <div class="checklist">
+        <label class="check-item" data-d="1"><input type="checkbox" data-ex="w05-01"><span><b style="color:var(--cyan)">5.1</b> ⭐ คำนวณด้วยมือก่อน แล้วรันตรวจ: 17 % 4 · 17 / 4 · 17.0 / 4 · 9 / 2 * 2.0 — ข้อไหนหลอกคุณได้บ้าง?</span></label>
+        <label class="check-item" data-d="1"><input type="checkbox" data-ex="w05-02"><span><b style="color:var(--cyan)">5.2</b> ⭐ รับจำนวนเต็ม 2 ตัวด้วย scanf แล้วแสดงผล + − * / % ครบทั้งห้าพร้อมป้ายกำกับ — อย่าลืม &amp; และสังเกตผลการหาร</span></label>
+        <label class="check-item" data-d="1"><input type="checkbox" data-ex="w05-03"><span><b style="color:var(--cyan)">5.3</b> ⭐ ทำนายค่า 1/0 ด้วยมือ: 8 &gt; 3 · 5 != 5 · 4 &gt;= 4 · !(3 &gt; 1) · (2 &gt; 1) &amp;&amp; (1 &gt; 2) — แล้ว printf("%d", ...) ตรวจทุกข้อ</span></label>
+        <label class="check-item" data-d="1"><input type="checkbox" data-ex="w05-04"><span><b style="color:var(--cyan)">5.4</b> ⭐ รับจำนวนนาทีรวม แปลงเป็น "ชั่วโมง + นาที" ด้วย / และ % ของ int (เช่น 135 → 2 ชม. 15 นาที)</span></label>
+        <label class="check-item" data-d="2"><input type="checkbox" data-ex="w05-05"><span><b style="color:var(--cyan)">5.5</b> ⭐⭐ ไล่ลำดับการคำนวณทีละขั้นของ 4 + 6 / 2 * 3 และ (4 + 6) / (2 * 3) — ตัวเลขทั้งหมดเป็น int อธิบายว่าคำตอบต่างกันเพราะอะไร</span></label>
+        <label class="check-item" data-d="2"><input type="checkbox" data-ex="w05-06"><span><b style="color:var(--cyan)">5.6</b> ⭐⭐ โปรแกรมแปลง °F → °C: เขียนสูตร c = 5 / 9 * (f - 32) ก่อน รันดูว่าได้อะไร แล้วแก้เป็น 5.0 / 9.0 พร้อมอธิบายกับดัก int หาร int (ทดสอบ 212°F ต้องได้ 100.00)</span></label>
+        <label class="check-item" data-d="2"><input type="checkbox" data-ex="w05-07"><span><b style="color:var(--cyan)">5.7</b> ⭐⭐ เครื่องทอนเงิน: รับราคาสินค้าและเงินที่จ่าย (int) แสดงเงินทอนรวม แล้วแตกเป็นแบงก์/เหรียญ 100, 20, 10, 5, 1 ว่าอย่างละกี่ใบ/เหรียญ (/ กับ % ต่อเนื่อง)</span></label>
+        <label class="check-item" data-d="2"><input type="checkbox" data-ex="w05-08"><span><b style="color:var(--cyan)">5.8</b> ⭐⭐ รับเลขประจำตัว 6 หลัก แสดง "เลขท้าย 2 ตัว" ด้วย % และ "เลข 4 ตัวหน้า" ด้วย / — ห้ามใช้สตริง</span></label>
+        <label class="check-item" data-d="3"><input type="checkbox" data-ex="w05-09"><span><b style="color:var(--cyan)">5.9</b> ⭐⭐⭐ รับคะแนน 3 วิชา (int) คำนวณค่าเฉลี่ยให้ได้ทศนิยมถูกต้อง (ต้องใช้ (float) ช่วย!) แล้วแสดงผลนิพจน์เดียวที่ตรวจ "ทุกวิชา ≥ 50 &amp;&amp; ค่าเฉลี่ย ≥ 60" เป็น 1/0</span></label>
+        <label class="check-item" data-d="3"><input type="checkbox" data-ex="w05-10"><span><b style="color:var(--cyan)">5.10</b> ⭐⭐⭐ รับจำนวนวินาทีรวม (เช่น 200000) แปลงเป็น "วัน ชั่วโมง นาที วินาที" — วางลำดับ / และ % ให้ถูกทุกชั้น แล้วตรวจคำตอบด้วยการคูณกลับ</span></label>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="w06">
+    <div class="container">
+      <h2 class="section-title reveal">บทที่ 6: เลือกทำ if และ switch <span class="week-status open" id="cnt-w06" style="margin-left:10px">0/10</span></h2>
+      <p class="section-sub reveal"><a href="week06.html" style="color:var(--cyan)">↩ ทบทวนบทเรียนก่อนทำ</a></p>
+      <div class="checklist">
+        <label class="check-item" data-d="1"><input type="checkbox" data-ex="w06-01"><span><b style="color:var(--cyan)">6.1</b> ⭐ รับจำนวนเต็ม ตอบว่า "เลขคู่" หรือ "เลขคี่" ด้วย if–else</span></label>
+        <label class="check-item" data-d="1"><input type="checkbox" data-ex="w06-02"><span><b style="color:var(--cyan)">6.2</b> ⭐ รับตัวเลข ตอบว่าเป็น "จำนวนบวก" "จำนวนลบ" หรือ "ศูนย์" ด้วย if–else if–else</span></label>
+        <label class="check-item" data-d="1"><input type="checkbox" data-ex="w06-03"><span><b style="color:var(--cyan)">6.3</b> ⭐ รับอายุ จัดกลุ่ม: ต่ำกว่า 18 "เยาวชน" / 18–59 "ผู้ใหญ่" / 60 ขึ้นไป "ผู้สูงอายุ"</span></label>
+        <label class="check-item" data-d="1"><input type="checkbox" data-ex="w06-04"><span><b style="color:var(--cyan)">6.4</b> ⭐ รับคะแนน 0–100 ตัดเกรด A ≥ 80, B ≥ 70, C ≥ 60, D ≥ 50, ต่ำกว่านั้น F — ระวังเรียงลำดับเงื่อนไข</span></label>
+        <label class="check-item" data-d="2"><input type="checkbox" data-ex="w06-05"><span><b style="color:var(--cyan)">6.5</b> ⭐⭐ ค่าจอดรถ: ชั่วโมงแรกฟรี ชั่วโมงที่ 2–4 คิดชั่วโมงละ 20 บาท เกินจากนั้นชั่วโมงละ 40 บาท — ทดสอบ 1, 3 และ 6 ชั่วโมง</span></label>
+        <label class="check-item" data-d="2"><input type="checkbox" data-ex="w06-06"><span><b style="color:var(--cyan)">6.6</b> ⭐⭐ รับเลข 3 ตัว หาค่ามากที่สุดด้วย if เท่านั้น — คิดให้ครอบคลุมกรณีค่าเท่ากันด้วย</span></label>
+        <label class="check-item" data-d="2"><input type="checkbox" data-ex="w06-07"><span><b style="color:var(--cyan)">6.7</b> ⭐⭐ ปีอธิกสุรทิน: รับ ค.ศ. — หาร 4 ลงตัวเป็นปีอธิกสุรทิน ยกเว้นหาร 100 ลงตัว แต่ถ้าหาร 400 ลงตัวก็เป็น — ทดสอบ 2000, 1900, 2024</span></label>
+        <label class="check-item" data-d="2"><input type="checkbox" data-ex="w06-08"><span><b style="color:var(--cyan)">6.8</b> ⭐⭐ เมนูร้านเครื่องดื่ม 4 เมนูด้วย switch–case (มี default รับเมนูผิด) — แล้วลองลบ break ออกหนึ่งตัว สังเกตและอธิบายอาการ "ไหลทะลุ"</span></label>
+        <label class="check-item" data-d="3"><input type="checkbox" data-ex="w06-09"><span><b style="color:var(--cyan)">6.9</b> ⭐⭐⭐ รับความยาวด้าน 3 ด้าน ตอบว่าเป็นสามเหลี่ยม ด้านเท่า/หน้าจั่ว/ด้านไม่เท่า หรือ "สร้างสามเหลี่ยมไม่ได้" (ผลรวมสองด้านใด ๆ ต้องมากกว่าด้านที่เหลือ)</span></label>
+        <label class="check-item" data-d="3"><input type="checkbox" data-ex="w06-10"><span><b style="color:var(--cyan)">6.10</b> ⭐⭐⭐ ค่าส่งพัสดุ: ≤ 1 กก. 40 บาท / ≤ 5 กก. 60 บาท / เกินนั้น 60 + กก.ที่เกินละ 10 บาท และถ้าเลือกส่งด่วน (รับ 1/0) ให้คูณเพิ่ม 1.5 เท่า — ใช้เงื่อนไขซ้อนให้เป็นระเบียบ</span></label>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" id="w07">
+    <div class="container">
+      <h2 class="section-title reveal">บทที่ 7: วนซ้ำ for / while / do-while <span class="week-status open" id="cnt-w07" style="margin-left:10px">0/10</span></h2>
+      <p class="section-sub reveal"><a href="week07.html" style="color:var(--cyan)">↩ ทบทวนบทเรียนก่อนทำ</a></p>
+      <div class="checklist">
+        <label class="check-item" data-d="1"><input type="checkbox" data-ex="w07-01"><span><b style="color:var(--cyan)">7.1</b> ⭐ รับเลขแม่สูตรคูณด้วย scanf แล้วพิมพ์สูตรคูณแม่นั้น ×1 ถึง ×12 ด้วย for</span></label>
+        <label class="check-item" data-d="1"><input type="checkbox" data-ex="w07-02"><span><b style="color:var(--cyan)">7.2</b> ⭐ หาผลรวม 1 ถึง 100 ด้วย for + ตัวสะสม (คำตอบต้องได้ 5050)</span></label>
+        <label class="check-item" data-d="1"><input type="checkbox" data-ex="w07-03"><span><b style="color:var(--cyan)">7.3</b> ⭐ นับถอยหลัง 10 → 1 ด้วย while และ count-- แล้วปิดท้ายด้วย "ปล่อยจรวด!"</span></label>
+        <label class="check-item" data-d="1"><input type="checkbox" data-ex="w07-04"><span><b style="color:var(--cyan)">7.4</b> ⭐ พิมพ์เลขคี่ 1–99 ในบรรทัดเดียวกัน ด้วย for ก้าวทีละ 2 (i += 2)</span></label>
+        <label class="check-item" data-d="2"><input type="checkbox" data-ex="w07-05"><span><b style="color:var(--cyan)">7.5</b> ⭐⭐ รับ n แล้วคำนวณ n! (แฟกทอเรียล) ด้วยลูป — ทดสอบ 5! = 120 และ 0! = 1 (ใช้ long ถ้าอยากลอง n ใหญ่)</span></label>
+        <label class="check-item" data-d="2"><input type="checkbox" data-ex="w07-06"><span><b style="color:var(--cyan)">7.6</b> ⭐⭐ รับคะแนนเรื่อย ๆ จนกว่าผู้ใช้ป้อน -1 แล้วสรุป จำนวนค่า ผลรวม และค่าเฉลี่ย (while + ตัวสะสม 2 ตัว — ระวังการหาร int ตอนคิดเฉลี่ย และกรณีไม่ป้อนอะไรเลย)</span></label>
+        <label class="check-item" data-d="2"><input type="checkbox" data-ex="w07-07"><span><b style="color:var(--cyan)">7.7</b> ⭐⭐ วาดสี่เหลี่ยมกลวงขนาด n×n ด้วยลูปซ้อน: ขอบเป็น * ข้างในเป็นช่องว่าง (เงื่อนไข: แถว/คอลัมน์แรกหรือสุดท้าย)</span></label>
+        <label class="check-item" data-d="2"><input type="checkbox" data-ex="w07-08"><span><b style="color:var(--cyan)">7.8</b> ⭐⭐ เมนูโปรแกรมด้วย do-while: แสดงเมนู 1-2-3 และ 0 เพื่อออก วนถามใหม่จนกด 0 — โครงเดียวกับโปรเจกต์สัปดาห์ที่ 11!</span></label>
+        <label class="check-item" data-d="3"><input type="checkbox" data-ex="w07-09"><span><b style="color:var(--cyan)">7.9</b> ⭐⭐⭐ FizzBuzz 1–50: หาร 3 ลงตัวพิมพ์ "Fizz" หาร 5 ลงตัวพิมพ์ "Buzz" หารลงตัวทั้งคู่พิมพ์ "FizzBuzz" นอกนั้นพิมพ์ตัวเลข — ระวังลำดับการตรวจ!</span></label>
+        <label class="check-item" data-d="3"><input type="checkbox" data-ex="w07-10"><span><b style="color:var(--cyan)">7.10</b> ⭐⭐⭐ พิมพ์ลำดับฟีโบนัชชี 15 ตัวแรก (1 1 2 3 5 8 ...) ด้วยลูปและตัวแปรเลื่อนค่า 2 ตัว — ห้ามใช้อาร์เรย์</span></label>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="w09">
+    <div class="container">
+      <h2 class="section-title reveal">บทที่ 9: ฟังก์ชัน <span class="week-status open" id="cnt-w09" style="margin-left:10px">0/10</span></h2>
+      <p class="section-sub reveal"><a href="week09.html" style="color:var(--cyan)">↩ ทบทวนบทเรียนก่อนทำ</a></p>
+      <div class="checklist">
+        <label class="check-item" data-d="1"><input type="checkbox" data-ex="w09-01"><span><b style="color:var(--cyan)">9.1</b> ⭐ เขียน void greet(char name[]) พิมพ์ประโยคทักทาย แล้วเรียกใช้กับ 3 ชื่อ — สังเกตว่าโค้ดทักทายเขียนครั้งเดียว</span></label>
+        <label class="check-item" data-d="1"><input type="checkbox" data-ex="w09-02"><span><b style="color:var(--cyan)">9.2</b> ⭐ เขียน float c_to_f(float c) ที่ return องศาฟาเรนไฮต์ — ทดสอบกับ 0, 37, 100 °C</span></label>
+        <label class="check-item" data-d="1"><input type="checkbox" data-ex="w09-03"><span><b style="color:var(--cyan)">9.3</b> ⭐ เขียน float circle_area(float r) คืนพื้นที่วงกลม (ใช้ 3.14159) แสดงผลปัดทศนิยม 2 ตำแหน่งด้วย %.2f</span></label>
+        <label class="check-item" data-d="1"><input type="checkbox" data-ex="w09-04"><span><b style="color:var(--cyan)">9.4</b> ⭐ ทำนายผลก่อนรัน: int f(int x) { return x + 1; } แล้วเรียก printf("%d", f(f(3))); — อธิบายลำดับการเรียกซ้อน</span></label>
+        <label class="check-item" data-d="2"><input type="checkbox" data-ex="w09-05"><span><b style="color:var(--cyan)">9.5</b> ⭐⭐ เขียน int is_pass(int score) คืน 1/0 (เกณฑ์ ≥ 50) แล้วใช้ลูปเรียกกับคะแนน 45, 72, 50, 38, 90 รายงานทีละค่า</span></label>
+        <label class="check-item" data-d="2"><input type="checkbox" data-ex="w09-06"><span><b style="color:var(--cyan)">9.6</b> ⭐⭐ เขียน int max3(int a, int b, int c) คืนค่ามากที่สุด — รวมตรรกะ if จากบท 6 เข้าเป็นฟังก์ชัน</span></label>
+        <label class="check-item" data-d="2"><input type="checkbox" data-ex="w09-07"><span><b style="color:var(--cyan)">9.7</b> ⭐⭐ เขียนสองฟังก์ชันทำงานต่อกัน: float bmi(float w, float h) คืนค่า BMI และ void print_label(float b) พิมพ์ระดับ — main เรียก print_label(bmi(w, h));</span></label>
+        <label class="check-item" data-d="2"><input type="checkbox" data-ex="w09-08"><span><b style="color:var(--cyan)">9.8</b> ⭐⭐ โค้ดนี้ผิดตรงไหน: void add(int a, int b) { printf("%d", a + b); } แล้วผู้เรียกเขียน int total = add(2, 3) * 10; — อธิบายว่าทำไมคอมไพล์ไม่ผ่าน และแก้ให้ถูก</span></label>
+        <label class="check-item" data-d="3"><input type="checkbox" data-ex="w09-09"><span><b style="color:var(--cyan)">9.9</b> ⭐⭐⭐ เขียน float shipping_fee(float weight) คิดค่าส่งแบบขั้นบันได และ float total_cost(float price, float weight) ที่เรียกใช้ shipping_fee ข้างใน — ทดสอบ 3 กรณีครอบคลุมทุกขั้นราคา</span></label>
+        <label class="check-item" data-d="3"><input type="checkbox" data-ex="w09-10"><span><b style="color:var(--cyan)">9.10</b> ⭐⭐⭐ เขียน void print_table(int n) พิมพ์สูตรคูณแม่ n แล้วเขียนลูปใน main เรียก print_table กับแม่ 2 ถึง 12 — ลูปเรียกฟังก์ชัน 11 รอบ ได้สูตรคูณทั้งชุด</span></label>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" id="w10">
+    <div class="container">
+      <h2 class="section-title reveal">บทที่ 10: อาร์เรย์ <span class="week-status open" id="cnt-w10" style="margin-left:10px">0/10</span></h2>
+      <p class="section-sub reveal"><a href="week10.html" style="color:var(--cyan)">↩ ทบทวนบทเรียนก่อนทำ</a></p>
+      <div class="checklist">
+        <label class="check-item" data-d="1"><input type="checkbox" data-ex="w10-01"><span><b style="color:var(--cyan)">10.1</b> ⭐ ประกาศอาร์เรย์เลขโปรด 5 ค่า แล้ววนพิมพ์เป็นรายการพร้อมลำดับ 1–5 (ดัชนี + 1)</span></label>
+        <label class="check-item" data-d="1"><input type="checkbox" data-ex="w10-02"><span><b style="color:var(--cyan)">10.2</b> ⭐ อาร์เรย์คะแนน 8 ค่า: แสดงตัวแรก scores[0] และตัวสุดท้าย scores[7] — อธิบายว่าทำไมตัวสุดท้ายไม่ใช่ scores[8]</span></label>
+        <label class="check-item" data-d="1"><input type="checkbox" data-ex="w10-03"><span><b style="color:var(--cyan)">10.3</b> ⭐ หาผลรวมและค่าเฉลี่ยของอาร์เรย์ตัวเลขด้วยลูปเขียนเอง — ระวังการหาร int ตอนคิดเฉลี่ย ((float) ช่วย!)</span></label>
+        <label class="check-item" data-d="1"><input type="checkbox" data-ex="w10-04"><span><b style="color:var(--cyan)">10.4</b> ⭐ นับว่าอาร์เรย์คะแนนมีค่าที่ ≥ 70 อยู่กี่ค่า (ลูป + เงื่อนไข + ตัวนับ)</span></label>
+        <label class="check-item" data-d="2"><input type="checkbox" data-ex="w10-05"><span><b style="color:var(--cyan)">10.5</b> ⭐⭐ หาค่ามากที่สุด "พร้อมดัชนีตำแหน่งของมัน" ด้วยลูปเขียนเอง — จำทั้งค่าแชมป์และตำแหน่งแชมป์</span></label>
+        <label class="check-item" data-d="2"><input type="checkbox" data-ex="w10-06"><span><b style="color:var(--cyan)">10.6</b> ⭐⭐ รับคะแนนจากผู้ใช้เก็บลงอาร์เรย์ (เผื่อ 100 ช่อง ใช้ n นับ) ป้อน -1 เมื่อจบ แล้วแสดงรายการทั้งหมด — อย่าลืมกัน n เกิน 100!</span></label>
+        <label class="check-item" data-d="2"><input type="checkbox" data-ex="w10-07"><span><b style="color:var(--cyan)">10.7</b> ⭐⭐ จากอาร์เรย์ตัวเลขที่กำหนด คัด "เฉพาะเลขคู่" ใส่อาร์เรย์ใหม่ (arr2 กับตัวนับ m) แล้วแสดงผลทั้งสองชุด</span></label>
+        <label class="check-item" data-d="2"><input type="checkbox" data-ex="w10-08"><span><b style="color:var(--cyan)">10.8</b> ⭐⭐ ค้นหาแบบลำดับ (Linear Search): รับเลขที่ต้องการค้น วนเทียบทีละช่อง ตอบ "พบที่ดัชนี i" หรือ "ไม่พบ" — เขียนเองทั้งหมด</span></label>
+        <label class="check-item" data-d="3"><input type="checkbox" data-ex="w10-09"><span><b style="color:var(--cyan)">10.9</b> ⭐⭐⭐ ไล่ Bubble Sort ของ {6, 3, 8, 2} ด้วยมือ: เขียนสถานะอาร์เรย์หลังการเทียบทุกครั้งจนเรียงเสร็จ แล้วเขียนโค้ดจริง (สลับด้วย temp) ตรวจคำตอบ</span></label>
+        <label class="check-item" data-d="3"><input type="checkbox" data-ex="w10-10"><span><b style="color:var(--cyan)">10.10</b> ⭐⭐⭐ หาค่ามากที่สุด "อันดับสอง" โดยวนอาร์เรย์เพียงรอบเดียว — เก็บทั้งแชมป์และรองแชมป์ระหว่างวน (คิดเคสข้อมูลเรียงมาแล้วให้รอด)</span></label>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="w11">
+    <div class="container">
+      <h2 class="section-title reveal">บทที่ 11: สตริง <span class="week-status open" id="cnt-w11" style="margin-left:10px">0/10</span></h2>
+      <p class="section-sub reveal"><a href="week11.html" style="color:var(--cyan)">↩ ทบทวนบทเรียนก่อนทำ</a></p>
+      <div class="checklist">
+        <label class="check-item" data-d="1"><input type="checkbox" data-ex="w11-01"><span><b style="color:var(--cyan)">11.1</b> ⭐ รับชื่อภาษาอังกฤษด้วย scanf("%s") แสดง: ความยาว (strlen) ตัวอักษรแรก s[0] และตัวสุดท้าย s[strlen-1]</span></label>
+        <label class="check-item" data-d="1"><input type="checkbox" data-ex="w11-02"><span><b style="color:var(--cyan)">11.2</b> ⭐ วนแปลงข้อความเป็นตัวพิมพ์ใหญ่ทั้งหมดด้วย toupper ทีละตัวอักษร (จาก ctype.h) แล้วพิมพ์ผล</span></label>
+        <label class="check-item" data-d="1"><input type="checkbox" data-ex="w11-03"><span><b style="color:var(--cyan)">11.3</b> ⭐ จาก char s[] = "ENGINEERING"; ใช้ลูป+ดัชนี พิมพ์เฉพาะ "ENGINE" (6 ตัวแรก) และ "RING" (4 ตัวท้าย) — เขียนดัชนีที่ใช้</span></label>
+        <label class="check-item" data-d="1"><input type="checkbox" data-ex="w11-04"><span><b style="color:var(--cyan)">11.4</b> ⭐ นับช่องว่างในประโยค (วน + if s[i] == ' ') แล้วประมาณจำนวนคำ = ช่องว่าง + 1</span></label>
+        <label class="check-item" data-d="2"><input type="checkbox" data-ex="w11-05"><span><b style="color:var(--cyan)">11.5</b> ⭐⭐ เขียน int count_vowels(char text[]) นับสระภาษาอังกฤษ (a e i o u ไม่สนตัวพิมพ์) ด้วยลูป + เงื่อนไข</span></label>
+        <label class="check-item" data-d="2"><input type="checkbox" data-ex="w11-06"><span><b style="color:var(--cyan)">11.6</b> ⭐⭐ สร้างชื่อย่อ: จาก "Somchai Jaidee" ให้ได้ "S.J." — หาตำแหน่งช่องว่างด้วยลูป แล้วหยิบตัวแรกกับตัวถัดจากช่องว่าง</span></label>
+        <label class="check-item" data-d="2"><input type="checkbox" data-ex="w11-07"><span><b style="color:var(--cyan)">11.7</b> ⭐⭐ ซ่อนเลขบัตร: รับเลข 13 หลักเป็นสตริง วนแทนที่ทุกตัวยกเว้น 4 ตัวท้ายด้วย '*' เช่น "*********0123"</span></label>
+        <label class="check-item" data-d="2"><input type="checkbox" data-ex="w11-08"><span><b style="color:var(--cyan)">11.8</b> ⭐⭐ พิมพ์ข้อความแบบกลับหลังด้วยลูปถอยหลัง: "ROBOT" → "TOBOR" (เริ่มที่ strlen-1 ลงมาถึง 0)</span></label>
+        <label class="check-item" data-d="3"><input type="checkbox" data-ex="w11-09"><span><b style="color:var(--cyan)">11.9</b> ⭐⭐⭐ Palindrome: ตรวจว่าคำที่รับมาอ่านกลับหลังแล้วเหมือนเดิมหรือไม่ (เช่น level, radar) — เทียบตัวหัวกับตัวท้ายเข้าหากลาง ไม่สนตัวพิมพ์เล็กใหญ่</span></label>
+        <label class="check-item" data-d="3"><input type="checkbox" data-ex="w11-10"><span><b style="color:var(--cyan)">11.10</b> ⭐⭐⭐ รับข้อความสถานะ "PUMP-01:RUNNING:75.5" — ใช้ sscanf(line, "%[^:]:%[^:]:%f") แกะเป็น 3 ส่วน ตรวจว่าแกะครบก่อน แล้วแสดงรายงานสวย ๆ (ทศนิยม 1 ตำแหน่ง) ถ้ารูปแบบผิดให้แจ้งเตือน</span></label>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" id="w12">
+    <div class="container">
+      <h2 class="section-title reveal">บทที่ 12: ไฟล์และ CSV <span class="week-status open" id="cnt-w12" style="margin-left:10px">0/10</span></h2>
+      <p class="section-sub reveal"><a href="week12.html" style="color:var(--cyan)">↩ ทบทวนบทเรียนก่อนทำ</a></p>
+      <div class="checklist">
+        <label class="check-item" data-d="1"><input type="checkbox" data-ex="w12-01"><span><b style="color:var(--cyan)">12.1</b> ⭐ เขียนรายชื่อเพื่อน 5 คนลงไฟล์ friends.txt ด้วย fopen("w") + fprintf + fclose แล้วเปิดด้วย Notepad พิสูจน์ว่าไฟล์เกิดจริง</span></label>
+        <label class="check-item" data-d="1"><input type="checkbox" data-ex="w12-02"><span><b style="color:var(--cyan)">12.2</b> ⭐ อ่าน friends.txt กลับมาแสดงพร้อมเลขบรรทัด ด้วย while (fgets(...) != NULL)</span></label>
+        <label class="check-item" data-d="1"><input type="checkbox" data-ex="w12-03"><span><b style="color:var(--cyan)">12.3</b> ⭐ สมุดบันทึก: รับข้อความแล้ว fprintf ต่อท้าย diary.txt (โหมด "a") — รันโปรแกรม 3 รอบ แล้วพิสูจน์ว่าข้อความเก่าอยู่ครบ (ลองเทียบกับโหมด "w" ดูความต่าง)</span></label>
+        <label class="check-item" data-d="1"><input type="checkbox" data-ex="w12-04"><span><b style="color:var(--cyan)">12.4</b> ⭐ นับจำนวนบรรทัดในไฟล์ข้อความใด ๆ — และต้องแจ้งเตือนอย่างสุภาพถ้าไฟล์ไม่มีอยู่ (ตรวจ fopen == NULL)</span></label>
+        <label class="check-item" data-d="2"><input type="checkbox" data-ex="w12-05"><span><b style="color:var(--cyan)">12.5</b> ⭐⭐ สร้าง scores.csv ด้วย Notepad (ชื่อ,คะแนน อย่างน้อย 8 แถว) แล้วเขียนโปรแกรม fgets + sscanf อ่านมาแสดงเฉพาะคนที่ได้ ≥ 70 พร้อมนับจำนวน</span></label>
+        <label class="check-item" data-d="2"><input type="checkbox" data-ex="w12-06"><span><b style="color:var(--cyan)">12.6</b> ⭐⭐ ต่อยอด 12.5: คำนวณค่าเฉลี่ย สูงสุด ต่ำสุด แล้ว "เขียนผลสรุปลง report.txt" ด้วย fprintf — ครบวงจร อ่าน → ประมวลผล → เขียน</span></label>
+        <label class="check-item" data-d="2"><input type="checkbox" data-ex="w12-07"><span><b style="color:var(--cyan)">12.7</b> ⭐⭐ โปรแกรมค้นหาใน log: รับคำค้น แสดงทุกบรรทัดของไฟล์ที่มีคำนั้น พร้อมเลขบรรทัด — ใช้ strstr จาก string.h (เปิดคู่มือเพิ่มนิดเดียว ใช้เหมือน in)</span></label>
+        <label class="check-item" data-d="2"><input type="checkbox" data-ex="w12-08"><span><b style="color:var(--cyan)">12.8</b> ⭐⭐ อ่าน CSV สินค้า (ชื่อ,จำนวน,ราคาต่อชิ้น) แสดงเป็นตารางจัดคอลัมน์ตรงด้วย printf("%-10s %5d %8.2f") พร้อมคอลัมน์ "มูลค่ารวม" และยอดรวมทั้งคลังบรรทัดสุดท้าย</span></label>
+        <label class="check-item" data-d="3"><input type="checkbox" data-ex="w12-09"><span><b style="color:var(--cyan)">12.9</b> ⭐⭐⭐ ทำให้ 12.8 ทนทานแบบมืออาชีพ: ตรวจค่าที่ sscanf คืน (ต้องได้ 3) — บรรทัดเสียให้ข้าม นับ และรายงานจำนวนที่ข้ามตอนท้าย โปรแกรมห้ามล้มไม่ว่าไฟล์จะสกปรกแค่ไหน</span></label>
+        <label class="check-item" data-d="3"><input type="checkbox" data-ex="w12-10"><span><b style="color:var(--cyan)">12.10</b> ⭐⭐⭐ รวมยอดสองเดือน: อ่าน sales_jan.csv และ sales_feb.csv (สินค้า,ยอด) รวมยอดของสินค้าชื่อเดียวกัน (จับคู่ด้วย strcmp) แล้วเขียนผลลง summary.csv — ใช้อาร์เรย์คู่ขนาน ชื่อ[][30] กับ ยอด[]</span></label>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="assign-box reveal" style="text-align:center">
+        <h3>🧭 เลือกอย่างไรดี?</h3>
+        <p style="color:var(--text-dim);max-width:720px;margin:0 auto;line-height:2">
+          แนะนำ: ทำ ⭐ ให้ครบก่อนเพื่อความแม่น แล้วเลือก ⭐⭐ ที่ตรงกับจุดอ่อนของตัวเอง
+          ส่วน ⭐⭐⭐ คือสนามซ้อมข้อสอบและสัมภาษณ์งานของจริง —
+          ติดตรงไหนให้กลับไปเล่นตัวจำลองในบทเรียนก่อน แล้วค่อยกลับมาสู้ใหม่
+        </p>
+      </div>
+      <div class="btn-row reveal" style="margin-top:40px;justify-content:center">
+        <a href="index.html" class="btn btn-primary">🏠 กลับหน้ารายวิชา</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <p>คลังแบบฝึกหัด 110 ข้อ — รายวิชาการเขียนโปรแกรมคอมพิวเตอร์</p>
+      <p class="credits">จัดทำเพื่อการศึกษา</p>
+    </div>
+  </footer>
+
+  <button id="toTop" title="กลับขึ้นด้านบน">↑</button>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/exercises.js"></script>
+</body>
+</html>

@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>บทที่ 5: ตัวดำเนินการและการรับค่า | Computer Programming</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2322d3ee'/%3E%3Ctext x='50' y='68' font-size='48' text-anchor='middle' fill='%23071018' font-family='monospace'%3E%26lt;/%26gt;%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="nav-logo"><span class="logo-dot">&lt;/&gt;</span> Computer Programming</a>
+      <ul class="nav-links">
+        <li><a href="#objectives">วัตถุประสงค์</a></li>
+        <li><a href="#arith">คณิตศาสตร์</a></li>
+        <li><a href="#precedence">ลำดับคำนวณ</a></li>
+        <li><a href="#input">รับค่า scanf</a></li>
+        <li><a href="#logic">เปรียบเทียบ–ตรรกะ</a></li>
+        <li><a href="#applied">ใช้งานจริง</a></li>
+        <li><a href="#quiz">แบบทดสอบ</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <canvas id="binary-canvas"></canvas>
+    <div class="container">
+      <div class="hero-kicker reveal">สัปดาห์ที่ 3</div>
+      <h1 class="reveal" data-delay="0.1">บทที่ 5<br><span class="grad-text">ตัวดำเนินการและการรับค่า</span></h1>
+      <p class="hero-desc reveal" data-delay="0.2">
+        สัปดาห์ที่แล้วเราเก็บข้อมูลลงตัวแปรและแสดงผลได้แล้ว วันนี้ครบวงจร:
+        รับข้อมูลจากผู้ใช้ด้วย scanf แล้วคำนวณด้วยตัวดำเนินการครบชุด —
+        พร้อมรู้ทันกับดักที่ดังที่สุดของภาษาซี: จำนวนเต็มหารจำนวนเต็ม ได้จำนวนเต็ม!
+      </p>
+      <div class="hero-badges reveal" data-delay="0.3">
+        <span class="badge">⏱️ <b>ใช้เวลาเรียน ~2.5 ชั่วโมง</b></span>
+        <span class="badge">🧮 <b>ตัวคำนวณนิพจน์ทีละขั้น</b></span>
+        <span class="badge">📝 <b>แบบทดสอบ 10 ข้อ</b></span>
+      </div>
+      <div class="btn-row reveal" data-delay="0.4">
+        <a href="#objectives" class="btn btn-primary">เริ่มบทเรียน ↓</a>
+        <a href="week04.html" class="btn btn-ghost">← บทที่ 4</a>
+      </div>
+    </div>
+    <div class="scroll-hint">เลื่อนลงเพื่อเริ่มเรียน<br>⌄</div>
+  </header>
+
+  <section class="section" id="objectives">
+    <div class="container">
+      <span class="section-tag reveal">Learning Objectives</span>
+      <h2 class="section-title reveal">วัตถุประสงค์การเรียนรู้</h2>
+      <div class="obj-list">
+        <div class="obj-item reveal">ใช้ตัวดำเนินการคณิตศาสตร์ + − * / % ได้ถูกความหมาย รวมถึงพฤติกรรมการหารของ int</div>
+        <div class="obj-item reveal" data-delay="0.05">เรียงลำดับความสำคัญของตัวดำเนินการ และคำนวณนิพจน์ซับซ้อนได้ถูกต้อง</div>
+        <div class="obj-item reveal" data-delay="0.1">รับข้อมูลจากผู้ใช้ด้วย scanf พร้อมใช้เครื่องหมาย &amp; ได้ถูกต้อง</div>
+        <div class="obj-item reveal" data-delay="0.15">เขียนนิพจน์เปรียบเทียบและเชื่อมเงื่อนไขด้วย &amp;&amp;, ||, ! ได้</div>
+        <div class="obj-item reveal" data-delay="0.2">ประยุกต์ / และ % กับจำนวนเต็ม แก้ปัญหาจริง เช่น การแปลงหน่วยเวลาและการแยกหลักเลข</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" id="arith">
+    <div class="container">
+      <span class="section-tag reveal">Arithmetic Operators</span>
+      <h2 class="section-title reveal">➗ ตัวดำเนินการคณิตศาสตร์ของภาษาซี</h2>
+      <p class="section-sub reveal">
+        หน้าตาคุ้นเคยทั้งห้าตัว แต่มีพฤติกรรมลับที่ต้องรู้:
+        <b style="color:var(--amber)">เครื่องหมาย / ระหว่าง int กับ int จะ "ตัดเศษทิ้ง" อัตโนมัติ</b>
+        ส่วน <b style="color:var(--cyan)">%</b> เก็บเศษไว้ให้ — สองตัวนี้จึงเป็นคู่หูกันโดยกำเนิด
+      </p>
+      <div style="overflow-x:auto" class="reveal">
+        <table class="data-table op-table">
+          <thead><tr><th>เครื่องหมาย</th><th>ชื่อ</th><th>ตัวอย่าง (int)</th><th>ผลลัพธ์</th><th>ข้อสังเกต</th></tr></thead>
+          <tbody>
+            <tr><td>+</td><td>บวก</td><td>17 + 5</td><td>22</td><td>—</td></tr>
+            <tr><td>-</td><td>ลบ</td><td>17 - 5</td><td>12</td><td>—</td></tr>
+            <tr><td>*</td><td>คูณ</td><td>17 * 5</td><td>85</td><td>ใช้ดอกจัน ไม่ใช่ ×</td></tr>
+            <tr><td>/</td><td>หาร</td><td>17 / 5</td><td>3</td><td>⚠️ int หาร int = int ตัดเศษทิ้ง! (17.0 / 5 จึงจะได้ 3.4)</td></tr>
+            <tr><td>%</td><td>มอดุลัส (เศษ)</td><td>17 % 5</td><td>2</td><td>ใช้กับจำนวนเต็มเท่านั้น — คู่หูของ /</td></tr>
+            <tr><td>++ / --</td><td>เพิ่ม/ลดทีละ 1</td><td>i++</td><td>i เพิ่มขึ้น 1</td><td>เอกลักษณ์ภาษาซี — ย่อมาจาก i = i + 1 จะเจอบ่อยมากในลูป</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="section-sub reveal" style="margin-top:14px">
+        💡 ภาษาซีไม่มีเครื่องหมายยกกำลัง — ใช้คูณซ้ำ (x * x) หรือฟังก์ชัน <code style="color:var(--green)">pow(x, 2)</code> จากคลัง <code style="color:var(--green)">&lt;math.h&gt;</code>
+      </p>
+
+      <div class="code-card reveal" style="margin-top:30px">
+        <div class="code-head"><span>ตัวอย่างที่ 5.1 — arith.c</span><div class="dots"><span></span><span></span><span></span></div></div>
+        <pre><code><span style="color:#a78bfa">int</span> a = <span style="color:#a78bfa">17</span>, b = <span style="color:#a78bfa">5</span>;
+<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"หาร (int):  %d\n"</span>, a / b);
+<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"เศษ:        %d\n"</span>, a % b);
+<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"หารทศนิยม: %.2f\n"</span>, <span style="color:#a78bfa">17.0</span> / b);
+<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"กำลังสอง:  %d\n"</span>, b * b);</code></pre>
+        <button class="run-btn" data-output="หาร (int):  3&#10;เศษ:        2&#10;หารทศนิยม: 3.40&#10;กำลังสอง:  25">▶ คอมไพล์และรัน</button>
+        <div class="code-output"></div>
+      </div>
+
+      <div class="grid grid-2" style="margin-top:36px">
+        <div class="card reveal">
+          <div class="icon">🤔</div>
+          <h3>% มีไว้ทำไม?</h3>
+          <p>เศษจากการหารคือพระเอกลับของโปรแกรมมิง: <code style="color:var(--green)">n % 2 == 0</code> ตรวจเลขคู่ ·
+          <code style="color:var(--green)">นาที % 60</code> หาเศษนาทีที่ไม่ครบชั่วโมง ·
+          <code style="color:var(--green)">ลำดับ % 7</code> หาว่าตรงกับวันอะไรของสัปดาห์</p>
+        </div>
+        <div class="card reveal" data-delay="0.1">
+          <div class="icon">👫</div>
+          <h3>/ กับ % เป็นคู่หูกัน (ฉบับ int)</h3>
+          <p>แบ่งของ 17 ชิ้นให้คน 5 คน: แต่ละคนได้ <code style="color:var(--green)">17 / 5 = 3</code> ชิ้น (int ตัดเศษให้เอง)
+          เหลือเศษ <code style="color:var(--green)">17 % 5 = 2</code> ชิ้น — ใช้คู่กันเมื่อไรที่ต้อง "แบ่งกลุ่มแล้วดูเศษ"</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="precedence">
+    <div class="container">
+      <span class="section-tag reveal">Order of Operations</span>
+      <h2 class="section-title reveal">🥇 ลำดับการคำนวณ — ใครมาก่อนมาหลัง?</h2>
+      <p class="section-sub reveal">
+        ภาษาซีไม่ได้คำนวณซ้ายไปขวาเสมอไป! ลำดับคือ
+        <b style="color:var(--text)">( ) → * / % → + −</b> (ระดับเดียวกันทำซ้ายไปขวา และตัวเปรียบเทียบมาก่อน &amp;&amp; ||)
+        — เลือกนิพจน์แล้วกด <b style="color:var(--cyan)">"คำนวณทีละขั้น ▶"</b> ดูคอมไพเลอร์ย่อยทีละก้อน
+      </p>
+
+      <div class="widget reveal">
+        <div class="widget-controls">
+          <label>เลือกนิพจน์:
+            <select id="exprSelect">
+              <option value="0">2 + 3 * 4</option>
+              <option value="1">(8 + 4) / 5</option>
+              <option value="2">17 % 5 + 17 / 5 * 2</option>
+              <option value="3">10 &gt; 3 &amp;&amp; 2 &gt; 5</option>
+            </select>
+          </label>
+          <button class="btn btn-primary" id="exprStep">คำนวณทีละขั้น ▶</button>
+          <button class="btn btn-ghost" id="exprReset">↺ เริ่มใหม่</button>
+        </div>
+        <div id="exprSteps" style="min-height:120px"></div>
+        <div class="expr-note" id="exprNote">ส่วนที่ <b style="color:var(--amber)">สีเหลือง</b> คือก้อนที่จะถูกคำนวณในขั้นถัดไป (ตัวแปรทุกตัวเป็น int)</div>
+      </div>
+
+      <div class="card reveal" style="margin-top:30px">
+        <div class="icon">💣</div>
+        <h3>กับดักระดับตำนานของภาษาซี: 5 / 9 = 0</h3>
+        <p>สูตรแปลงอุณหภูมิ <code style="color:#fca5a5">c = 5 / 9 * (f - 32);</code> ให้คำตอบ <b style="color:#fca5a5">0 เสมอ</b> —
+        เพราะ 5 / 9 เป็น int หาร int ได้ 0 ก่อนจะคูณอะไรทั้งนั้น!
+        ต้องเขียน <code style="color:var(--green)">c = 5.0 / 9.0 * (f - 32);</code> ให้เป็นทศนิยมตั้งแต่ต้น
+        — บั๊กตัวนี้อยู่ในข้อสอบและชีวิตจริงมาห้าสิบปีแล้ว อย่าเป็นเหยื่อรายต่อไป</p>
+      </div>
+
+      <div class="code-card reveal" style="margin-top:30px">
+        <div class="code-head"><span>ตัวอย่างที่ 5.2 — cast.c (วิธีปราบการหารแบบ int)</span><div class="dots"><span></span><span></span><span></span></div></div>
+        <pre><code><span style="color:#a78bfa">int</span> sum = <span style="color:#a78bfa">17</span>, n = <span style="color:#a78bfa">4</span>;
+<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"เฉลี่ยแบบ int:    %d\n"</span>, sum / n);
+<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"เฉลี่ยที่ถูกต้อง: %.2f\n"</span>, (<span style="color:#a78bfa">float</span>) sum / n);   <span style="color:#6b7280">// (float) = แปลงชนิดชั่วคราว</span></code></pre>
+        <button class="run-btn" data-output="เฉลี่ยแบบ int:    4&#10;เฉลี่ยที่ถูกต้อง: 4.25">▶ คอมไพล์และรัน</button>
+        <div class="code-output"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" id="input">
+    <div class="container">
+      <span class="section-tag reveal">User Input with scanf</span>
+      <h2 class="section-title reveal">⌨️ scanf — รับข้อมูลจากผู้ใช้ และเครื่องหมาย &amp; ที่ห้ามลืม</h2>
+      <p class="section-sub reveal">
+        คู่แฝดของ printf: <b style="color:var(--cyan)">scanf("ตัวกำหนดรูปแบบ", &amp;ตัวแปร);</b> หยุดรอให้ผู้ใช้พิมพ์แล้วกด Enter
+        — ใช้ %d %f %c ชุดเดียวกับ printf แต่มีของเพิ่มหนึ่งชิ้น:
+        <b style="color:#fca5a5">เครื่องหมาย &amp; หน้าชื่อตัวแปร</b> (บอก "ตำแหน่งกล่อง" ให้ scanf เอาค่าไปวาง)
+      </p>
+
+      <div class="grid grid-2" style="align-items:start">
+        <div class="code-card reveal" style="margin:0">
+          <div class="code-head"><span>ตัวอย่างที่ 5.3 — input_age.c (สมมุติผู้ใช้พิมพ์ 19)</span><div class="dots"><span></span><span></span><span></span></div></div>
+          <pre><code><span style="color:#a78bfa">int</span> age;
+<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"อายุของคุณ: "</span>);
+<span style="color:#22d3ee">scanf</span>(<span style="color:#fbbf24">"%d"</span>, &amp;age);   <span style="color:#6b7280">// อย่าลืม & !</span>
+<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"ปีหน้าคุณจะอายุ %d ปี\n"</span>, age + <span style="color:#a78bfa">1</span>);</code></pre>
+          <button class="run-btn" data-stdin="19" data-output="อายุของคุณ: 19&#10;ปีหน้าคุณจะอายุ 20 ปี">▶ คอมไพล์และรัน</button>
+          <div class="code-output"></div>
+        </div>
+        <div class="code-card reveal" data-delay="0.1" style="margin:0">
+          <div class="code-head"><span>ตัวอย่างที่ 5.4 — รับหลายค่า + ทศนิยม</span><div class="dots"><span></span><span></span><span></span></div></div>
+          <pre><code><span style="color:#a78bfa">int</span> w, h;
+<span style="color:#a78bfa">float</span> price;
+<span style="color:#22d3ee">scanf</span>(<span style="color:#fbbf24">"%d %d"</span>, &amp;w, &amp;h);   <span style="color:#6b7280">// รับ 2 ค่าในบรรทัดเดียว</span>
+<span style="color:#22d3ee">scanf</span>(<span style="color:#fbbf24">"%f"</span>, &amp;price);      <span style="color:#6b7280">// float ใช้ %f (double ใช้ %lf)</span>
+<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"พื้นที่ %d ตร.ม. ราคา %.2f บาท\n"</span>, w * h, price);</code></pre>
+          <button class="run-btn" data-stdin="4 5&#10;99.5" data-output="(ผู้ใช้พิมพ์: 4 5 แล้ว 99.5)&#10;พื้นที่ 20 ตร.ม. ราคา 99.50 บาท">▶ คอมไพล์และรัน</button>
+          <div class="code-output"></div>
+        </div>
+      </div>
+      <div class="card reveal" style="margin-top:26px">
+        <div class="icon">☠️</div>
+        <h3>ลืม &amp; แล้วเป็นอะไร?</h3>
+        <p><code style="color:#fca5a5">scanf("%d", age);</code> (ไม่มี &amp;) — คอมไพล์ "ผ่าน" แต่ตอนรันโปรแกรมพังหรือค่าหายเงียบ ๆ
+        เพราะ scanf ไม่รู้ตำแหน่งกล่องจริงของตัวแปร — นี่คือบั๊กยอดฮิตอันดับหนึ่งของบทนี้
+        จำท่าให้ขึ้นใจ: <b style="color:var(--text)">printf ไม่ใส่ &amp; · scanf ใส่ &amp; เสมอ</b> (ยกเว้นสตริง ซึ่งจะเจอบทที่ 11)</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="logic">
+    <div class="container">
+      <span class="section-tag reveal">Comparison & Logical Operators</span>
+      <h2 class="section-title reveal">⚖️ เปรียบเทียบและตรรกะ — ภาษาของการตัดสินใจ</h2>
+      <p class="section-sub reveal">
+        ผลของการเปรียบเทียบในภาษาซีคือ int: <b style="color:var(--cyan)">1 = จริง, 0 = เท็จ</b>
+        (ไม่มี True/False!) — และนี่คือสิ่งที่จะอยู่ใน "ข้าวหลามตัด" ของ if สัปดาห์หน้า
+        ระวัง: เท่ากับใช้ <b style="color:var(--cyan)">==</b> สองตัว เพราะ = ตัวเดียวคือกำหนดค่า
+      </p>
+
+      <div class="grid grid-2" style="align-items:start">
+        <div style="overflow-x:auto" class="reveal">
+          <table class="data-table op-table">
+            <thead><tr><th>เครื่องหมาย</th><th>ความหมาย</th><th>ตัวอย่าง (a=7, b=3)</th><th>ผล</th></tr></thead>
+            <tbody>
+              <tr><td>==</td><td>เท่ากับ</td><td>a == b</td><td>0 (เท็จ)</td></tr>
+              <tr><td>!=</td><td>ไม่เท่ากับ</td><td>a != b</td><td>1 (จริง)</td></tr>
+              <tr><td>&gt;</td><td>มากกว่า</td><td>a &gt; b</td><td>1 (จริง)</td></tr>
+              <tr><td>&lt;=</td><td>น้อยกว่าหรือเท่ากับ</td><td>a &lt;= b</td><td>0 (เท็จ)</td></tr>
+              <tr><td>&amp;&amp;</td><td>และ — จริงทั้งคู่จึงจริง</td><td>a &gt; 0 &amp;&amp; b &gt; 9</td><td>0 (เท็จ)</td></tr>
+              <tr><td>||</td><td>หรือ — จริงสักตัวก็จริง</td><td>a &gt; 0 || b &gt; 9</td><td>1 (จริง)</td></tr>
+              <tr><td>!</td><td>นิเสธ — กลับค่า</td><td>!(a &gt; b)</td><td>0 (เท็จ)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card reveal" data-delay="0.1" style="margin:0">
+          <h3 style="margin-bottom:14px">🧪 สนามทดลองตรรกะ</h3>
+          <p style="margin-bottom:14px">เปลี่ยนค่า a, b แล้วดูผลทุกนิพจน์เปลี่ยนตามทันที (1 = จริง, 0 = เท็จ):</p>
+          <div class="widget" style="padding:20px;margin-top:0">
+            <div class="widget-controls" style="margin-bottom:14px">
+              <label>a = <input type="number" id="logicA" value="7" style="width:80px"></label>
+              <label>b = <input type="number" id="logicB" value="3" style="width:80px"></label>
+            </div>
+            <div class="widget-result" id="logicResult" style="line-height:2.1">— กำลังคำนวณ —</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" id="applied">
+    <div class="container">
+      <span class="section-tag reveal">Putting It Together</span>
+      <h2 class="section-title reveal">🛠️ ใช้งานจริง: เครื่องแปลงวินาที → ชั่วโมง/นาที/วินาที</h2>
+      <p class="section-sub reveal">
+        โจทย์คลาสสิกที่ / กับ % ของจำนวนเต็มเปล่งประกาย: เซ็นเซอร์จับเวลาเครื่องจักรรายงานมาเป็น "วินาทีรวม"
+        แต่หัวหน้าต้องการ ชม./นาที/วิ — การหารแบบตัดเศษของ int ทำหน้าที่ได้พอดีเป๊ะ
+      </p>
+
+      <div class="grid grid-2" style="align-items:start">
+        <div class="code-card reveal" style="margin:0">
+          <div class="code-head"><span>ตัวอย่างที่ 5.5 — time_convert.c</span><div class="dots"><span></span><span></span><span></span></div></div>
+          <pre><code><span style="color:#a78bfa">int</span> total, hours, remain, minutes, seconds;
+<span style="color:#22d3ee">scanf</span>(<span style="color:#fbbf24">"%d"</span>, &amp;total);
+hours   = total / <span style="color:#a78bfa">3600</span>;   <span style="color:#6b7280">// int หาร int ตัดเศษให้เอง</span>
+remain  = total % <span style="color:#a78bfa">3600</span>;
+minutes = remain / <span style="color:#a78bfa">60</span>;
+seconds = remain % <span style="color:#a78bfa">60</span>;
+<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"%d ชม. %d นาที %d วิ\n"</span>, hours, minutes, seconds);</code></pre>
+          <button class="run-btn" data-stdin="7385" data-output="2 ชม. 3 นาที 5 วิ">▶ คอมไพล์และรัน</button>
+          <div class="code-output"></div>
+        </div>
+        <div class="card reveal" data-delay="0.1" style="margin:0">
+          <h3 style="margin-bottom:14px">⏱️ ลองเครื่องจริง</h3>
+          <div class="widget" style="padding:20px;margin-top:0">
+            <div class="widget-controls" style="margin-bottom:14px">
+              <label>วินาทีรวม = <input type="number" id="timeInput" value="7385" min="0" style="width:120px"></label>
+            </div>
+            <div class="widget-result" id="timeResult" style="line-height:2">— กำลังคำนวณ —</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-3" style="margin-top:36px">
+        <div class="card reveal">
+          <div class="icon">🚚</div>
+          <h3>โลจิสติกส์</h3>
+          <p>พัสดุ 1,250 ชิ้น บรรจุลังละ 48: ต้องใช้ <code style="color:var(--green)">1250 / 48 = 26</code> ลัง
+          เหลือเศษ <code style="color:var(--green)">1250 % 48 = 2</code> ชิ้นรอลังถัดไป</p>
+        </div>
+        <div class="card reveal" data-delay="0.05">
+          <div class="icon">🏭</div>
+          <h3>อุตสาหการ</h3>
+          <p>ตรวจ QC ทุกชิ้นที่ 25: ชิ้นงานลำดับ n เข้าตรวจเมื่อ <code style="color:var(--green)">n % 25 == 0</code>
+          — เงื่อนไขเดียวคุมทั้งสายการผลิต</p>
+        </div>
+        <div class="card reveal" data-delay="0.1">
+          <div class="icon">🔢</div>
+          <h3>แยกหลักเลข</h3>
+          <p>รหัส 4 หลัก n = 4725: หลักพัน <code style="color:var(--green)">n / 1000</code> = 4,
+          เลขท้ายสองตัว <code style="color:var(--green)">n % 100</code> = 25 — / กับ % คือมีดผ่าตัดตัวเลข</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="quiz">
+    <div class="container">
+      <span class="section-tag reveal">Check Your Understanding</span>
+      <h2 class="section-title reveal">📝 แบบทดสอบท้ายบท (10 ข้อ)</h2>
+      <p class="section-sub reveal">สามจุดตาย: int หาร int ตัดเศษ · scanf ต้องมี &amp; · ผลเปรียบเทียบคือ 1/0</p>
+      <div class="prequiz reveal">
+        <div class="prequiz-head">📘 อ่านก่อนสอบ · สรุปประเด็นสำคัญ</div>
+        <p class="prequiz-intro">หัวใจของบทนี้คือ "กับดักการหารจำนวนเต็ม" และการใช้ scanf ให้ถูก — เข้าใจ 5 ข้อนี้แล้วทำแบบทดสอบได้สบาย</p>
+        <div class="pq-item">
+          <span class="pq-num">1</span>
+          <div class="pq-text"><h4>กับดัก: int / int = int</h4><p>จำนวนเต็มหารจำนวนเต็ม ผลลัพธ์ถูก <b>ตัดทศนิยมทิ้ง</b> เสมอ</p><p><pre class="pq-code">int a = 7, b = 2;
+printf("%d", a / b);   <span class="cm">// 3 ไม่ใช่ 3.5</span>
+
+float c = 5.0 / 9;     <span class="cm">// ต้องมี .0 อย่างน้อยตัวหนึ่ง</span></pre></p></div>
+        </div>
+        <div class="pq-item">
+          <span class="pq-num">2</span>
+          <div class="pq-text"><h4>ตัวดำเนินการมอดูลัส %</h4><p><code>%</code> = เศษจากการหาร ใช้เช็คเลขคู่/คี่ และแยกหลัก</p><p><pre class="pq-code">17 / 5 = 3      17 % 5 = 2
+if (n % 2 == 0)   <span class="cm">// n เป็นเลขคู่</span></pre></p></div>
+        </div>
+        <div class="pq-item">
+          <span class="pq-num">3</span>
+          <div class="pq-text"><h4>ลำดับความสำคัญ</h4><p><code>*</code> <code>/</code> <code>%</code> ทำก่อน <code>+</code> <code>-</code> เสมอ</p><p><pre class="pq-code">2 + 3 * 4 = 2 + 12 = <b>14</b>   <span class="cm">(ไม่ใช่ 20)</span></pre></p></div>
+        </div>
+        <div class="pq-item">
+          <span class="pq-num">4</span>
+          <div class="pq-text"><h4>scanf ต้องมีเครื่องหมาย &</h4><p>รับค่าเข้าตัวแปรต้องใส่ <code>&amp;</code> หน้าชื่อตัวแปร (ต่างจาก printf ที่ใส่ชื่อตรง ๆ) — ลืม <code>&amp;</code> โปรแกรมพังตอนรัน</p><p><pre class="pq-code">int age;
+scanf("%d", &amp;age);   <span class="cm">// อย่าลืม &amp;</span></pre></p></div>
+        </div>
+        <div class="pq-item">
+          <span class="pq-num">5</span>
+          <div class="pq-text"><h4>ตัวดำเนินการเปรียบเทียบ/ตรรกะ</h4><p>นิพจน์เปรียบเทียบให้ค่า <b>1 (จริง)</b> หรือ <b>0 (เท็จ)</b> · <code>&amp;&amp;</code> = และ (ต้องจริงทั้งคู่)</p><p><pre class="pq-code">8 &gt; 3            <span class="cm">// มีค่าเป็น 1</span>
+score&gt;=50 &amp;&amp; score&gt;=80   <span class="cm">// 65 → เท็จ (0)</span></pre></p></div>
+        </div>
+        <div class="pq-item tip">
+          <span class="pq-num">💡</span>
+          <div class="pq-text"><h4>จุดที่ข้อสอบชอบถาม</h4><p>โจทย์คำนวณที่ผลออกมา <code>0.000000</code> เกือบทุกครั้งคือกับดัก int division — มองหาว่ามีตัวเลขทศนิยม (.0) หรือยัง</p></div>
+        </div>
+      </div>
+      <div id="quizWrap"></div>
+      <div class="quiz-score" id="quizScore"></div>
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="container">
+      <span class="section-tag reveal">Summary & Assignment</span>
+      <h2 class="section-title reveal">🎯 สรุปบทเรียน</h2>
+      <div class="grid grid-2" style="margin-bottom:50px">
+        <div class="card reveal">
+          <div class="icon">🧮</div>
+          <h3>สิ่งที่ได้เรียน</h3>
+          <p>ตัวดำเนินการ + − * / % และ ++ -- · กับดักใหญ่: int / int ตัดเศษทิ้ง (5/9 = 0!) แก้ด้วย 5.0/9.0 · scanf รับค่า ต้องมี &amp; หน้าตัวแปรเสมอ · เปรียบเทียบให้ผล 1/0 และเชื่อมด้วย &amp;&amp; || ! · ลำดับ ( ) → * / % → + − → เปรียบเทียบ → &amp;&amp; ||</p>
+        </div>
+        <div class="card reveal" data-delay="0.1">
+          <div class="icon">🔮</div>
+          <h3>เชื่อมไปสัปดาห์หน้า</h3>
+          <p>นิพจน์ตรรกะที่ฝึกวันนี้คือ "หัวใจ" ของสัปดาห์ที่ 4: โครงสร้างควบคุมแบบเลือกทำ if–else if–else และ switch — ข้าวหลามตัดในผังงานบทที่ 3 กำลังจะกลายเป็นโค้ดเต็มรูปแบบ</p>
+        </div>
+      </div>
+      <div class="assign-box reveal">
+        <h3>📌 งานมอบหมายสัปดาห์ที่ 3</h3>
+        <ol>
+          <li>เขียนโปรแกรมรับจำนวนเต็ม 2 ตัวด้วย scanf แล้วแสดงผล + − * / % ครบทั้งห้าพร้อมป้ายกำกับ — สังเกตผลการหารดี ๆ</li>
+          <li>เขียนโปรแกรมแปลงอุณหภูมิ: รับองศาฟาเรนไฮต์ แล้วคำนวณ C = 5.0/9.0 × (F − 32) — ลองเขียนแบบ 5/9 ดูก่อนว่าได้อะไร แล้วค่อยแก้ พร้อมอธิบายว่าทำไม (ทดสอบ 212°F ต้องได้ 100.00)</li>
+          <li>คำนวณด้วยมือก่อนแล้วค่อยรันตรวจ: 3 + 2 * 2, (7 + 2) % 4, 20 / 3 / 2, 9 / 2 * 2.0 — ข้อไหนหลอกคุณได้บ้าง?</li>
+          <li>โจทย์สาขา: เขียนโปรแกรมแบ่งบรรจุสินค้า รับจำนวนชิ้นและความจุต่อลัง แสดงจำนวนลังเต็ม เศษชิ้นที่เหลือ และผลตรวจว่าจำนวนชิ้นเป็นเลขคู่หรือไม่ (แสดง 1 หรือ 0)</li>
+          <li>ทำแบบทดสอบท้ายบทให้ได้อย่างน้อย 8/10 แล้วแคปหน้าจอส่งใน LMS</li>
+        </ol>
+      </div>
+      <div class="btn-row reveal" style="margin-top:46px;justify-content:center">
+        <a href="week04.html" class="btn btn-ghost">← บทที่ 4</a>
+        <a href="exercises.html#w05" class="btn btn-ghost">📚 แบบฝึกหัดบทนี้</a>
+        <a href="week06.html" class="btn btn-primary">สัปดาห์ที่ 4: โครงสร้างควบคุมแบบเลือกทำ →</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <p>บทที่ 5: ตัวดำเนินการและการรับค่า — รายวิชาการเขียนโปรแกรมคอมพิวเตอร์</p>
+      <p class="credits">จัดทำเพื่อการศึกษา · อิงเอกสารประกอบการสอนบทที่ 2, 5</p>
+    </div>
+  </footer>
+
+  <button id="toTop" title="กลับขึ้นด้านบน">↑</button>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/week05.js"></script>
+  <script src="js/runner.js"></script>
+  <script src="js/quiz.js"></script>
+</body>
+</html>

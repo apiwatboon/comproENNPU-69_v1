@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>บทที่ 1: ประวัติความเป็นมาของคอมพิวเตอร์ | Computer Programming</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2322d3ee'/%3E%3Ctext x='50' y='68' font-size='48' text-anchor='middle' fill='%23071018' font-family='monospace'%3E%26lt;/%26gt;%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ===== Navbar ===== -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="nav-logo"><span class="logo-dot">&lt;/&gt;</span> Computer Programming</a>
+      <ul class="nav-links">
+        <li><a href="#objectives">วัตถุประสงค์</a></li>
+        <li><a href="#what-is">คอมพิวเตอร์คืออะไร</a></li>
+        <li><a href="#timeline">เส้นเวลา</a></li>
+        <li><a href="#generations">5 ยุค</a></li>
+        <li><a href="#moore">กฎของมัวร์</a></li>
+        <li><a href="#video">วิดีโอ</a></li>
+        <li><a href="#quiz">แบบทดสอบ</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ===== Hero ===== -->
+  <header class="hero">
+    <canvas id="binary-canvas"></canvas>
+    <div class="container">
+      <div class="hero-kicker reveal">สัปดาห์ที่ 1 · คาบที่ 1</div>
+      <h1 class="reveal" data-delay="0.1">บทที่ 1<br><span class="grad-text">ประวัติความเป็นมาของคอมพิวเตอร์</span></h1>
+      <p class="hero-desc reveal" data-delay="0.2">
+        ก่อนจะเขียนโปรแกรมบรรทัดแรก เรามาย้อนเวลากันก่อนว่า "คอมพิวเตอร์" เดินทางมาอย่างไร —
+        จากลูกคิดเมื่อ 4,000 ปีก่อน สู่เครื่องจักรไอน้ำที่คิดเลขได้ สู่ชิปที่มีทรานซิสเตอร์นับแสนล้านตัวในมือถือของคุณ
+      </p>
+      <div class="hero-badges reveal" data-delay="0.3">
+        <span class="badge">⏱️ <b>ใช้เวลาเรียน ~2 ชั่วโมง</b></span>
+        <span class="badge">🖼️ <b>Timeline + อนิเมชัน</b></span>
+        <span class="badge">📝 <b>แบบทดสอบ 10 ข้อ</b></span>
+      </div>
+      <div class="btn-row reveal" data-delay="0.4">
+        <a href="#objectives" class="btn btn-primary">เริ่มบทเรียน ↓</a>
+        <a href="index.html" class="btn btn-ghost">← กลับหน้ารายวิชา</a>
+      </div>
+    </div>
+    <div class="scroll-hint">เลื่อนลงเพื่อเริ่มเรียน<br>⌄</div>
+  </header>
+
+  <!-- ===== วัตถุประสงค์ ===== -->
+  <section class="section" id="objectives">
+    <div class="container">
+      <span class="section-tag reveal">Learning Objectives</span>
+      <h2 class="section-title reveal">วัตถุประสงค์การเรียนรู้</h2>
+      <p class="section-sub reveal">เมื่อจบบทเรียนนี้ นักศึกษาจะสามารถ...</p>
+      <div class="obj-list">
+        <div class="obj-item reveal">อธิบายความหมายและหลักการทำงานพื้นฐานของคอมพิวเตอร์ (Input → Process → Output) ได้</div>
+        <div class="obj-item reveal" data-delay="0.05">ลำดับเหตุการณ์สำคัญในประวัติศาสตร์คอมพิวเตอร์ ตั้งแต่ยุคเครื่องกลจนถึงยุคปัญญาประดิษฐ์ได้</div>
+        <div class="obj-item reveal" data-delay="0.1">จำแนกคอมพิวเตอร์ทั้ง 5 ยุค ตามเทคโนโลยีหลักที่ใช้ พร้อมยกตัวอย่างเครื่องสำคัญของแต่ละยุคได้</div>
+        <div class="obj-item reveal" data-delay="0.15">อธิบายกฎของมัวร์ และผลกระทบต่อการพัฒนาเทคโนโลยีได้</div>
+        <div class="obj-item reveal" data-delay="0.2">เชื่อมโยงวิวัฒนาการของฮาร์ดแวร์เข้ากับวิวัฒนาการของภาษาโปรแกรม เพื่อเป็นพื้นฐานสู่บทถัดไปได้</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== คอมพิวเตอร์คืออะไร ===== -->
+  <section class="section alt" id="what-is">
+    <div class="container">
+      <span class="section-tag reveal">Definition</span>
+      <h2 class="section-title reveal">คอมพิวเตอร์คืออะไร?</h2>
+      <p class="section-sub reveal">
+        <b style="color:var(--text)">คอมพิวเตอร์ (Computer)</b> มาจากภาษาละติน <i>computare</i> แปลว่า "การคำนวณ"
+        หมายถึง <b style="color:var(--cyan)">เครื่องจักรอิเล็กทรอนิกส์ที่รับข้อมูลเข้า นำไปประมวลผลตามชุดคำสั่ง (โปรแกรม)
+        แล้วส่งผลลัพธ์ออกมา</b> — น่าสนใจว่าเดิมที "Computer" คือ <u>ตำแหน่งงานของคน</u> ที่ทำหน้าที่คำนวณตัวเลข
+        ก่อนที่เครื่องจักรจะเข้ามาทำหน้าที่แทน
+      </p>
+
+      <div class="ipo-wrap reveal">
+        <div class="ipo-box">
+          <div class="ipo-icon">⌨️</div>
+          <h3>Input<br>รับข้อมูลเข้า</h3>
+          <p>คีย์บอร์ด เมาส์ เซนเซอร์<br>บัตรเจาะรู (ในอดีต)</p>
+        </div>
+        <div class="ipo-arrow"><span class="pulse">➜</span></div>
+        <div class="ipo-box process">
+          <div class="ipo-icon">🧮</div>
+          <h3>Process<br>ประมวลผล</h3>
+          <p>CPU ทำงานตามชุดคำสั่ง<br>= "โปรแกรม" ที่เราจะเรียนเขียน!</p>
+        </div>
+        <div class="ipo-arrow"><span class="pulse">➜</span></div>
+        <div class="ipo-box">
+          <div class="ipo-icon">🖥️</div>
+          <h3>Output<br>แสดงผลลัพธ์</h3>
+          <p>จอภาพ เครื่องพิมพ์<br>สัญญาณควบคุมเครื่องจักร</p>
+        </div>
+      </div>
+
+      <p class="reveal" style="text-align:center;color:var(--text-dim);max-width:680px;margin:30px auto 0">
+        💡 หัวใจของวิชานี้คือกล่องตรงกลาง — <b style="color:var(--text)">"การเขียนโปรแกรม"</b> คือการเขียนชุดคำสั่ง
+        บอกคอมพิวเตอร์ว่าต้อง<b style="color:var(--cyan)">ประมวลผลอย่างไร</b> และประวัติศาสตร์ทั้งหมดต่อจากนี้
+        คือเรื่องราวการตามหาวิธี "สั่งงานเครื่องจักร" ที่ดีขึ้นเรื่อย ๆ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== Timeline: ยุคเครื่องกล ===== -->
+  <section class="section" id="timeline">
+    <div class="container">
+      <span class="section-tag reveal">Era 1 · Mechanical Age</span>
+      <h2 class="section-title reveal">🦾 ยุคเครื่องกล — ก่อนจะมีไฟฟ้า มนุษย์ก็อยากคิดเลขเร็ว</h2>
+      <p class="section-sub reveal">
+        ประวัติศาสตร์คอมพิวเตอร์ไม่ได้เริ่มจากจอและคีย์บอร์ด แต่เริ่มจากความต้องการพื้นฐานของมนุษย์:
+        <b style="color:var(--text)">นับ คำนวณ และจดจำตัวเลขให้แม่นยำ</b>
+      </p>
+
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-year grad-text">~2,500 ปีก่อน ค.ศ.</div>
+          <div class="tl-card reveal">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Abacus_6.png?width=900" alt="ลูกคิด (Abacus)" data-fallback loading="lazy">
+            <div class="tl-body">
+              <h3>ลูกคิด (Abacus)</h3>
+              <p>เครื่องช่วยคำนวณชิ้นแรกของมนุษยชาติ กำเนิดในเมโสโปเตเมียและพัฒนาต่อในจีน
+                 ใช้ลูกปัดแทนค่าตัวเลขเพื่อบวก ลบ คูณ หาร ได้รวดเร็วอย่างไม่น่าเชื่อ</p>
+              <div class="tl-fact">⚡ ปี 1946 มีการแข่งขันระหว่างลูกคิดกับเครื่องคิดเลขไฟฟ้า — ลูกคิดชนะ 4 ใน 5 รอบ!</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-year grad-text">ค.ศ. 1642</div>
+          <div class="tl-card reveal">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Arts_et_Metiers_Pascaline_dsc03869.jpg?width=900" alt="เครื่อง Pascaline" data-fallback loading="lazy">
+            <div class="tl-body">
+              <h3>Pascaline — เครื่องคิดเลขกลไกเครื่องแรก</h3>
+              <p><b>Blaise Pascal</b> นักคณิตศาสตร์ชาวฝรั่งเศสวัย 19 ปี ประดิษฐ์เครื่องบวก-ลบเลขด้วยเฟืองกล
+                 เพื่อช่วยพ่อที่เป็นเจ้าหน้าที่เก็บภาษี ถือเป็นเครื่องคิดเลขกลไกเครื่องแรกที่ใช้งานได้จริง</p>
+              <div class="tl-fact">🏷️ ภาษาโปรแกรม "Pascal" ที่ใช้สอนเขียนโปรแกรมทั่วโลกถูกตั้งชื่อตามเขา</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-year grad-text">ค.ศ. 1673</div>
+          <div class="tl-card reveal">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Leibnitzrechenmaschine.jpg?width=900" alt="เครื่องคำนวณของไลบ์นิซ" class="img-full" data-fallback loading="lazy">
+            <div class="tl-body">
+              <h3>Stepped Reckoner ของไลบ์นิซ</h3>
+              <p><b>Gottfried Leibniz</b> พัฒนาเครื่องที่คูณและหารได้ และที่สำคัญกว่านั้น —
+                 เขาคือผู้วางรากฐาน<b style="color:var(--cyan)">ระบบเลขฐานสอง (Binary)</b>
+                 ที่คอมพิวเตอร์ทุกเครื่องในปัจจุบันใช้</p>
+              <div class="tl-fact">0️⃣1️⃣ เลข 0 กับ 1 ที่วิ่งอยู่บนพื้นหลังหน้าเว็บนี้ คือมรดกของไลบ์นิซ</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-year grad-text">ค.ศ. 1804</div>
+          <div class="tl-card reveal">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Jacquard.loom.full.view.jpg?width=900" alt="เครื่องทอผ้า Jacquard" class="img-full" data-fallback loading="lazy">
+            <div class="tl-body">
+              <h3>เครื่องทอผ้า Jacquard — โปรแกรมแรกของโลก?</h3>
+              <p><b>Joseph Marie Jacquard</b> ใช้<b style="color:var(--cyan)">บัตรเจาะรู (Punched Card)</b>
+                 ควบคุมลายทอผ้าโดยอัตโนมัติ เปลี่ยนบัตร = เปลี่ยนลายผ้า
+                 นี่คือแนวคิด "เครื่องจักรที่ทำงานตามคำสั่งที่เปลี่ยนได้" เป็นครั้งแรก</p>
+              <div class="tl-fact">🧵 นักศึกษาวิศวกรรมอุตสาหการดูให้ดี — นี่คือบรรพบุรุษของระบบการผลิตอัตโนมัติ (Automation) ทั้งหมด</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-year grad-text">ค.ศ. 1822–1837</div>
+          <div class="tl-card reveal">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/8/8b/Babbage_Difference_Engine.jpg" alt="Difference Engine ของ Babbage" class="img-full" data-fallback loading="lazy">
+            <div class="tl-body">
+              <h3>Charles Babbage — "บิดาแห่งคอมพิวเตอร์"</h3>
+              <p>Babbage ออกแบบ <b>Difference Engine</b> (เครื่องคำนวณตารางคณิตศาสตร์) และต่อยอดเป็น
+                 <b>Analytical Engine</b> ซึ่งมีครบทุกองค์ประกอบของคอมพิวเตอร์ยุคใหม่:
+                 หน่วยคำนวณ (Mill = CPU), หน่วยความจำ (Store = Memory), และรับโปรแกรมผ่านบัตรเจาะรู —
+                 ทั้งหมดนี้ขับเคลื่อนด้วย<b style="color:var(--amber)">ไอน้ำ</b>!</p>
+              <div class="tl-fact">⚙️ เขาสร้างไม่เสร็จในชีวิตจริงเพราะเทคโนโลยีสมัยนั้นผลิตชิ้นส่วนละเอียดพอไม่ได้ —
+                 แต่พิมพ์เขียวถูกต้องสมบูรณ์ พิพิธภัณฑ์ลอนดอนสร้างตามแบบในปี 1991 แล้ว "ใช้งานได้จริง"</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-year grad-text">ค.ศ. 1843</div>
+          <div class="tl-card reveal">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/4/4c/Ada_Lovelace_daguerreotype_by_Antoine_Claudet_1843_-_cropped.png" alt="Ada Lovelace" class="img-full" data-fallback loading="lazy">
+            <div class="tl-body">
+              <h3>Ada Lovelace — โปรแกรมเมอร์คนแรกของโลก</h3>
+              <p>เคาน์เตสชาวอังกฤษ (ลูกสาวของกวี Lord Byron) เขียน<b style="color:var(--cyan)">อัลกอริทึม
+                 สำหรับคำนวณจำนวนแบร์นูลลี</b>บน Analytical Engine ของ Babbage
+                 และมองการณ์ไกลว่าเครื่องนี้จะทำได้มากกว่าคิดเลข — อาจแต่งเพลงหรือสร้างกราฟิกได้
+                 ก่อนคอมพิวเตอร์เครื่องแรกเกิดจริงเกือบ 100 ปี</p>
+              <div class="tl-fact">👩‍💻 ภาษาโปรแกรม "Ada" ของกระทรวงกลาโหมสหรัฐฯ ตั้งชื่อเพื่อเป็นเกียรติแก่เธอ
+                 และวัน Ada Lovelace Day จัดทุกเดือนตุลาคมเพื่อเชิดชูผู้หญิงในวงการ STEM</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Timeline 2: ยุคเครื่องกลไฟฟ้า ===== -->
+  <section class="section alt">
+    <div class="container">
+      <span class="section-tag reveal">Era 2 · Electromechanical Age</span>
+      <h2 class="section-title reveal">⚡ ยุคเครื่องกลไฟฟ้า — เมื่อไฟฟ้าเข้ามาช่วยเฟือง</h2>
+      <p class="section-sub reveal">
+        ปลายศตวรรษที่ 19 ถึงสงครามโลกครั้งที่ 2 — รีเลย์ไฟฟ้าเข้ามาแทนเฟืองกล
+        และ "ความจำเป็น" (สำมะโนประชากร, สงคราม) กลายเป็นแรงผลักดันที่ทรงพลังที่สุด
+      </p>
+
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-year grad-text">ค.ศ. 1890</div>
+          <div class="tl-card reveal">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/HollerithMachine.CHM.jpg" alt="เครื่อง Tabulating ของ Hollerith" class="img-full" data-fallback loading="lazy">
+            <div class="tl-body">
+              <h3>เครื่องประมวลผลบัตรเจาะรูของ Hollerith</h3>
+              <p>สำมะโนประชากรสหรัฐฯ ปี 1880 ใช้เวลานับมือถึง 8 ปี! <b>Herman Hollerith</b>
+                 จึงสร้างเครื่องอ่านบัตรเจาะรูด้วยไฟฟ้า ลดเวลาเหลือ 2 ปีครึ่ง
+                 — นี่คือการประมวลผลข้อมูลขนาดใหญ่ (Data Processing) ครั้งแรกของโลก</p>
+              <div class="tl-fact">🏢 บริษัทของ Hollerith ควบรวมกับบริษัทอื่นในปี 1924 กลายเป็น... <b>IBM</b></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-year grad-text">ค.ศ. 1936</div>
+          <div class="tl-card reveal">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Alan_Turing_Aged_16.jpg?width=900" alt="Alan Turing" class="img-full" data-fallback loading="lazy">
+            <div class="tl-body">
+              <h3>Alan Turing — ผู้วางรากฐานทฤษฎี</h3>
+              <p>Turing เสนอแนวคิด <b style="color:var(--cyan)">"Turing Machine"</b> —
+                 เครื่องจักรในจินตนาการที่พิสูจน์ว่าเครื่องเดียวสามารถคำนวณ "ทุกสิ่งที่คำนวณได้"
+                 ขอเพียงเปลี่ยนชุดคำสั่ง นี่คือรากฐานทางทฤษฎีของวิทยาการคอมพิวเตอร์ทั้งศาสตร์</p>
+              <div class="tl-fact">🎬 ชีวิตของเขาถูกสร้างเป็นภาพยนตร์ The Imitation Game (2014) และรางวัล Turing Award
+                 คือ "โนเบลแห่งวงการคอมพิวเตอร์"</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-year grad-text">ค.ศ. 1941</div>
+          <div class="tl-card reveal">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Z3_Deutsches_Museum.JPG?width=900" alt="เครื่อง Z3 ของ Konrad Zuse" class="img-full" data-fallback loading="lazy">
+            <div class="tl-body">
+              <h3>Z3 — คอมพิวเตอร์โปรแกรมได้เครื่องแรก</h3>
+              <p><b>Konrad Zuse</b> วิศวกรชาวเยอรมัน สร้างคอมพิวเตอร์แบบโปรแกรมได้และทำงานอัตโนมัติเต็มรูปแบบ
+                 เครื่องแรกของโลก ใช้รีเลย์ไฟฟ้า 2,600 ตัว และใช้<b style="color:var(--cyan)">เลขฐานสอง</b>
+                 ตามแนวคิดของไลบ์นิซ</p>
+              <div class="tl-fact">🛠️ Zuse สร้างเครื่องรุ่นแรก (Z1) ในห้องนั่งเล่นบ้านพ่อแม่ — วิศวกรตัวจริงเริ่มจากที่บ้านได้เสมอ</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-year grad-text">ค.ศ. 1943–1944</div>
+          <div class="tl-card reveal">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Colossus.jpg?width=900" alt="เครื่อง Colossus" class="img-full" data-fallback loading="lazy">
+            <div class="tl-body">
+              <h3>Colossus & Harvard Mark I — สงครามเร่งวิวัฒนาการ</h3>
+              <p><b>Colossus</b> (อังกฤษ, 1943) คอมพิวเตอร์อิเล็กทรอนิกส์แบบดิจิทัลเครื่องแรก
+                 ใช้ถอดรหัสลับของนาซีจนช่วยให้ฝ่ายสัมพันธมิตรชนะสงคราม ส่วน <b>Harvard Mark I</b> (สหรัฐฯ, 1944)
+                 เครื่องกลไฟฟ้ายาว 15.5 เมตร ใช้คำนวณวิถีกระสุนปืนใหญ่</p>
+              <div class="tl-fact">🤫 Colossus เป็นความลับทางทหารนาน 30 ปี — โลกเพิ่งรู้จักมันในทศวรรษ 1970</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 5 Generations ===== -->
+  <section class="section" id="generations">
+    <div class="container">
+      <span class="section-tag reveal">The 5 Generations</span>
+      <h2 class="section-title reveal">คอมพิวเตอร์ <span class="grad-text">5 ยุค</span> — แบ่งตามเทคโนโลยีหลัก</h2>
+      <p class="section-sub reveal">
+        ตำราสากลแบ่งคอมพิวเตอร์อิเล็กทรอนิกส์ออกเป็น 5 ยุค ตาม "อุปกรณ์ประมวลผลหลัก" ที่ใช้
+        — คลิกแต่ละแท็บเพื่อสำรวจ
+      </p>
+
+      <div class="gen-tabs reveal">
+        <button class="gen-tab active" data-target="gen1">ยุค 1 · หลอดสุญญากาศ</button>
+        <button class="gen-tab" data-target="gen2">ยุค 2 · ทรานซิสเตอร์</button>
+        <button class="gen-tab" data-target="gen3">ยุค 3 · วงจรรวม (IC)</button>
+        <button class="gen-tab" data-target="gen4">ยุค 4 · ไมโครโพรเซสเซอร์</button>
+        <button class="gen-tab" data-target="gen5">ยุค 5 · AI & อนาคต</button>
+      </div>
+
+      <!-- Gen 1 -->
+      <div class="gen-panel active" id="gen1">
+        <div class="gen-layout">
+          <div class="gen-info">
+            <h3>🔥 ยุคที่ 1: หลอดสุญญากาศ</h3>
+            <div class="gen-period">ค.ศ. 1946 – 1957</div>
+            <p>คอมพิวเตอร์อิเล็กทรอนิกส์ยุคแรกใช้ <b>หลอดสุญญากาศ (Vacuum Tube)</b> เป็นสวิตช์เปิด-ปิดสัญญาณไฟฟ้า
+               เครื่องจึงใหญ่เท่าห้องเรียน ร้อนจัด ไฟดับทั้งย่านเมื่อเปิดเครื่อง และหลอดขาดแทบทุกวัน</p>
+            <ul class="gen-points">
+              <li><b>ENIAC (1946)</b> — คอมพิวเตอร์อเนกประสงค์เครื่องแรก: หลอด 18,000 หลอด หนัก 27 ตัน กินไฟ 150 กิโลวัตต์</li>
+              <li><b>สถาปัตยกรรม von Neumann (1945)</b> — เก็บ "โปรแกรม" ไว้ในหน่วยความจำเดียวกับข้อมูล ใช้มาจนถึงทุกวันนี้</li>
+              <li><b>UNIVAC I (1951)</b> — คอมพิวเตอร์เชิงพาณิชย์เครื่องแรก โด่งดังจากการทำนายผลเลือกตั้งสหรัฐฯ ได้ถูกต้อง</li>
+              <li>เขียนโปรแกรมด้วย<b>ภาษาเครื่อง (Machine Language)</b> — ป้อนเลข 0/1 หรือต่อสายไฟใหม่ทั้งแผง!</li>
+            </ul>
+            <div class="gen-chip-row">
+              <span class="gen-chip">ENIAC</span><span class="gen-chip">UNIVAC I</span>
+              <span class="gen-chip">ภาษาเครื่อง</span><span class="gen-chip">บัตรเจาะรู</span>
+            </div>
+          </div>
+          <figure class="gen-figure">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6c/ENIAC_Penn1.jpg" alt="เครื่อง ENIAC" data-fallback loading="lazy">
+            <figcaption>ENIAC ที่มหาวิทยาลัยเพนซิลเวเนีย — โปรแกรมเมอร์ยุคแรกส่วนใหญ่เป็นผู้หญิง ("ENIAC Six")</figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <!-- Gen 2 -->
+      <div class="gen-panel" id="gen2">
+        <div class="gen-layout">
+          <div class="gen-info">
+            <h3>📻 ยุคที่ 2: ทรานซิสเตอร์</h3>
+            <div class="gen-period">ค.ศ. 1958 – 1963</div>
+            <p>ทรานซิสเตอร์ (ประดิษฐ์ที่ Bell Labs ปี 1947 — ได้รางวัลโนเบล) เข้ามาแทนหลอดสุญญากาศ
+               <b>เล็กลง 100 เท่า เร็วขึ้น ทนขึ้น เย็นลง</b> คอมพิวเตอร์เริ่มเข้าสู่ธุรกิจและมหาวิทยาลัย</p>
+            <ul class="gen-points">
+              <li><b>IBM 1401</b> — คอมพิวเตอร์ธุรกิจยอดนิยม ขายได้กว่า 12,000 เครื่อง</li>
+              <li>กำเนิด<b>ภาษาระดับสูง</b>: FORTRAN (1957) สำหรับงานวิทยาศาสตร์/วิศวกรรม และ COBOL (1959) สำหรับงานธุรกิจ</li>
+              <li><b>Grace Hopper</b> สร้างคอมไพเลอร์ตัวแรก — แปลภาษาที่คนอ่านออกให้เป็นภาษาเครื่อง</li>
+              <li>เริ่มใช้หน่วยความจำวงแหวนแม่เหล็ก (Magnetic Core) และเทปแม่เหล็ก</li>
+            </ul>
+            <div class="gen-chip-row">
+              <span class="gen-chip">IBM 1401</span><span class="gen-chip">FORTRAN</span>
+              <span class="gen-chip">COBOL</span><span class="gen-chip">คอมไพเลอร์</span>
+            </div>
+          </div>
+          <figure class="gen-figure">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Transbauformen.jpg" alt="ทรานซิสเตอร์รูปแบบต่าง ๆ" data-fallback loading="lazy">
+            <figcaption>ทรานซิสเตอร์ — สิ่งประดิษฐ์ที่ถูกยกให้เป็น "นวัตกรรมสำคัญที่สุดแห่งศตวรรษที่ 20"</figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <!-- Gen 3 -->
+      <div class="gen-panel" id="gen3">
+        <div class="gen-layout">
+          <div class="gen-info">
+            <h3>🔲 ยุคที่ 3: วงจรรวม (IC)</h3>
+            <div class="gen-period">ค.ศ. 1964 – 1970</div>
+            <p><b>Integrated Circuit</b> = ยัดทรานซิสเตอร์หลายตัวลงบนแผ่นซิลิคอนชิ้นเดียว
+               (Jack Kilby & Robert Noyce, 1958) ทำให้คอมพิวเตอร์เล็กลง ถูกลง และน่าเชื่อถือขึ้นอีกขั้น</p>
+            <ul class="gen-points">
+              <li><b>IBM System/360 (1964)</b> — ตระกูลคอมพิวเตอร์ที่ใช้ซอฟต์แวร์ร่วมกันได้ จุดกำเนิดแนวคิด "Compatibility"</li>
+              <li>กำเนิด<b>ระบบปฏิบัติการ (Operating System)</b> และการทำงานหลายงานพร้อมกัน (Multiprogramming)</li>
+              <li>ภาษา <b>BASIC (1964)</b> ทำให้คนทั่วไปเริ่มหัดเขียนโปรแกรมได้</li>
+              <li>เริ่มมีจอภาพและคีย์บอร์ดแทนบัตรเจาะรู — ปฏิสัมพันธ์กับเครื่องแบบ "ทันที" ครั้งแรก</li>
+            </ul>
+            <div class="gen-chip-row">
+              <span class="gen-chip">IBM System/360</span><span class="gen-chip">OS</span>
+              <span class="gen-chip">BASIC</span><span class="gen-chip">Minicomputer</span>
+            </div>
+          </div>
+          <figure class="gen-figure">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/IBM_System_360_model_30_profile.agr.jpg/960px-IBM_System_360_model_30_profile.agr.jpg" alt="IBM System/360" data-fallback loading="lazy">
+            <figcaption>IBM System/360 — โครงการพนัน 5 พันล้านดอลลาร์ (สมัยนั้น!) ที่เปลี่ยนอุตสาหกรรมทั้งวงการ</figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <!-- Gen 4 -->
+      <div class="gen-panel" id="gen4">
+        <div class="gen-layout">
+          <div class="gen-info">
+            <h3>💻 ยุคที่ 4: ไมโครโพรเซสเซอร์</h3>
+            <div class="gen-period">ค.ศ. 1971 – ปัจจุบัน</div>
+            <p><b>Intel 4004 (1971)</b> รวม CPU ทั้งตัวไว้บนชิปเดียว — จุดระเบิดของการปฏิวัติ
+               คอมพิวเตอร์ส่วนบุคคล (PC) ที่พาคอมพิวเตอร์จากห้องแล็บเข้าสู่บ้านทุกหลัง</p>
+            <ul class="gen-points">
+              <li><b>Altair 8800 (1975)</b> — PC เครื่องแรกขายเป็นชุดประกอบเอง: Bill Gates & Paul Allen เขียน BASIC ให้มัน → กำเนิด Microsoft</li>
+              <li><b>Apple II (1977)</b> — Steve Wozniak & Steve Jobs ทำให้ PC ใช้ง่ายสำหรับคนทั่วไป</li>
+              <li><b>IBM PC (1981)</b> + MS-DOS — มาตรฐาน PC ที่สืบทอดมาถึงเครื่องที่คุณใช้อยู่</li>
+              <li><b>Macintosh (1984)</b> — GUI และเมาส์เปลี่ยนวิธีที่มนุษย์คุยกับเครื่อง</li>
+              <li><b>World Wide Web (1989–1991)</b> — Tim Berners-Lee ที่ CERN เชื่อมโลกทั้งใบ</li>
+              <li>กำเนิดภาษา <b>C (1972)</b>, C++ (1985), <b>Python (1991)</b>, Java (1995) — เครื่องมือหลักของวิศวกรปัจจุบัน</li>
+            </ul>
+            <div class="gen-chip-row">
+              <span class="gen-chip">Intel 4004</span><span class="gen-chip">Apple II</span>
+              <span class="gen-chip">IBM PC</span><span class="gen-chip">WWW</span><span class="gen-chip">ภาษา C / Python</span>
+            </div>
+          </div>
+          <div>
+            <figure class="gen-figure" style="margin-bottom:18px">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Intel_C4004.jpg/960px-Intel_C4004.jpg" alt="ชิป Intel 4004" data-fallback loading="lazy">
+              <figcaption>Intel 4004 — CPU ตัวแรกของโลก: ทรานซิสเตอร์ 2,300 ตัว ราคาเปิดตัว 60 ดอลลาร์</figcaption>
+            </figure>
+            <figure class="gen-figure">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Apple_II-IMG_7064.jpg/960px-Apple_II-IMG_7064.jpg" alt="เครื่อง Apple II" data-fallback loading="lazy">
+              <figcaption>Apple II — คอมพิวเตอร์ที่จุดกระแส "ทุกบ้านควรมีคอมพิวเตอร์"</figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gen 5 -->
+      <div class="gen-panel" id="gen5">
+        <div class="gen-layout">
+          <div class="gen-info">
+            <h3>🤖 ยุคที่ 5: ปัญญาประดิษฐ์และอนาคต</h3>
+            <div class="gen-period">ปัจจุบัน – อนาคต</div>
+            <p>ยุคของการประมวลผลแบบขนานมหาศาล, คลาวด์, อุปกรณ์พกพา, IoT และ
+               <b>ปัญญาประดิษฐ์ (AI)</b> — คอมพิวเตอร์ไม่ได้แค่ "คำนวณตามสั่ง" อีกต่อไป แต่เริ่ม "เรียนรู้" จากข้อมูล</p>
+            <ul class="gen-points">
+              <li><b>สมาร์ตโฟน</b> — ซูเปอร์คอมพิวเตอร์ในกระเป๋า: แรงกว่าคอมพิวเตอร์ยานอพอลโลที่พาคนไปดวงจันทร์นับล้านเท่า</li>
+              <li><b>Cloud Computing</b> — พลังประมวลผลกลายเป็นสาธารณูปโภค เช่าใช้ได้เหมือนไฟฟ้า</li>
+              <li><b>AI / Machine Learning</b> — จาก Deep Blue ชนะหมากรุก (1997), AlphaGo (2016) ถึง Generative AI ที่ช่วยเขียนโค้ดได้ในวันนี้</li>
+              <li><b>Quantum Computer</b> — ใช้คิวบิต (Qubit) ที่เป็นทั้ง 0 และ 1 พร้อมกัน อาจพลิกโฉมการเข้ารหัสและการออกแบบยา/วัสดุ</li>
+              <li>สำหรับวิศวกร: AI ช่วยออกแบบ, Digital Twin จำลองโรงงาน, ระบบโลจิสติกส์อัจฉริยะ — ทุกอย่างต้องการคน "เขียนโปรแกรมเป็น"</li>
+            </ul>
+            <div class="gen-chip-row">
+              <span class="gen-chip">AI / ML</span><span class="gen-chip">Cloud</span>
+              <span class="gen-chip">IoT</span><span class="gen-chip">Quantum</span>
+            </div>
+          </div>
+          <div>
+            <figure class="gen-figure" style="margin-bottom:18px">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/d/d3/IBM_Blue_Gene_P_supercomputer.jpg" alt="ซูเปอร์คอมพิวเตอร์ IBM Blue Gene/P" data-fallback loading="lazy">
+              <figcaption>ซูเปอร์คอมพิวเตอร์ IBM Blue Gene/P — งานจำลองสภาพอากาศ ยา และวัสดุศาสตร์</figcaption>
+            </figure>
+            <figure class="gen-figure">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/IBM_Quantum_Computer_Demo_at_ITUWTSA_2024%2C_Delhi_2.jpg" alt="ควอนตัมคอมพิวเตอร์ของ IBM" class="img-full" data-fallback loading="lazy">
+              <figcaption>ควอนตัมคอมพิวเตอร์ของ IBM — สถาปัตยกรรมที่อาจนิยาม "ยุคที่ 6" ในอนาคต</figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Moore's Law ===== -->
+  <section class="section alt" id="moore">
+    <div class="container">
+      <span class="section-tag reveal">Moore's Law</span>
+      <h2 class="section-title reveal">📈 กฎของมัวร์ — ทำไมคอมพิวเตอร์ถึงเร็วขึ้นไม่หยุด?</h2>
+      <p class="section-sub reveal">
+        ปี 1965 <b style="color:var(--text)">Gordon Moore</b> (ผู้ร่วมก่อตั้ง Intel) สังเกตว่า
+        <b style="color:var(--cyan)">จำนวนทรานซิสเตอร์บนชิปเพิ่มขึ้นประมาณ 2 เท่า ทุก ๆ 2 ปี</b>
+        — คำทำนายนี้แม่นยำมานานกว่า 50 ปี สังเกตแกนตั้งของกราฟเป็นแบบลอการิทึม:
+        เส้นที่ดูเหมือน "เส้นตรง" จริง ๆ แล้วคือการเติบโตแบบทวีคูณ!
+      </p>
+      <div class="chart-box reveal">
+        <canvas id="mooreChart"></canvas>
+      </div>
+
+      <div class="stats-grid" style="margin-top:46px">
+        <div class="stat-card reveal">
+          <div class="stat-value" data-count="2300">0</div>
+          <div class="stat-label">ทรานซิสเตอร์ใน Intel 4004 (1971)</div>
+        </div>
+        <div class="stat-card reveal" data-delay="0.1">
+          <div class="stat-value" data-count="134" data-suffix=" พันล้าน">0</div>
+          <div class="stat-label">ทรานซิสเตอร์ใน Apple M2 Ultra (2023)</div>
+        </div>
+        <div class="stat-card reveal" data-delay="0.2">
+          <div class="stat-value" data-count="58" data-suffix=" ล้านเท่า">0</div>
+          <div class="stat-label">เพิ่มขึ้นในเวลาเพียง ~50 ปี</div>
+        </div>
+        <div class="stat-card reveal" data-delay="0.3">
+          <div class="stat-value" data-count="2" data-suffix="x ทุก 2 ปี">0</div>
+          <div class="stat-label">อัตราตามกฎของมัวร์</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ENIAC vs Smartphone ===== -->
+  <section class="section">
+    <div class="container">
+      <span class="section-tag reveal">Then vs Now</span>
+      <h2 class="section-title reveal">⚖️ ENIAC (1946) ปะทะ สมาร์ตโฟน (วันนี้)</h2>
+      <p class="section-sub reveal">เห็นภาพชัดที่สุดว่า 80 ปีของวิวัฒนาการพาเรามาไกลแค่ไหน</p>
+
+      <div class="vs-wrap">
+        <div class="vs-side old reveal">
+          <h3>🏛️ ENIAC</h3>
+          <div class="vs-sub">คอมพิวเตอร์อเนกประสงค์เครื่องแรกของโลก (ค.ศ. 1946)</div>
+          <div class="vs-row"><span class="k">น้ำหนัก</span><span class="v">27,000 กิโลกรัม</span></div>
+          <div class="vs-row"><span class="k">พื้นที่ติดตั้ง</span><span class="v">167 ตารางเมตร</span></div>
+          <div class="vs-row"><span class="k">อุปกรณ์ประมวลผล</span><span class="v">หลอดสุญญากาศ 18,000 หลอด</span></div>
+          <div class="vs-row"><span class="k">กินไฟ</span><span class="v">150,000 วัตต์</span></div>
+          <div class="vs-row"><span class="k">ความเร็ว</span><span class="v">~5,000 คำสั่ง/วินาที</span></div>
+          <div class="vs-row"><span class="k">ราคา (ปรับเงินเฟ้อ)</span><span class="v">~200 ล้านบาท</span></div>
+          <div class="vs-row"><span class="k">วิธีเขียนโปรแกรม</span><span class="v">ต่อสายไฟ + สับสวิตช์</span></div>
+        </div>
+        <div class="vs-mid reveal">VS</div>
+        <div class="vs-side new reveal">
+          <h3>📱 สมาร์ตโฟนทั่วไป</h3>
+          <div class="vs-sub">เครื่องที่อยู่ในกระเป๋ากางเกงของคุณตอนนี้</div>
+          <div class="vs-row"><span class="k">น้ำหนัก</span><span class="v">~0.2 กิโลกรัม</span></div>
+          <div class="vs-row"><span class="k">พื้นที่ติดตั้ง</span><span class="v">ฝ่ามือเดียว</span></div>
+          <div class="vs-row"><span class="k">อุปกรณ์ประมวลผล</span><span class="v">ทรานซิสเตอร์ ~2 หมื่นล้านตัว</span></div>
+          <div class="vs-row"><span class="k">กินไฟ</span><span class="v">~5 วัตต์</span></div>
+          <div class="vs-row"><span class="k">ความเร็ว</span><span class="v">>1 ล้านล้านคำสั่ง/วินาที</span></div>
+          <div class="vs-row"><span class="k">ราคา</span><span class="v">หลักพัน–หมื่นบาท</span></div>
+          <div class="vs-row"><span class="k">วิธีเขียนโปรแกรม</span><span class="v">ภาษาระดับสูง (ที่เรากำลังจะเรียน!)</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== จากประวัติศาสตร์สู่การเขียนโปรแกรม ===== -->
+  <section class="section alt" id="languages">
+    <div class="container">
+      <span class="section-tag reveal">Bridge to Programming</span>
+      <h2 class="section-title reveal">🌉 จากประวัติศาสตร์ฮาร์ดแวร์ สู่วิวัฒนาการ "ภาษาโปรแกรม"</h2>
+      <p class="section-sub reveal">
+        ทุกครั้งที่ฮาร์ดแวร์ก้าวหน้า ภาษาที่ใช้สั่งงานก็พัฒนาตาม — จากการต่อสายไฟ สู่ภาษาที่อ่านเหมือนภาษาอังกฤษ
+        เลื่อนดูเส้นทางนี้ แล้วคุณจะรู้ว่าบทถัด ๆ ไปของวิชานี้ยืนอยู่บนบ่าของใครบ้าง
+      </p>
+
+      <div class="lang-strip reveal">
+        <div class="lang-card">
+          <div class="lang-year">1940s</div>
+          <h3>ภาษาเครื่อง</h3>
+          <p>สั่งงานด้วยเลขฐานสองโดยตรง มนุษย์อ่านแทบไม่ออก</p>
+          <code>10110000 01100001</code>
+        </div>
+        <div class="lang-card">
+          <div class="lang-year">1950s</div>
+          <h3>Assembly</h3>
+          <p>ใช้ตัวย่อแทนเลขฐานสอง ยังผูกติดกับฮาร์ดแวร์แต่ละรุ่น</p>
+          <code>MOV AL, 61h</code>
+        </div>
+        <div class="lang-card">
+          <div class="lang-year">1957</div>
+          <h3>FORTRAN</h3>
+          <p>ภาษาระดับสูงภาษาแรก เพื่องานคำนวณวิศวกรรมโดยเฉพาะ</p>
+          <code>AREA = 3.14 * R**2</code>
+        </div>
+        <div class="lang-card">
+          <div class="lang-year">1972</div>
+          <h3>C ⭐ ภาษาของวิชานี้!</h3>
+          <p>Dennis Ritchie สร้างที่ Bell Labs — รากฐานของ OS และภาษายุคใหม่เกือบทั้งหมด และคือภาษาที่เราจะใช้ตลอดคอร์สนี้</p>
+          <code>printf("Hello!\n");</code>
+        </div>
+        <div class="lang-card">
+          <div class="lang-year">1985</div>
+          <h3>C++</h3>
+          <p>เพิ่มแนวคิดเชิงวัตถุ (OOP) ใช้ในเกม หุ่นยนต์ ระบบฝังตัว</p>
+          <code>cout &lt;&lt; "Hello!";</code>
+        </div>
+        <div class="lang-card">
+          <div class="lang-year">1991</div>
+          <h3>Python</h3>
+          <p>เน้นอ่านง่าย เขียนเร็ว — ภาษายอดนิยมของวิศวกรและ AI ในปัจจุบัน</p>
+          <code>print("Hello!")</code>
+        </div>
+        <div class="lang-card">
+          <div class="lang-year">1995</div>
+          <h3>Java / JavaScript</h3>
+          <p>Java ครองระบบองค์กรและ Android ส่วน JavaScript ขับเคลื่อนเว็บทั้งโลก (รวมหน้านี้!)</p>
+          <code>console.log("Hello!")</code>
+        </div>
+        <div class="lang-card">
+          <div class="lang-year">วันนี้</div>
+          <h3>คุณ 👩‍💻👨‍💻</h3>
+          <p>บทต่อไปคุณจะเขียนโปรแกรมแรกของตัวเอง — เป็นส่วนหนึ่งของประวัติศาสตร์บทนี้</p>
+          <code>// เริ่มต้นที่สัปดาห์ที่ 2</code>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== วิดีโอ ===== -->
+  <section class="section" id="video">
+    <div class="container">
+      <span class="section-tag reveal">Watch & Learn</span>
+      <h2 class="section-title reveal">🎬 วิดีโอประกอบ: The Incredible Evolution of Computers</h2>
+      <p class="section-sub reveal">
+        ชมสารคดีสั้นสรุปวิวัฒนาการของคอมพิวเตอร์ เพื่อทบทวนภาพรวมทั้งหมดที่เรียนมา
+        (เปิดคำบรรยายอัตโนมัติ + แปลไทยได้จากปุ่มตั้งค่าของ YouTube)
+      </p>
+      <div class="video-frame reveal">
+        <iframe
+          src="https://www.youtube.com/embed/aa6YISbAJEA"
+          title="The Incredible Evolution of Computers"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen
+          loading="lazy"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Quiz ===== -->
+  <section class="section alt" id="quiz">
+    <div class="container">
+      <span class="section-tag reveal">Check Your Understanding</span>
+      <h2 class="section-title reveal">📝 แบบทดสอบท้ายบท (10 ข้อ)</h2>
+      <p class="section-sub reveal">ตอบทุกข้อแล้วระบบจะสรุปคะแนนพร้อมคำอธิบายให้ทันที — ตอบผิดไม่หักคะแนนเก็บ ลองเต็มที่!</p>
+      <div class="prequiz reveal">
+        <div class="prequiz-head">📘 อ่านก่อนสอบ · สรุปประเด็นสำคัญ</div>
+        <p class="prequiz-intro">บทนี้เป็นเนื้อหาประวัติศาสตร์ จำ "ชื่อคน–ผลงาน" และ "ลำดับยุค–อุปกรณ์" ให้แม่น แล้วลองทำ 10 ข้อด้านล่าง</p>
+        <div class="pq-item">
+          <span class="pq-num">1</span>
+          <div class="pq-text"><h4>วิวัฒนาการ 5 ยุค (จำลำดับอุปกรณ์)</h4><p>คอมพิวเตอร์พัฒนาเป็นยุค ๆ ตาม "อุปกรณ์ประมวลผลหลัก": <b>ยุค 1</b> หลอดสุญญากาศ → <b>ยุค 2</b> ทรานซิสเตอร์ → <b>ยุค 3</b> วงจรรวม (IC) → <b>ยุค 4</b> ไมโครโพรเซสเซอร์ → <b>ยุค 5</b> ปัญญาประดิษฐ์ (AI)</p><p>จุดเปลี่ยนที่ข้อสอบชอบ: เริ่มใช้ทรานซิสเตอร์ใน <b>ยุคที่ 2</b>, ไมโครโพรเซสเซอร์ตัวแรก <code>Intel 4004</code> เปิดยุคที่ 4</p></div>
+        </div>
+        <div class="pq-item">
+          <span class="pq-num">2</span>
+          <div class="pq-text"><h4>บุคคลสำคัญ จับคู่ชื่อ–ผลงาน</h4><p><b>Charles Babbage</b> — "บิดาแห่งคอมพิวเตอร์" ออกแบบ Analytical Engine · <b>Ada Lovelace</b> — "โปรแกรมเมอร์คนแรกของโลก" · <b>John von Neumann</b> — แนวคิด <i>Stored-Program</i> (เก็บโปรแกรมไว้ในหน่วยความจำ) ที่เครื่องทุกวันนี้ยังใช้</p></div>
+        </div>
+        <div class="pq-item">
+          <span class="pq-num">3</span>
+          <div class="pq-text"><h4>เครื่องและภาษาแรก ๆ</h4><p><b>ENIAC</b> = คอมพิวเตอร์อิเล็กทรอนิกส์อเนกประสงค์เครื่องแรก · <b>FORTRAN</b> = ภาษาระดับสูงภาษาแรกที่ใช้แพร่หลาย · อุปกรณ์ช่วยคำนวณเก่าแก่ที่สุด = <b>ลูกคิด (Abacus)</b></p></div>
+        </div>
+        <div class="pq-item">
+          <span class="pq-num">4</span>
+          <div class="pq-text"><h4>กฎของมัวร์ (Moore's Law)</h4><p>จำนวนทรานซิสเตอร์บนชิปจะ <b>เพิ่มเป็นสองเท่าทุก ~2 ปี</b> ทำให้คอมพิวเตอร์เร็วขึ้นและถูกลงอย่างต่อเนื่อง</p></div>
+        </div>
+        <div class="pq-item tip">
+          <span class="pq-num">💡</span>
+          <div class="pq-text"><h4>จุดที่ข้อสอบชอบถาม</h4><p>ข้อสอบเน้น "จับคู่บุคคลกับผลงาน" และ "อุปกรณ์ประจำยุค" — อย่าสับสนระหว่าง Babbage (ฮาร์ดแวร์) กับ Ada (โปรแกรม) และจำว่าทรานซิสเตอร์ = ยุค 2 ไม่ใช่ยุค 1</p></div>
+        </div>
+      </div>
+      <div id="quizWrap"></div>
+      <div class="quiz-score" id="quizScore"></div>
+    </div>
+  </section>
+
+  <!-- ===== สรุป + งานมอบหมาย ===== -->
+  <section class="section">
+    <div class="container">
+      <span class="section-tag reveal">Summary & Assignment</span>
+      <h2 class="section-title reveal">🎯 สรุปบทเรียน</h2>
+      <div class="grid grid-2" style="margin-bottom:50px">
+        <div class="card reveal">
+          <div class="icon">🧭</div>
+          <h3>เส้นทางที่เราเดินมา</h3>
+          <p>ลูกคิด → เครื่องคิดเลขกลไก (Pascal, Leibniz) → เครื่องโปรแกรมได้ (Jacquard, Babbage, Ada) →
+             ยุคไฟฟ้า (Hollerith, Turing, Z3) → 5 ยุคอิเล็กทรอนิกส์: หลอดสุญญากาศ → ทรานซิสเตอร์ → IC →
+             ไมโครโพรเซสเซอร์ → AI</p>
+        </div>
+        <div class="card reveal" data-delay="0.1">
+          <div class="icon">🔑</div>
+          <h3>แนวคิดสำคัญที่ต้องจำ</h3>
+          <p>หลักการ Input–Process–Output · สถาปัตยกรรม von Neumann (เก็บโปรแกรมในหน่วยความจำ) ·
+             กฎของมัวร์ · ทุกยุคถูกนิยามด้วย "อุปกรณ์ประมวลผลหลัก" · ภาษาโปรแกรมวิวัฒน์คู่กับฮาร์ดแวร์เสมอ</p>
+        </div>
+      </div>
+
+      <div class="assign-box reveal">
+        <h3>📌 งานมอบหมายสัปดาห์ที่ 1 (คาบที่ 1)</h3>
+        <ol>
+          <li>เลือกบุคคลสำคัญในประวัติศาสตร์คอมพิวเตอร์ 1 คน (ที่ไม่ได้อยู่ในบทเรียนนี้ก็ได้ เช่น Grace Hopper, Steve Wozniak, Tim Berners-Lee)
+              เขียนสรุป 1 หน้า: เขา/เธอแก้ "ปัญหา" อะไร และโลกเปลี่ยนไปอย่างไร</li>
+          <li>ยกตัวอย่างงานในสาขาของคุณ (คอมพิวเตอร์ / โลจิสติกส์ / อุตสาหการ) 3 อย่าง
+              ที่ปัจจุบันใช้คอมพิวเตอร์ทำ และวิเคราะห์ว่าก่อนมีคอมพิวเตอร์ งานนั้นทำกันอย่างไร</li>
+          <li>ทำแบบทดสอบท้ายบทในหน้านี้ให้ได้อย่างน้อย 8/10 (ทำซ้ำได้ไม่จำกัด) แล้วแคปหน้าจอคะแนนส่งใน LMS</li>
+        </ol>
+      </div>
+
+      <div class="btn-row reveal" style="margin-top:46px;justify-content:center">
+        <a href="index.html" class="btn btn-ghost">← กลับหน้ารายวิชา</a>
+        <a href="exercises.html#w01" class="btn btn-ghost">📚 แบบฝึกหัดบทนี้</a>
+        <a href="week02.html" class="btn btn-primary">สัปดาห์ที่ 1 คาบที่ 2: องค์ประกอบของระบบคอมพิวเตอร์ →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer">
+    <div class="container">
+      <p>บทที่ 1: ประวัติความเป็นมาของคอมพิวเตอร์ — รายวิชาการเขียนโปรแกรมคอมพิวเตอร์</p>
+      <p class="credits">
+        รูปภาพประกอบทั้งหมดจาก <a href="https://commons.wikimedia.org" target="_blank" rel="noopener">Wikimedia Commons</a>
+        (Public Domain / Creative Commons) · วิดีโอจาก YouTube ฝังตามนโยบายการแบ่งปันของแพลตฟอร์ม · จัดทำเพื่อการศึกษา
+      </p>
+    </div>
+  </footer>
+
+  <button id="toTop" title="กลับขึ้นด้านบน">↑</button>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/week01.js"></script>
+  <script src="js/quiz.js"></script>
+</body>
+</html>

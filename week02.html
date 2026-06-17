@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>บทที่ 2: องค์ประกอบของระบบคอมพิวเตอร์ | Computer Programming</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2322d3ee'/%3E%3Ctext x='50' y='68' font-size='48' text-anchor='middle' fill='%23071018' font-family='monospace'%3E%26lt;/%26gt;%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ===== Navbar ===== -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="nav-logo"><span class="logo-dot">&lt;/&gt;</span> Computer Programming</a>
+      <ul class="nav-links">
+        <li><a href="#objectives">วัตถุประสงค์</a></li>
+        <li><a href="#system">4 องค์ประกอบ</a></li>
+        <li><a href="#hardware">ฮาร์ดแวร์</a></li>
+        <li><a href="#software">ซอฟต์แวร์</a></li>
+        <li><a href="#binary">เลขฐาน</a></li>
+        <li><a href="#sdlc">พัฒนาโปรแกรม</a></li>
+        <li><a href="#quiz">แบบทดสอบ</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ===== Hero ===== -->
+  <header class="hero">
+    <canvas id="binary-canvas"></canvas>
+    <div class="container">
+      <div class="hero-kicker reveal">สัปดาห์ที่ 1 · คาบที่ 2</div>
+      <h1 class="reveal" data-delay="0.1">บทที่ 2<br><span class="grad-text">องค์ประกอบของระบบคอมพิวเตอร์</span></h1>
+      <p class="hero-desc reveal" data-delay="0.2">
+        สัปดาห์ที่แล้วเรารู้ว่าคอมพิวเตอร์ "มาจากไหน" — สัปดาห์นี้เราจะผ่าเครื่องดูว่าข้างในมีอะไร
+        ทำงานร่วมกันอย่างไร และทำไมเครื่องที่รู้จักแค่ 0 กับ 1 ถึงทำงานซับซ้อนได้ขนาดนี้
+      </p>
+      <div class="hero-badges reveal" data-delay="0.3">
+        <span class="badge">⏱️ <b>ใช้เวลาเรียน ~2 ชั่วโมง</b></span>
+        <span class="badge">🎛️ <b>เครื่องแปลงเลขฐานแบบโต้ตอบ</b></span>
+        <span class="badge">📝 <b>แบบทดสอบ 10 ข้อ</b></span>
+      </div>
+      <div class="btn-row reveal" data-delay="0.4">
+        <a href="#objectives" class="btn btn-primary">เริ่มบทเรียน ↓</a>
+        <a href="week01.html" class="btn btn-ghost">← บทที่ 1</a>
+      </div>
+    </div>
+    <div class="scroll-hint">เลื่อนลงเพื่อเริ่มเรียน<br>⌄</div>
+  </header>
+
+  <!-- ===== วัตถุประสงค์ ===== -->
+  <section class="section" id="objectives">
+    <div class="container">
+      <span class="section-tag reveal">Learning Objectives</span>
+      <h2 class="section-title reveal">วัตถุประสงค์การเรียนรู้</h2>
+      <p class="section-sub reveal">เมื่อจบบทเรียนนี้ นักศึกษาจะสามารถ...</p>
+      <div class="obj-list">
+        <div class="obj-item reveal">ระบุองค์ประกอบทั้ง 4 ของระบบคอมพิวเตอร์ และอธิบายความสัมพันธ์ระหว่างกันได้</div>
+        <div class="obj-item reveal" data-delay="0.05">จำแนกฮาร์ดแวร์ตามหน้าที่ 5 หน่วย และอธิบายบทบาทของ CPU, RAM, ROM และหน่วยเก็บข้อมูลได้</div>
+        <div class="obj-item reveal" data-delay="0.1">แยกความแตกต่างระหว่างซอฟต์แวร์ระบบกับซอฟต์แวร์ประยุกต์ พร้อมยกตัวอย่างได้</div>
+        <div class="obj-item reveal" data-delay="0.15">แปลงเลขระหว่างฐานสอง ฐานสิบ และฐานสิบหกได้ และอธิบายหน่วย bit/byte ได้</div>
+        <div class="obj-item reveal" data-delay="0.2">เรียงลำดับขั้นตอนการพัฒนาโปรแกรมทั้ง 6 ขั้นได้ เพื่อเตรียมพร้อมเขียนโปรแกรมจริงในสัปดาห์ถัดไป</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 4 องค์ประกอบ ===== -->
+  <section class="section alt" id="system">
+    <div class="container">
+      <span class="section-tag reveal">The Computer System</span>
+      <h2 class="section-title reveal">ระบบคอมพิวเตอร์ = <span class="grad-text">4 องค์ประกอบ</span> ที่ขาดกันไม่ได้</h2>
+      <p class="section-sub reveal">
+        "คอมพิวเตอร์" เครื่องเปล่า ๆ ยังทำอะไรไม่ได้ — ระบบที่ทำงานได้จริงต้องมีครบทั้ง 4 ส่วนนี้
+      </p>
+      <div class="grid grid-4">
+        <div class="card reveal">
+          <div class="icon">🔩</div>
+          <h3>ฮาร์ดแวร์ (Hardware)</h3>
+          <p>ตัวเครื่องและอุปกรณ์ที่จับต้องได้ — CPU, RAM, จอ, คีย์บอร์ด ถ้าระบบคือร่างกาย ฮาร์ดแวร์คือ "อวัยวะ"</p>
+        </div>
+        <div class="card reveal" data-delay="0.1">
+          <div class="icon">💿</div>
+          <h3>ซอฟต์แวร์ (Software)</h3>
+          <p>ชุดคำสั่งที่บอกฮาร์ดแวร์ว่าต้องทำอะไร — จับต้องไม่ได้แต่ขาดไม่ได้ เปรียบเหมือน "ความคิด" ของระบบ</p>
+        </div>
+        <div class="card reveal" data-delay="0.2">
+          <div class="icon">👥</div>
+          <h3>บุคลากร (Peopleware)</h3>
+          <p>ผู้ใช้ ผู้ดูแลระบบ และ<b style="color:var(--cyan)">โปรแกรมเมอร์</b> — บทบาทที่คุณกำลังจะก้าวเข้ามาในวิชานี้</p>
+        </div>
+        <div class="card reveal" data-delay="0.3">
+          <div class="icon">📊</div>
+          <h3>ข้อมูล (Data)</h3>
+          <p>วัตถุดิบของการประมวลผล — ตัวเลข ข้อความ ภาพ เสียง ที่ถูกแปลงเป็น 0/1 ให้เครื่องเข้าใจ</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ฮาร์ดแวร์ ===== -->
+  <section class="section" id="hardware">
+    <div class="container">
+      <span class="section-tag reveal">Hardware</span>
+      <h2 class="section-title reveal">🔩 ฮาร์ดแวร์ — แบ่งตามหน้าที่ได้ 5 หน่วย</h2>
+      <p class="section-sub reveal">
+        โครงสร้างนี้คือสถาปัตยกรรม von Neumann จากบทที่ 1 ตัวจริง — คอมพิวเตอร์ทุกเครื่องตั้งแต่ ENIAC
+        ถึงมือถือของคุณ ยังใช้ผังเดียวกันนี้
+      </p>
+
+      <div class="hw-diagram reveal">
+        <div class="hw-unit">
+          <div class="hw-icon">⌨️ 🖱️ 🎤</div>
+          <h3>หน่วยรับข้อมูล (Input Unit)</h3>
+          <p>คีย์บอร์ด เมาส์ ทัชสกรีน ไมโครโฟน สแกนเนอร์ เซนเซอร์ในโรงงาน</p>
+          <div class="hw-flow"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+        </div>
+        <div class="hw-unit hw-cpu">
+          <div class="hw-icon">🧠</div>
+          <h3>หน่วยประมวลผลกลาง (CPU)</h3>
+          <p>สมองของเครื่อง — ทำงานวนลูป "อ่านคำสั่ง → ตีความ → ปฏิบัติ" หลายพันล้านรอบต่อวินาที</p>
+          <div class="hw-cpu-inner">
+            <div class="hw-sub">CU<span>หน่วยควบคุม สั่งการทุกส่วน</span></div>
+            <div class="hw-sub">ALU<span>คำนวณ + เปรียบเทียบตรรกะ</span></div>
+            <div class="hw-sub">Register<span>ที่พักข้อมูลเร็วที่สุด</span></div>
+            <div class="hw-sub">Cache<span>ความจำใกล้ CPU ลดการรอ</span></div>
+          </div>
+          <div class="hw-mem">หน่วยความจำหลัก (Main Memory)
+            <span>RAM — พื้นที่ทำงานชั่วคราว (ไฟดับ = หาย) · ROM — เก็บเฟิร์มแวร์ถาวรสำหรับบูตเครื่อง</span>
+          </div>
+          <div class="hw-mem" style="background:rgba(251,191,36,0.07);border-color:rgba(251,191,36,0.4);color:var(--amber)">หน่วยเก็บข้อมูลสำรอง (Storage)
+            <span>HDD / SSD / Flash Drive — เก็บถาวรแม้ปิดเครื่อง ความจุมากแต่ช้ากว่า RAM</span>
+          </div>
+        </div>
+        <div class="hw-unit">
+          <div class="hw-icon">🖥️ 🖨️ 🔊</div>
+          <h3>หน่วยแสดงผล (Output Unit)</h3>
+          <p>จอภาพ เครื่องพิมพ์ ลำโพง รวมถึงสัญญาณควบคุมแขนกลและสายพานการผลิต</p>
+          <div class="hw-flow"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+        </div>
+      </div>
+
+      <p class="reveal" style="text-align:center;color:var(--text-dim);max-width:700px;margin:26px auto 60px">
+        💡 ลำดับความเร็ว (และราคาต่อหน่วย): <b style="color:var(--cyan)">Register → Cache → RAM → SSD → HDD</b>
+        — ยิ่งใกล้ CPU ยิ่งเร็วยิ่งแพง นี่คือเหตุผลที่เครื่องมีหน่วยความจำหลายชั้น
+      </p>
+
+      <div class="grid grid-2">
+        <figure class="gen-figure reveal">
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Personal_computer,_exploded_5.svg?width=900" alt="แผนภาพชิ้นส่วนคอมพิวเตอร์ส่วนบุคคล" data-fallback loading="lazy" style="background:#fff;object-fit:contain">
+          <figcaption>ชิ้นส่วน PC: 1 จอภาพ · 2 เมนบอร์ด · 3 CPU · 4 RAM · 5 การ์ดต่อขยาย · 6 เพาเวอร์ซัพพลาย · 7 ไดรฟ์แผ่น · 8 HDD/SSD · 9 คีย์บอร์ด · 10 เมาส์</figcaption>
+        </figure>
+        <div>
+          <figure class="gen-figure reveal" style="margin-bottom:18px">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/0/0a/Intel_i9-14900KF_CPU.jpg" alt="ซีพียู Intel Core i9" data-fallback loading="lazy">
+            <figcaption>CPU ยุคปัจจุบัน — ในแพ็กเกจเล็ก ๆ นี้มีทรานซิสเตอร์หลายหมื่นล้านตัว</figcaption>
+          </figure>
+          <figure class="gen-figure reveal">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Swissbit_2GB_PC2-5300U-555.jpg/960px-Swissbit_2GB_PC2-5300U-555.jpg" alt="แรม (RAM)" data-fallback loading="lazy">
+            <figcaption>โมดูล RAM — พื้นที่ทำงานชั่วคราวของโปรแกรมทุกตัวที่กำลังรัน</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ซอฟต์แวร์ ===== -->
+  <section class="section alt" id="software">
+    <div class="container">
+      <span class="section-tag reveal">Software</span>
+      <h2 class="section-title reveal">💿 ซอฟต์แวร์ — ลำดับชั้นจากผู้ใช้ถึงฮาร์ดแวร์</h2>
+      <p class="section-sub reveal">
+        ซอฟต์แวร์แบ่งใหญ่ ๆ ได้ 2 ประเภท: <b style="color:var(--cyan)">ซอฟต์แวร์ระบบ</b> (จัดการเครื่อง)
+        และ<b style="color:var(--violet)">ซอฟต์แวร์ประยุกต์</b> (ทำงานให้ผู้ใช้) — ทุกอย่างเรียงเป็นชั้นแบบนี้
+      </p>
+
+      <div class="sw-stack reveal">
+        <div class="sw-layer user">👤 ผู้ใช้ (User)<span>คลิก พิมพ์ สั่งงาน</span></div>
+        <div class="sw-layer app">📱 ซอฟต์แวร์ประยุกต์ (Application Software)<span>Word, Excel, เกม, เบราว์เซอร์, แอปมือถือ — และโปรแกรมที่คุณกำลังจะเขียน</span></div>
+        <div class="sw-layer os">⚙️ ซอฟต์แวร์ระบบ (System Software)<span>ระบบปฏิบัติการ: Windows, macOS, Linux, Android · ตัวแปลภาษา: Compiler / Interpreter</span></div>
+        <div class="sw-layer hw">🔩 ฮาร์ดแวร์ (Hardware)<span>CPU, RAM, จอ, ดิสก์ — เข้าใจแค่ 0 กับ 1</span></div>
+      </div>
+
+      <div class="grid grid-2" style="margin-top:50px">
+        <div class="card reveal">
+          <div class="icon">⚙️</div>
+          <h3>ซอฟต์แวร์ระบบ</h3>
+          <p>ทำงานเบื้องหลัง จัดการทรัพยากรเครื่อง: ระบบปฏิบัติการแบ่งเวลา CPU จัดหน่วยความจำ จัดไฟล์
+             · <b style="color:var(--text)">ตัวแปลภาษา (Compiler/Interpreter)</b> แปลโค้ดที่เราเขียนเป็นภาษาเครื่อง
+             — เครื่องมือสำคัญที่สุดของโปรแกรมเมอร์</p>
+        </div>
+        <div class="card reveal" data-delay="0.1">
+          <div class="icon">📱</div>
+          <h3>ซอฟต์แวร์ประยุกต์</h3>
+          <p>ทำงานเฉพาะด้านให้ผู้ใช้: โปรแกรมสำนักงาน เกม โปรแกรมออกแบบ CAD ระบบจัดการคลังสินค้า (WMS)
+             ระบบวางแผนการผลิต (ERP) — งานวิศวกรรมยุคใหม่ขับเคลื่อนด้วยซอฟต์แวร์ประเภทนี้ทั้งสิ้น</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== เลขฐาน ===== -->
+  <section class="section" id="binary">
+    <div class="container">
+      <span class="section-tag reveal">Number Systems</span>
+      <h2 class="section-title reveal">🔢 ภาษาของเครื่อง — ระบบเลขฐาน</h2>
+      <p class="section-sub reveal">
+        วงจรไฟฟ้ารู้จักแค่ 2 สถานะ: ไฟติด (1) กับไฟดับ (0) — ทุกอย่างในคอมพิวเตอร์ ทั้งรูป เพลง เกม และโค้ด
+        จึงถูกเก็บเป็น<b style="color:var(--cyan)">เลขฐานสอง (Binary)</b> ทั้งหมด
+        ลองเล่นเครื่องแปลงด้านล่าง: <b style="color:var(--text)">คลิกที่บิตเพื่อสลับ 0/1</b> หรือพิมพ์เลขฐานสิบก็ได้
+      </p>
+
+      <div class="conv-box reveal">
+        <div class="conv-dec-row">
+          <label for="convDecimal">เลขฐานสิบ (0–255):</label>
+          <input type="number" id="convDecimal" min="0" max="255" value="42">
+        </div>
+        <div class="bit-row" id="bitRow"></div>
+        <div class="conv-sum" id="convSum"></div>
+        <div class="conv-results">
+          <div class="conv-result"><div class="label">ฐานสอง (Binary)</div><div class="value" id="convBin">—</div></div>
+          <div class="conv-result"><div class="label">ฐานสิบหก (Hexadecimal)</div><div class="value" id="convHex">—</div></div>
+          <div class="conv-result"><div class="label">ฐานแปด (Octal)</div><div class="value" id="convOct">—</div></div>
+        </div>
+      </div>
+
+      <div class="grid grid-3" style="margin-top:46px">
+        <div class="card reveal">
+          <div class="icon">💡</div>
+          <h3>bit — หน่วยเล็กที่สุด</h3>
+          <p>1 bit = 0 หรือ 1 หนึ่งหลัก · 8 bit = 1 <b style="color:var(--text)">Byte</b> เก็บอักษรอังกฤษได้ 1 ตัว
+             · 1 KB = 1,024 Byte · 1 MB ≈ ล้าน Byte · 1 GB ≈ พันล้าน Byte</p>
+        </div>
+        <div class="card reveal" data-delay="0.1">
+          <div class="icon">🔠</div>
+          <h3>ฐานสิบหก — ทางลัดของโปรแกรมเมอร์</h3>
+          <p>เลขฐานสองยาวเกินไป จึงนิยมย่อทีละ 4 บิตเป็นฐานสิบหก (0–9, A–F) เช่น 11111111₂ = FF₁₆
+             — เจอบ่อยในรหัสสี เช่น <span style="color:#22d3ee;font-family:'Kanit',sans-serif">#22D3EE</span> ของธีมหน้านี้</p>
+        </div>
+        <div class="card reveal" data-delay="0.2">
+          <div class="icon">🏭</div>
+          <h3>ทำไมวิศวกรต้องรู้?</h3>
+          <p>PLC ในโรงงาน, รหัสบาร์โค้ด/RFID ในคลังสินค้า, เซนเซอร์ดิจิทัล — สื่อสารกันด้วยบิตทั้งหมด
+             อ่านสเปกอุปกรณ์เป็น ต้องอ่านเลขฐานเป็น</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ขั้นตอนพัฒนาโปรแกรม ===== -->
+  <section class="section alt" id="sdlc">
+    <div class="container">
+      <span class="section-tag reveal">Program Development</span>
+      <h2 class="section-title reveal">🛠️ 6 ขั้นตอนการพัฒนาโปรแกรม</h2>
+      <p class="section-sub reveal">
+        โปรแกรมที่ดีไม่ได้เริ่มจากการพิมพ์โค้ด — มันเริ่มจากการ "เข้าใจปัญหา"
+        หกขั้นตอนนี้คือกระดูกสันหลังของทั้งวิชา และเราจะใช้มันทุกครั้งที่ทำโจทย์
+      </p>
+
+      <div class="sdlc">
+        <div class="sdlc-step reveal">
+          <div class="sdlc-num">🔍</div>
+          <div class="sdlc-body">
+            <h3>1. วิเคราะห์ปัญหา <small>Problem Analysis</small></h3>
+            <p>ระบุให้ชัด: ข้อมูลเข้า (Input) คืออะไร · ผลลัพธ์ (Output) ที่ต้องการคืออะไร · มีเงื่อนไข/ข้อจำกัดอะไร
+               เช่น "คำนวณเกรด" ต้องรู้ช่วงคะแนนของแต่ละเกรดก่อน</p>
+          </div>
+        </div>
+        <div class="sdlc-step reveal">
+          <div class="sdlc-num">📐</div>
+          <div class="sdlc-body">
+            <h3>2. ออกแบบอัลกอริทึม <small>Algorithm Design</small></h3>
+            <p>วางลำดับขั้นการแก้ปัญหาเป็นข้อ ๆ ด้วย Pseudocode หรือผังงาน (Flowchart) —
+               สัปดาห์หน้าเราจะฝึกเรื่องนี้แบบเต็ม ๆ</p>
+          </div>
+        </div>
+        <div class="sdlc-step reveal">
+          <div class="sdlc-num">⌨️</div>
+          <div class="sdlc-body">
+            <h3>3. เขียนโปรแกรม <small>Coding</small></h3>
+            <p>แปลงอัลกอริทึมเป็นภาษาโปรแกรมจริง — ขั้นนี้จะง่ายมากถ้าสองขั้นแรกทำมาดี
+               และจะทรมานมากถ้าข้ามสองขั้นแรกมา</p>
+          </div>
+        </div>
+        <div class="sdlc-step reveal">
+          <div class="sdlc-num">🧪</div>
+          <div class="sdlc-body">
+            <h3>4. ทดสอบและแก้ไข <small>Testing & Debugging</small></h3>
+            <p>รันด้วยข้อมูลหลายแบบ รวมถึงกรณีสุดขั้ว (เช่น ใส่ 0, ใส่ค่าติดลบ) — ข้อผิดพลาดเรียกว่า "บั๊ก (Bug)"
+               ตามตำนานแมลงเม่าที่บินเข้าไปติดในรีเลย์ของ Harvard Mark II ปี 1947</p>
+          </div>
+        </div>
+        <div class="sdlc-step reveal">
+          <div class="sdlc-num">📄</div>
+          <div class="sdlc-body">
+            <h3>5. จัดทำเอกสาร <small>Documentation</small></h3>
+            <p>เขียนคู่มือใช้งานและคอมเมนต์อธิบายโค้ด — เพื่อเพื่อนร่วมทีม และเพื่อตัวคุณเองในอีก 6 เดือนข้างหน้า
+               ที่จะลืมว่าเคยเขียนอะไรไว้</p>
+          </div>
+        </div>
+        <div class="sdlc-step reveal">
+          <div class="sdlc-num">🔧</div>
+          <div class="sdlc-body">
+            <h3>6. บำรุงรักษา <small>Maintenance</small></h3>
+            <p>ปรับปรุงตามความต้องการใหม่และแก้บั๊กที่เจอภายหลัง — ในชีวิตจริง ขั้นนี้กินเวลากว่า 60%
+               ของอายุซอฟต์แวร์ทั้งหมด</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Quiz ===== -->
+  <section class="section" id="quiz">
+    <div class="container">
+      <span class="section-tag reveal">Check Your Understanding</span>
+      <h2 class="section-title reveal">📝 แบบทดสอบท้ายบท (10 ข้อ)</h2>
+      <p class="section-sub reveal">บางข้อใช้เครื่องแปลงเลขฐานด้านบนช่วยตรวจคำตอบได้ — ลองเลย!</p>
+      <div class="prequiz reveal">
+        <div class="prequiz-head">📘 อ่านก่อนสอบ · สรุปประเด็นสำคัญ</div>
+        <p class="prequiz-intro">โฟกัส 3 กลุ่ม: องค์ประกอบฮาร์ดแวร์/ซอฟต์แวร์ · หน่วยความจำ · และการแปลงเลขฐาน (คำนวณได้แน่นอนในข้อสอบ)</p>
+        <div class="pq-item">
+          <span class="pq-num">1</span>
+          <div class="pq-text"><h4>องค์ประกอบระบบ + ภายใน CPU</h4><p>ระบบคอมพิวเตอร์ที่ครบ = <b>ฮาร์ดแวร์ + ซอฟต์แวร์ + บุคลากร + ข้อมูล</b></p><p>ภายใน CPU มี 2 หน่วยหลัก: <b>ALU</b> (คำนวณ+เปรียบเทียบตรรกะ) และ <b>CU</b> (ควบคุมสั่งงาน)</p></div>
+        </div>
+        <div class="pq-item">
+          <span class="pq-num">2</span>
+          <div class="pq-text"><h4>หน่วยความจำ: RAM / ROM / Cache / สำรอง</h4><p><b>RAM</b> = ชั่วคราว เขียนได้ ไฟดับหาย · <b>ROM</b> = อ่านอย่างเดียว ไฟดับไม่หาย · <b>Cache</b> = เล็กแต่เร็วมาก พักข้อมูลที่ CPU ใช้บ่อย · <b>หน่วยเก็บสำรอง</b> = ฮาร์ดดิสก์/SSD/Flash Drive (เก็บถาวร)</p></div>
+        </div>
+        <div class="pq-item">
+          <span class="pq-num">3</span>
+          <div class="pq-text"><h4>ซอฟต์แวร์ระบบ vs ประยุกต์</h4><p><b>ซอฟต์แวร์ระบบ</b> = ระบบปฏิบัติการ (Windows/Linux), ตัวแปลภาษา · <b>ซอฟต์แวร์ประยุกต์</b> = โปรแกรมใช้งาน เช่น Word, เกม</p></div>
+        </div>
+        <div class="pq-item">
+          <span class="pq-num">4</span>
+          <div class="pq-text"><h4>เลขฐาน: bit / byte และการแปลง</h4><p><b>1 ไบต์ = 8 บิต</b> · แปลงฐานสอง→ฐานสิบ คือถ่วงน้ำหนักด้วยเลขยกกำลังของ 2:</p><p><pre class="pq-code">1011₂ = (1×8)+(0×4)+(1×2)+(1×1) = <b>11</b>₁₀
+200₁₀ = 11001000₂  <span class="cm">(128+64+8)</span></pre></p></div>
+        </div>
+        <div class="pq-item">
+          <span class="pq-num">5</span>
+          <div class="pq-text"><h4>ขั้นตอนพัฒนาโปรแกรม</h4><p>เริ่มจาก <b>วิเคราะห์ปัญหา</b> เป็นขั้นแรกเสมอ → ออกแบบ → เขียนโค้ด → ทดสอบ → บำรุงรักษา</p></div>
+        </div>
+        <div class="pq-item tip">
+          <span class="pq-num">💡</span>
+          <div class="pq-text"><h4>จุดที่ข้อสอบชอบถาม</h4><p>โจทย์คำนวณแปลงเลขฐานมาแน่ — ฝึกแปลงทั้งสองทาง และจำความต่าง RAM (หายเมื่อไฟดับ) กับ ROM (ไม่หาย) ให้ขึ้นใจ</p></div>
+        </div>
+      </div>
+      <div id="quizWrap"></div>
+      <div class="quiz-score" id="quizScore"></div>
+    </div>
+  </section>
+
+  <!-- ===== สรุป + งานมอบหมาย ===== -->
+  <section class="section alt">
+    <div class="container">
+      <span class="section-tag reveal">Summary & Assignment</span>
+      <h2 class="section-title reveal">🎯 สรุปบทเรียน</h2>
+      <div class="grid grid-2" style="margin-bottom:50px">
+        <div class="card reveal">
+          <div class="icon">🧩</div>
+          <h3>ภาพรวมที่ต้องเห็น</h3>
+          <p>ระบบคอมพิวเตอร์ = ฮาร์ดแวร์ + ซอฟต์แวร์ + บุคลากร + ข้อมูล ·
+             ฮาร์ดแวร์แบ่ง 5 หน่วยตามผัง von Neumann · ซอฟต์แวร์เรียงชั้นจากผู้ใช้ → แอป → OS → เครื่อง ·
+             ทุกข้อมูลคือเลขฐานสอง</p>
+        </div>
+        <div class="card reveal" data-delay="0.1">
+          <div class="icon">🔑</div>
+          <h3>แนวคิดสำคัญที่ต้องจำ</h3>
+          <p>CPU = CU + ALU + Register · RAM ชั่วคราว / ROM ถาวร / Storage เก็บยาว ·
+             1 Byte = 8 bit · ลำดับพัฒนาโปรแกรม: วิเคราะห์ → ออกแบบ → เขียน → ทดสอบ → เอกสาร → บำรุงรักษา</p>
+        </div>
+      </div>
+
+      <div class="assign-box reveal">
+        <h3>📌 งานมอบหมายสัปดาห์ที่ 1 (คาบที่ 2)</h3>
+        <ol>
+          <li>เปิดสเปกคอมพิวเตอร์หรือโทรศัพท์ของตัวเอง ระบุ: CPU รุ่นอะไร / RAM เท่าใด / หน่วยเก็บข้อมูลชนิดและความจุเท่าใด
+              แล้วจัดหมวดว่าแต่ละชิ้นอยู่ "หน่วย" ใดในผัง 5 หน่วย</li>
+          <li>แปลงเลขต่อไปนี้ด้วยมือ (แสดงวิธีทำ) แล้วตรวจคำตอบด้วยเครื่องแปลงในหน้านี้:
+              ① 156₁₀ → ฐานสอง ② 10110101₂ → ฐานสิบ ③ 255₁₀ → ฐานสิบหก</li>
+          <li>เลือกงาน 1 อย่างในสาขาของคุณ (เช่น จัดตารางการผลิต, คำนวณเส้นทางขนส่ง) แล้วเขียน "6 ขั้นตอนการพัฒนาโปรแกรม"
+              สำหรับงานนั้นแบบย่อ ขั้นละ 1–2 ประโยค</li>
+          <li>ทำแบบทดสอบท้ายบทให้ได้อย่างน้อย 8/10 แล้วแคปหน้าจอคะแนนส่งใน LMS</li>
+        </ol>
+      </div>
+
+      <div class="btn-row reveal" style="margin-top:46px;justify-content:center">
+        <a href="week01.html" class="btn btn-ghost">← บทที่ 1: ประวัติคอมพิวเตอร์</a>
+        <a href="exercises.html#w02" class="btn btn-ghost">📚 แบบฝึกหัดบทนี้</a>
+        <a href="week03.html" class="btn btn-primary">สัปดาห์ที่ 1 คาบที่ 3: อัลกอริทึมและผังงาน →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer">
+    <div class="container">
+      <p>บทที่ 2: องค์ประกอบของระบบคอมพิวเตอร์ — รายวิชาการเขียนโปรแกรมคอมพิวเตอร์</p>
+      <p class="credits">
+        รูปภาพประกอบทั้งหมดจาก <a href="https://commons.wikimedia.org" target="_blank" rel="noopener">Wikimedia Commons</a>
+        (Public Domain / Creative Commons) · จัดทำเพื่อการศึกษา
+      </p>
+    </div>
+  </footer>
+
+  <button id="toTop" title="กลับขึ้นด้านบน">↑</button>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/week02.js"></script>
+  <script src="js/quiz.js"></script>
+</body>
+</html>

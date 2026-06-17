@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>สัปดาห์ที่ 12: นำเสนอโปรเจกต์ + ทบทวนปลายภาค | Computer Programming</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2322d3ee'/%3E%3Ctext x='50' y='68' font-size='48' text-anchor='middle' fill='%23071018' font-family='monospace'%3E%26lt;/%26gt;%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="nav-logo"><span class="logo-dot">&lt;/&gt;</span> Computer Programming</a>
+      <ul class="nav-links">
+        <li><a href="#present">การนำเสนอ</a></li>
+        <li><a href="#recap">สรุปครึ่งหลัง</a></li>
+        <li><a href="#final">สอบปลายภาค</a></li>
+        <li><a href="#quiz">ข้อสอบจำลอง</a></li>
+        <li><a href="#journey">จบคอร์ส</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <canvas id="binary-canvas"></canvas>
+    <div class="container">
+      <div class="hero-kicker reveal">สัปดาห์ที่ 12 — สัปดาห์สุดท้าย</div>
+      <h1 class="reveal" data-delay="0.1">นำเสนอโปรเจกต์<br><span class="grad-text">+ ทบทวนปลายภาค</span></h1>
+      <p class="hero-desc reveal" data-delay="0.2">
+        14 สัปดาห์ก่อน คุณยังไม่รู้ว่าตัวแปรคืออะไร — วันนี้คุณกำลังจะเดโมระบบที่เขียนเองทั้งทีม
+        ขึ้นเวทีให้เต็มที่ แล้วปิดท้ายด้วยการเตรียมสอบปลายภาคให้พร้อมที่สุด
+      </p>
+      <div class="hero-badges reveal" data-delay="0.3">
+        <span class="badge">🎤 <b>เดโมสด 8 นาที + ถามตอบ 4 นาที</b></span>
+        <span class="badge">📚 <b>สรุปครึ่งหลัง + ข้อสอบจำลองปลายภาค</b></span>
+        <span class="badge">🎓 <b>ปิดคอร์ส</b></span>
+      </div>
+      <div class="btn-row reveal" data-delay="0.4">
+        <a href="#present" class="btn btn-primary">เริ่มกันเลย ↓</a>
+        <a href="week13.html" class="btn btn-ghost">← สัปดาห์ที่ 11</a>
+      </div>
+    </div>
+    <div class="scroll-hint">เลื่อนลง<br>⌄</div>
+  </header>
+
+  <section class="section" id="present">
+    <div class="container">
+      <span class="section-tag reveal">Presentation Day</span>
+      <h2 class="section-title reveal">🎤 วันนำเสนอ — กติกาบนเวที</h2>
+      <div class="grid grid-3">
+        <div class="card reveal">
+          <div class="icon">⏱️</div>
+          <h3>รูปแบบเวลา</h3>
+          <p>นำเสนอ 8 นาที (เกินโดนตัด!) + ถามตอบ 4 นาที — โครงแนะนำ: ปัญหา 1 นาที → เดโมสด 4 นาที → โค้ดไฮไลต์ 2 นาที → ปัญหาที่เจอและสิ่งที่เรียนรู้ 1 นาที</p>
+        </div>
+        <div class="card reveal" data-delay="0.05">
+          <div class="icon">🖥️</div>
+          <h3>เดโมสดให้รอด</h3>
+          <p>กฎทอง: ซ้อมบนเครื่องที่ใช้จริง เตรียมข้อมูลตัวอย่างไว้ล่วงหน้า และมี "แผนสอง" (วิดีโอ/แคปหน้าจอ) เผื่อเครื่องมีปัญหา — เดโมพังไม่หักคะแนน ถ้ารับมืออย่างมืออาชีพ</p>
+        </div>
+        <div class="card reveal" data-delay="0.1">
+          <div class="icon">🗣️</div>
+          <h3>ถามตอบ</h3>
+          <p>กรรมการสุ่มถามรายบุคคล "บรรทัดนี้ทำอะไร ถ้าลบจะเกิดอะไร" — เตรียมตัวด้วยการให้เพื่อนในกลุ่มผลัดกันถามก่อนขึ้นเวที ทุกคนต้องอธิบายได้ทุกฟังก์ชัน</p>
+        </div>
+      </div>
+
+      <h2 class="section-title reveal" style="margin-top:60px;font-size:1.5rem">✅ เช็คลิสต์ก่อนขึ้นเวที</h2>
+      <div class="checklist reveal" id="stageChecklist">
+        <label class="check-item"><input type="checkbox" data-ck="0"><span>โปรแกรมรันผ่านครบทุกเมนูบนเครื่องที่จะใช้นำเสนอ</span></label>
+        <label class="check-item"><input type="checkbox" data-ck="1"><span>ไฟล์ข้อมูลตัวอย่างพร้อม และมีสำรองอีกชุดเผื่อเดโมแล้วข้อมูลเปลี่ยน</span></label>
+        <label class="check-item"><input type="checkbox" data-ck="2"><span>ซ้อมพูดจับเวลาแล้วไม่เกิน 8 นาที อย่างน้อย 2 รอบ</span></label>
+        <label class="check-item"><input type="checkbox" data-ck="3"><span>ทุกคนตอบได้ว่าแต่ละฟังก์ชัน รับอะไร–ทำอะไร–คืนอะไร</span></label>
+        <label class="check-item"><input type="checkbox" data-ck="4"><span>มีแผนสอง (วิดีโอเดโม/แคปหน้าจอ) พร้อมเปิดได้ทันที</span></label>
+        <label class="check-item"><input type="checkbox" data-ck="5"><span>ส่งโค้ด + ข้อมูล + ผังงาน + สไลด์ใน LMS ครบแล้ว</span></label>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="stFill"></div></div>
+      <div class="progress-text" id="stText">พร้อม 0 จาก 6 ข้อ</div>
+    </div>
+  </section>
+
+  <section class="section alt" id="recap">
+    <div class="container">
+      <span class="section-tag reveal">Second-Half Recap</span>
+      <h2 class="section-title reveal">🧠 แก่นครึ่งหลัง (บทที่ 9–12) ในหน้าเดียว</h2>
+      <p class="section-sub reveal">ครึ่งแรกทบทวนได้ที่<a href="week08.html" style="color:var(--cyan)">หน้าสรุปสัปดาห์ที่ 6</a> — ครึ่งหลังอยู่นี่ครบ คลิกกลับไปเล่นตัวจำลองของแต่ละบทได้</p>
+      <div class="grid grid-2">
+        <div class="card reveal">
+          <div class="icon">📦</div>
+          <h3>บทที่ 9: ฟังก์ชัน</h3>
+          <p>นิยาม: ชนิดค่าที่คืน ชื่อ(พารามิเตอร์) { } — โค้ดข้างในรอจนถูก "เรียก" · void = ไม่คืนค่า · พารามิเตอร์ = ช่องรับ, อาร์กิวเมนต์ = ของจริง · return ส่งค่ากลับใช้ต่อได้ (printf แค่โชว์) · ตัวแปร local ตายเมื่อฟังก์ชันจบ · นิยามไว้ก่อน main · ลำดับทำงานกระโดด: เรียก → เข้าไปทำ → กลับมา</p>
+          <p style="margin-top:14px"><a href="week09.html" style="color:var(--cyan)">ทบทวนบทเต็ม →</a></p>
+        </div>
+        <div class="card reveal" data-delay="0.05">
+          <div class="icon">🚃</div>
+          <h3>บทที่ 10: อาร์เรย์</h3>
+          <p>int arr[ขนาด] — ดัชนี 0 ถึง ขนาด−1, ไม่มีติดลบ, เกินขอบเขต = undefined behavior ไม่มีใครเตือน! · ขนาดตายตัว ใช้ n นับของจริง · เพิ่มท้าย: arr[n] = x; n++; · sum/max เขียนเองด้วยลูป · ฟังก์ชันรับอาร์เรย์ต้องส่ง n ติดไปด้วย · Bubble Sort: เทียบคู่–สลับด้วย temp–วนซ้ำ</p>
+          <p style="margin-top:14px"><a href="week10.html" style="color:var(--cyan)">ทบทวนบทเต็ม →</a></p>
+        </div>
+        <div class="card reveal" data-delay="0.1">
+          <div class="icon">🔤</div>
+          <h3>บทที่ 11: สตริง</h3>
+          <p>สตริง = อาร์เรย์ char ปิดท้ายด้วย \0 (จองที่เผื่อ 1 ช่องเสมอ!) · %s กับ printf/scanf — scanf กับอาร์เรย์ไม่ใส่ &amp; · แก้ทีละตัวได้ แต่ทั้งก้อนต้อง strcpy · strlen นับไม่รวม \0 · strcmp == 0 คือเท่ากัน ห้ามใช้ == เทียบข้อความ · ตรวจอักขระด้วย isdigit/isupper (ctype.h)</p>
+          <p style="margin-top:14px"><a href="week11.html" style="color:var(--cyan)">ทบทวนบทเต็ม →</a></p>
+        </div>
+        <div class="card reveal" data-delay="0.15">
+          <div class="icon">📄</div>
+          <h3>บทที่ 12: ไฟล์และ CSV</h3>
+          <p>วงจร: fopen → ตรวจ NULL → ใช้งาน → fclose เสมอ (ซีไม่ปิดให้!) · โหมด r อ่าน (ไม่มีไฟล์ = NULL) / w เขียนทับเกลี้ยง! / a ต่อท้าย · fgets อ่านทีละบรรทัด วน while จน NULL — มี \n ติดมา · CSV: ข้ามหัวตาราง → sscanf("%[^,],%d,%f") → ตรวจจำนวนที่แกะได้ · เจอบรรทัดเสีย: ข้าม + นับ + รายงาน</p>
+          <p style="margin-top:14px"><a href="week12.html" style="color:var(--cyan)">ทบทวนบทเต็ม →</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="final">
+    <div class="container">
+      <span class="section-tag reveal">Final Exam Info</span>
+      <h2 class="section-title reveal">📋 สอบปลายภาค — รู้ก่อน เตรียมถูก</h2>
+      <div class="grid grid-3">
+        <div class="card reveal">
+          <div class="icon">🗺️</div>
+          <h3>ขอบเขต</h3>
+          <p>เน้นหนักบทที่ 9–12 (ฟังก์ชัน อาร์เรย์ สตริง ไฟล์) ราว 70% — ที่เหลือเป็นพื้นฐานบท 1–7 ที่ต้องใช้ประกอบกันอยู่แล้ว: นิพจน์ เงื่อนไข และลูป</p>
+        </div>
+        <div class="card reveal" data-delay="0.05">
+          <div class="icon">🧾</div>
+          <h3>รูปแบบ</h3>
+          <p>เหมือนกลางภาคแต่ข้อเขียนโค้ดใหญ่ขึ้น: ปรนัย · Trace โค้ดที่มีฟังก์ชัน+ลูป+อาร์เรย์ปนกัน · เขียนฟังก์ชันตามโจทย์ · และโจทย์อ่านไฟล์ CSV มาสรุปผลหนึ่งข้อใหญ่</p>
+        </div>
+        <div class="card reveal" data-delay="0.1">
+          <div class="icon">🎯</div>
+          <h3>วิธีเตรียมที่คุ้มสุด</h3>
+          <p>① ทำข้อสอบจำลองข้างล่างแบบจับเวลา ② กลับไปไล่ trace ตัวจำลองบท 9–10 อีกรอบ ③ เขียนโปรแกรมอ่าน CSV จากศูนย์ด้วยมือเปล่า 1 ครั้ง — สามอย่างนี้ครอบคลุมข้อสอบเกินครึ่ง</p>
+        </div>
+      </div>
+      <p class="section-sub reveal" style="margin-top:24px">📌 วัน เวลา และห้องสอบ เป็นไปตามประกาศของมหาวิทยาลัย — ตรวจสอบใน LMS</p>
+    </div>
+  </section>
+
+  <section class="section alt" id="quiz">
+    <div class="container">
+      <span class="section-tag reveal">Mock Final Exam</span>
+      <h2 class="section-title reveal">📝 ข้อสอบจำลองปลายภาค 10 ข้อ</h2>
+      <p class="section-sub reveal">เน้นบทที่ 9–12 พร้อมข้อบูรณาการข้ามบท — ทำแบบสอบจริง: ไม่เปิดสมุด จับเวลา 15 นาที</p>
+      <div class="prequiz reveal">
+        <div class="prequiz-head">📘 อ่านก่อนสอบ · สรุปประเด็นสำคัญ</div>
+        <p class="prequiz-intro">ทบทวนปลายภาคครึ่งหลัง (สัปดาห์ที่ 7–10 / บทที่ 9–12) + การบูรณาการทุกเครื่องมือเข้าด้วยกันในโปรเจกต์</p>
+        <div class="pq-item">
+          <span class="pq-num">1</span>
+          <div class="pq-text"><h4>บทที่ 9 · ฟังก์ชัน</h4><p>นิยาม/เรียก, return ส่งค่ากลับ, ตัวแปร local ใช้ข้ามฟังก์ชันไม่ได้</p><p><pre class="pq-code">int area(int w,int h){ return w*h; }
+printf("%d", area(3,4));   <span class="cm">// 12</span></pre></p></div>
+        </div>
+        <div class="pq-item">
+          <span class="pq-num">2</span>
+          <div class="pq-text"><h4>บทที่ 10 · อาร์เรย์</h4><p>ดัชนีเริ่ม 0 ตัวสุดท้าย n-1 · เฉลี่ยต้องระวัง int division</p><p><pre class="pq-code">float avg = (float)sum / n;   <span class="cm">// แคสต์กัน int division</span></pre></p></div>
+        </div>
+        <div class="pq-item">
+          <span class="pq-num">3</span>
+          <div class="pq-text"><h4>บทที่ 11 · สตริง</h4><p>เก็บ "ROBOT" 5 ตัว ต้องมี <b>6 ช่อง</b> (เผื่อ \0) · เทียบด้วย <code>strcmp(user,"admin")==0</code> ไม่ใช่ <code>==</code></p></div>
+        </div>
+        <div class="pq-item">
+          <span class="pq-num">4</span>
+          <div class="pq-text"><h4>บทที่ 12 · ไฟล์</h4><p>บันทึกต่อท้ายทุกวันใช้โหมด <b>"a"</b> · หลัง <code>fopen</code> ต้องเช็ค <code>if (fp==NULL)</code> ก่อนใช้เสมอ</p></div>
+        </div>
+        <div class="pq-item">
+          <span class="pq-num">5</span>
+          <div class="pq-text"><h4>บูรณาการ: ประกอบทุกอย่างเป็นระบบ</h4><p>โปรเจกต์จริงผสมฟังก์ชัน+อาร์เรย์+ลูปเมนู · เมนูใช้ <b>do-while</b> เพราะต้องแสดงเมนูและรับค่าอย่างน้อย 1 ครั้งก่อนเช็คเงื่อนไขออก</p><p><pre class="pq-code">do {
+   ...แสดงเมนู + scanf...
+} while (choice != 0);</pre></p></div>
+        </div>
+        <div class="pq-item tip">
+          <span class="pq-num">💡</span>
+          <div class="pq-text"><h4>จุดที่ข้อสอบชอบถาม</h4><p>ปลายภาคชอบโจทย์บูรณาการ (ฟังก์ชันรับอาร์เรย์ + นับเงื่อนไข) และเหตุผลเลือก do-while สำหรับลูปเมนู — ทบทวน trace ให้คล่อง</p></div>
+        </div>
+      </div>
+      <div id="quizWrap"></div>
+      <div class="quiz-score" id="quizScore"></div>
+    </div>
+  </section>
+
+  <section class="section" id="journey">
+    <div class="container">
+      <span class="section-tag reveal">The Journey</span>
+      <h2 class="section-title reveal">🎓 14 สัปดาห์ของคุณ — และก้าวต่อไป</h2>
+      <div class="grid grid-2" style="margin-bottom:40px">
+        <div class="card reveal">
+          <div class="icon">🗺️</div>
+          <h3>สิ่งที่คุณทำได้แล้ววันนี้</h3>
+          <p>คิดเป็นขั้นตอน วาดผังงาน เขียนภาษาซีครบสามโครงสร้าง แตกงานเป็นฟังก์ชัน จัดการข้อมูลเป็นชุดด้วยอาร์เรย์–สตริง อ่านเขียนไฟล์จริง และส่งมอบระบบที่คอมไพล์ผ่านหนึ่งระบบพร้อมนำเสนอ — นี่คือชุดทักษะที่วิศวกรทุกสาขาพกติดตัวไปตลอดชีวิตการทำงาน</p>
+        </div>
+        <div class="card reveal" data-delay="0.1">
+          <div class="icon">🚀</div>
+          <h3>อยากไปต่อ เรียนอะไรดี?</h3>
+          <p><b style="color:var(--cyan)">สายฮาร์ดแวร์:</b> ไมโครคอนโทรลเลอร์ Arduino/ESP32 (เขียนด้วยภาษาตระกูลซีตรง ๆ!) · <b style="color:var(--violet)">สายระบบ:</b> C ขั้นสูง (pointer, struct) สู่ C++ สำหรับหุ่นยนต์และเกม · <b style="color:var(--green)">สายข้อมูล:</b> เรียน Python เพิ่ม — พื้นซีแน่นแล้วเรียนได้ในไม่กี่วัน เปิดประตูสู่ AI และวิเคราะห์ข้อมูล — ทั้งหมดต่อยอดจากพื้นฐานคอร์สนี้ตรง ๆ</p>
+        </div>
+      </div>
+      <div class="assign-box reveal" style="text-align:center">
+        <h3 style="margin-bottom:14px">💌 จากผู้สอน</h3>
+        <p style="color:var(--text-dim);max-width:700px;margin:0 auto;line-height:2">
+          โปรแกรมเมอร์ที่เก่ง ไม่ใช่คนที่จำคำสั่งได้เยอะ แต่คือคนที่ "แตกปัญหาใหญ่เป็นขั้นตอนเล็ก ๆ ได้" —
+          ทักษะที่คุณฝึกมาตั้งแต่วาดผังงานสัปดาห์ที่ 1 จนถึงเดโมโปรเจกต์วันนี้
+          ขอให้โชคดีกับการสอบปลายภาค แล้วพบกันในโลกที่คุณสั่งคอมพิวเตอร์ทำงานแทนได้แล้ว 🎉
+        </p>
+      </div>
+      <div class="btn-row reveal" style="margin-top:46px;justify-content:center">
+        <a href="week13.html" class="btn btn-ghost">← สัปดาห์ที่ 11</a>
+        <a href="index.html" class="btn btn-primary">🏠 กลับหน้าหลักรายวิชา</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <p>สัปดาห์ที่ 12: นำเสนอโปรเจกต์ + ทบทวนปลายภาค — รายวิชาการเขียนโปรแกรมคอมพิวเตอร์</p>
+      <p class="credits">จัดทำเพื่อการศึกษา · จบหลักสูตร 14 สัปดาห์ 🎓</p>
+    </div>
+  </footer>
+
+  <button id="toTop" title="กลับขึ้นด้านบน">↑</button>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/week14.js"></script>
+  <script src="js/quiz.js"></script>
+</body>
+</html>

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>บทที่ 12: ไฟล์และการจัดการข้อมูล | Computer Programming</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2322d3ee'/%3E%3Ctext x='50' y='68' font-size='48' text-anchor='middle' fill='%23071018' font-family='monospace'%3E%26lt;/%26gt;%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="nav-logo"><span class="logo-dot">&lt;/&gt;</span> Computer Programming</a>
+      <ul class="nav-links">
+        <li><a href="#objectives">วัตถุประสงค์</a></li>
+        <li><a href="#write">เขียนไฟล์</a></li>
+        <li><a href="#read">อ่านไฟล์</a></li>
+        <li><a href="#csv">รู้จัก CSV</a></li>
+        <li><a href="#simulator">โรงงานรายงาน</a></li>
+        <li><a href="#quiz">แบบทดสอบ</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <canvas id="binary-canvas"></canvas>
+    <div class="container">
+      <div class="hero-kicker reveal">สัปดาห์ที่ 10</div>
+      <h1 class="reveal" data-delay="0.1">บทที่ 12<br><span class="grad-text">ไฟล์และการจัดการข้อมูล</span></h1>
+      <p class="hero-desc reveal" data-delay="0.2">
+        จำบทที่ 2 ได้ไหม — RAM ลบเลือนเมื่อปิดเครื่อง ตัวแปรทุกตัวที่เราสร้างมาตลอดคอร์สจึงตายตอนโปรแกรมจบ
+        วันนี้ข้อมูลจะ "อยู่รอด" ด้วย fopen / fprintf / fgets และปิดท้ายด้วยสกิลที่วิศวกรใช้ทุกวัน:
+        แปลงไฟล์ CSV จากเครื่องจักรให้กลายเป็นรายงานอัตโนมัติ
+      </p>
+      <div class="hero-badges reveal" data-delay="0.3">
+        <span class="badge">⏱️ <b>ใช้เวลาเรียน ~2.5 ชั่วโมง</b></span>
+        <span class="badge">📄 <b>โรงงานรายงาน CSV แก้ข้อมูลเองได้</b></span>
+        <span class="badge">📝 <b>แบบทดสอบ 10 ข้อ</b></span>
+      </div>
+      <div class="btn-row reveal" data-delay="0.4">
+        <a href="#objectives" class="btn btn-primary">เริ่มบทเรียน ↓</a>
+        <a href="week11.html" class="btn btn-ghost">← บทที่ 11</a>
+      </div>
+    </div>
+    <div class="scroll-hint">เลื่อนลงเพื่อเริ่มเรียน<br>⌄</div>
+  </header>
+
+  <section class="section" id="objectives">
+    <div class="container">
+      <span class="section-tag reveal">Learning Objectives</span>
+      <h2 class="section-title reveal">วัตถุประสงค์การเรียนรู้</h2>
+      <div class="obj-list">
+        <div class="obj-item reveal">อธิบายเหตุผลที่ต้องเก็บข้อมูลเป็นไฟล์ และความต่างของโหมด "r" / "w" / "a" ได้</div>
+        <div class="obj-item reveal" data-delay="0.05">เขียนข้อมูลลงไฟล์ด้วย fopen + fprintf และปิดด้วย fclose ได้ครบวงจร</div>
+        <div class="obj-item reveal" data-delay="0.1">อ่านไฟล์ทีละบรรทัดด้วย fgets และตรวจสอบการเปิดไฟล์ล้มเหลว (NULL) ได้</div>
+        <div class="obj-item reveal" data-delay="0.15">อธิบายโครงสร้างไฟล์ CSV และแยกคอลัมน์ด้วย sscanf ได้</div>
+        <div class="obj-item reveal" data-delay="0.2">เขียนโปรแกรมอ่าน CSV มาสรุปเป็นรายงาน (จำนวน ผลรวม เฉลี่ย สูงสุด-ต่ำสุด) ได้</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" id="write">
+    <div class="container">
+      <span class="section-tag reveal">Writing Files</span>
+      <h2 class="section-title reveal">💾 เขียนไฟล์ — ให้ข้อมูลอยู่รอดหลังปิดโปรแกรม</h2>
+      <p class="section-sub reveal">
+        สามขั้นตอนตายตัว: <b style="color:var(--cyan)">fopen เปิด → fprintf เขียน → fclose ปิด</b>
+        — fopen คืน "ที่จับไฟล์" ชนิด <b style="color:var(--amber)">FILE *</b> ไว้ใช้อ้างถึงไฟล์นั้น
+        และ fprintf ก็คือ printf ที่เขียนลงไฟล์แทนหน้าจอ (รูปแบบ % เหมือนกันเป๊ะ)
+      </p>
+
+      <div class="grid grid-2" style="align-items:start">
+        <div class="code-card reveal" style="margin:0">
+          <div class="code-head"><span>ตัวอย่างที่ 12.1 — save_log.c</span><div class="dots"><span></span><span></span><span></span></div></div>
+          <pre><code><span style="color:#a78bfa">FILE</span> *fp = <span style="color:#22d3ee">fopen</span>(<span style="color:#fbbf24">"log.txt"</span>, <span style="color:#fbbf24">"w"</span>);
+<span style="color:#a78bfa">if</span> (fp == <span style="color:#a78bfa">NULL</span>) {            <span style="color:#6b7280">// เปิดไม่สำเร็จ?</span>
+    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"เปิดไฟล์ไม่ได้\n"</span>);
+    <span style="color:#a78bfa">return</span> <span style="color:#a78bfa">1</span>;
+}
+<span style="color:#22d3ee">fprintf</span>(fp, <span style="color:#fbbf24">"เริ่มกะเช้า 08:00\n"</span>);
+<span style="color:#22d3ee">fprintf</span>(fp, <span style="color:#fbbf24">"เครื่องที่ %d หยุดซ่อม\n"</span>, <span style="color:#a78bfa">3</span>);
+<span style="color:#22d3ee">fclose</span>(fp);                  <span style="color:#6b7280">// ปิดเสมอ!</span>
+<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"บันทึกแล้ว\n"</span>);</code></pre>
+          <button class="run-btn" data-output="บันทึกแล้ว&#10;&#10;(ในเครื่องจะเกิดไฟล์ log.txt มีข้อความ 2 บรรทัด)">▶ คอมไพล์และรัน</button>
+          <div class="code-output"></div>
+        </div>
+        <div class="card reveal" data-delay="0.1" style="margin:0">
+          <h3 style="margin-bottom:14px">🚦 สามโหมดที่ต้องแยกให้ออก</h3>
+          <div style="overflow-x:auto">
+            <table class="data-table op-table">
+              <thead><tr><th>โหมด</th><th>ชื่อ</th><th>พฤติกรรม</th></tr></thead>
+              <tbody>
+                <tr><td>"r"</td><td>read</td><td>อ่านอย่างเดียว — ไฟล์ไม่มีอยู่ fopen คืน NULL</td></tr>
+                <tr><td>"w"</td><td>write</td><td>เขียนใหม่ — ⚠️ ของเดิมถูกลบเกลี้ยงทันทีที่เปิด!</td></tr>
+                <tr><td>"a"</td><td>append</td><td>เขียนต่อท้าย — ของเดิมอยู่ครบ เหมาะกับ log</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p style="margin-top:14px">⚠️ จำให้ขึ้นใจ: เปิดโหมด <b style="color:#fca5a5">"w"</b> กับไฟล์รายงานทั้งเดือน = ข้อมูลหายหมดก่อนเขียนตัวแรกด้วยซ้ำ — งาน log รายวันให้ใช้ <b style="color:var(--green)">"a"</b><br><br>
+          🔒 และต่างจากบางภาษา — ภาษาซีไม่ปิดไฟล์ให้อัตโนมัติ: ลืม <b style="color:var(--cyan)">fclose</b> ข้อมูลอาจเขียนไม่ครบเพราะค้างอยู่ในบัฟเฟอร์</p>
+        </div>
+      </div>
+
+      <div class="code-card reveal" style="margin-top:30px">
+        <div class="code-head"><span>ตัวอย่างที่ 12.2 — append.c (พิสูจน์โหมด "a": เขียนสองรอบ ของเดิมไม่หาย)</span><div class="dots"><span></span><span></span><span></span></div></div>
+        <pre><code><span style="color:#a78bfa">FILE</span> *fp = <span style="color:#22d3ee">fopen</span>(<span style="color:#fbbf24">"shift.log"</span>, <span style="color:#fbbf24">"a"</span>);
+<span style="color:#22d3ee">fprintf</span>(fp, <span style="color:#fbbf24">"กะเช้า: ผลิตได้ 120 ชิ้น\n"</span>);
+<span style="color:#22d3ee">fclose</span>(fp);
+
+fp = <span style="color:#22d3ee">fopen</span>(<span style="color:#fbbf24">"shift.log"</span>, <span style="color:#fbbf24">"a"</span>);   <span style="color:#6b7280">// เปิดซ้ำด้วย "a" — ต่อท้าย ไม่ทับ</span>
+<span style="color:#22d3ee">fprintf</span>(fp, <span style="color:#fbbf24">"กะบ่าย: ผลิตได้ 98 ชิ้น\n"</span>);
+<span style="color:#22d3ee">fclose</span>(fp);
+
+<span style="color:#a78bfa">char</span> line[<span style="color:#a78bfa">100</span>];
+fp = <span style="color:#22d3ee">fopen</span>(<span style="color:#fbbf24">"shift.log"</span>, <span style="color:#fbbf24">"r"</span>);    <span style="color:#6b7280">// อ่านกลับมาพิสูจน์</span>
+<span style="color:#a78bfa">while</span> (<span style="color:#22d3ee">fgets</span>(line, <span style="color:#a78bfa">100</span>, fp) != <span style="color:#a78bfa">NULL</span>) {
+    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"%s"</span>, line);
+}
+<span style="color:#22d3ee">fclose</span>(fp);</code></pre>
+        <button class="run-btn" data-output="กะเช้า: ผลิตได้ 120 ชิ้น&#10;กะบ่าย: ผลิตได้ 98 ชิ้น">▶ คอมไพล์และรัน</button>
+        <div class="code-output"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="read">
+    <div class="container">
+      <span class="section-tag reveal">Reading Files</span>
+      <h2 class="section-title reveal">📖 อ่านไฟล์ — fgets ทีละบรรทัด ในลูป while ที่คุ้นเคย</h2>
+      <p class="section-sub reveal">
+        <b style="color:var(--cyan)">fgets(line, ขนาด, fp)</b> อ่านหนึ่งบรรทัดใส่สตริง และคืน NULL เมื่อหมดไฟล์
+        — จึงเข้าคู่กับ while ได้พอดี จุดเดียวที่ต้องระวัง:
+        <b style="color:var(--amber)">บรรทัดที่อ่านมามีอักขระ \n ติดท้ายมาด้วย</b>
+      </p>
+
+      <div class="code-card reveal" data-norun="1">
+        <div class="code-head"><span>ตัวอย่างที่ 12.3 — read_log.c อ่าน log.txt ที่เพิ่งบันทึก (ผลบันทึกไว้ เพราะไฟล์อยู่ในเครื่องคุณ)</span><div class="dots"><span></span><span></span><span></span></div></div>
+        <pre><code><span style="color:#a78bfa">FILE</span> *fp = <span style="color:#22d3ee">fopen</span>(<span style="color:#fbbf24">"log.txt"</span>, <span style="color:#fbbf24">"r"</span>);
+<span style="color:#a78bfa">char</span> line[<span style="color:#a78bfa">100</span>];
+<span style="color:#a78bfa">int</span> count = <span style="color:#a78bfa">0</span>;
+<span style="color:#a78bfa">while</span> (<span style="color:#22d3ee">fgets</span>(line, <span style="color:#a78bfa">100</span>, fp) != <span style="color:#a78bfa">NULL</span>) {
+    count++;
+    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"บรรทัด %d: %s"</span>, count, line);  <span style="color:#6b7280">// line มี \n อยู่แล้ว</span>
+}
+<span style="color:#22d3ee">fclose</span>(fp);
+<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"รวม %d บรรทัด\n"</span>, count);</code></pre>
+        <button class="run-btn" data-output="บรรทัด 1: เริ่มกะเช้า 08:00&#10;บรรทัด 2: เครื่องที่ 3 หยุดซ่อม&#10;รวม 2 บรรทัด">▶ คอมไพล์และรัน</button>
+        <div class="code-output"></div>
+      </div>
+
+      <div class="grid grid-3" style="margin-top:36px">
+        <div class="card reveal">
+          <div class="icon">🔁</div>
+          <h3>ความรู้เก่าใช้ได้หมด</h3>
+          <p>while วนจน NULL (บท 7) · line คือ char array (บท 11) · ตัวสะสมนับบรรทัด (บท 7) — บทนี้ไม่มีท่าใหม่ มีแต่สนามใหม่</p>
+        </div>
+        <div class="card reveal" data-delay="0.05">
+          <div class="icon">👻</div>
+          <h3>ระวังตัว \n ล่องหน</h3>
+          <p>fgets เก็บ \n ท้ายบรรทัดมาด้วย — เทียบ <code style="color:#fca5a5">strcmp(line, "END")</code> จะไม่มีวันเท่า เพราะจริง ๆ คือ "END\n" ต้องตัด \n ทิ้งก่อน — บั๊กล่องหนตัวจริงของบทนี้</p>
+        </div>
+        <div class="card reveal" data-delay="0.1">
+          <div class="icon">🛡️</div>
+          <h3>ตรวจ NULL ทุกครั้งที่ fopen</h3>
+          <p>เปิดโหมด "r" กับไฟล์ที่ไม่มี → fopen คืน <b style="color:#fca5a5">NULL</b> — ใช้ fp ต่อโดยไม่ตรวจ โปรแกรมพังทันที (crash) จึงต้อง if (fp == NULL) เสมอ เป็นมารยาทพื้นฐานของโปรแกรมไฟล์</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" id="csv">
+    <div class="container">
+      <span class="section-tag reveal">CSV Format</span>
+      <h2 class="section-title reveal">📊 CSV — ภาษากลางของข้อมูลทุกวงการ</h2>
+      <p class="section-sub reveal">
+        CSV (Comma-Separated Values) คือไฟล์ข้อความที่คั่นคอลัมน์ด้วยจุลภาค —
+        Excel, เครื่องจักร CNC, ระบบคลังสินค้า, เซ็นเซอร์ IoT ส่งออกเป็น CSV ได้ทั้งนั้น
+        กุญแจไขมันในภาษาซีคือ <b style="color:var(--cyan)">sscanf</b>: scanf ที่อ่านจาก "สตริง" แทนคีย์บอร์ด
+      </p>
+
+      <div class="grid grid-2" style="align-items:start">
+        <div class="reveal">
+          <div class="code-card" style="margin:0 0 20px">
+            <div class="code-head"><span>machines.csv — หน้าตาไฟล์จริง</span><div class="dots"><span></span><span></span><span></span></div></div>
+            <pre><code>machine,hours,temp
+PUMP-01,8,72.5
+MIXER-01,9,84.2
+CONV-01,7,61.8</code></pre>
+          </div>
+          <div style="overflow-x:auto">
+            <table class="data-table">
+              <thead><tr><th>machine</th><th>hours</th><th>temp</th></tr></thead>
+              <tbody>
+                <tr><td>PUMP-01</td><td>8</td><td>72.5</td></tr>
+                <tr><td>MIXER-01</td><td>9</td><td>84.2</td></tr>
+                <tr><td>CONV-01</td><td>7</td><td>61.8</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="section-sub" style="margin-top:14px">ไฟล์เดียวกัน มองสองมุม: ข้อความดิบ vs ตาราง — บรรทัดแรกคือ "หัวตาราง" (header) ต้องข้ามตอนคำนวณ!</p>
+        </div>
+        <div class="code-card reveal" data-delay="0.1" style="margin:0">
+          <div class="code-head"><span>ตัวอย่างที่ 12.4 — parse_csv.c (แยกหนึ่งบรรทัดเป็นข้อมูล)</span><div class="dots"><span></span><span></span><span></span></div></div>
+          <pre><code><span style="color:#a78bfa">char</span> line[<span style="color:#a78bfa">100</span>] = <span style="color:#fbbf24">"PUMP-01,8,72.5"</span>;
+<span style="color:#a78bfa">char</span> name[<span style="color:#a78bfa">30</span>];
+<span style="color:#a78bfa">int</span> hours;
+<span style="color:#a78bfa">float</span> temp;
+
+<span style="color:#6b7280">// %[^,] = "อ่านไปจนกว่าจะเจอจุลภาค"</span>
+<span style="color:#22d3ee">sscanf</span>(line, <span style="color:#fbbf24">"%29[^,],%d,%f"</span>, name, &amp;hours, &amp;temp);
+
+<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"%s ทำงาน %d ชม. อุณหภูมิ %.1f°C\n"</span>,
+       name, hours, temp);</code></pre>
+          <button class="run-btn" data-output="PUMP-01 ทำงาน 8 ชม. อุณหภูมิ 72.5°C">▶ คอมไพล์และรัน</button>
+          <div class="code-output"></div>
+        </div>
+      </div>
+      <div class="card reveal" style="margin-top:30px">
+        <div class="icon">🧩</div>
+        <h3>sscanf คือเพื่อนเก่าในชุดใหม่</h3>
+        <p>scanf อ่านจากคีย์บอร์ด · fscanf อ่านจากไฟล์ · <b style="color:var(--cyan)">sscanf อ่านจากสตริง</b> — สามพี่น้องใช้ตัวกำหนดรูปแบบชุดเดียวกันหมด
+        ท่ามาตรฐานอ่าน CSV จึงเป็น: fgets อ่านทั้งบรรทัดก่อน แล้ว sscanf ค่อยแกะคอลัมน์ — แยกหน้าที่ชัดเจน ตรวจบรรทัดเสียได้ง่าย
+        (sscanf คืนค่า "จำนวนช่องที่แกะสำเร็จ" — แกะได้ไม่ครบ 3 = บรรทัดเสีย!)</p>
+      </div>
+
+      <div class="code-card reveal" style="margin-top:30px">
+        <div class="code-head"><span>ตัวอย่างที่ 12.5 — report_write.c (ครบวงจร: คำนวณ → เขียนรายงานลงไฟล์)</span><div class="dots"><span></span><span></span><span></span></div></div>
+        <pre><code><span style="color:#a78bfa">int</span> qty[<span style="color:#a78bfa">4</span>] = {<span style="color:#a78bfa">12</span>, <span style="color:#a78bfa">7</span>, <span style="color:#a78bfa">25</span>, <span style="color:#a78bfa">9</span>};
+<span style="color:#a78bfa">int</span> sum = <span style="color:#a78bfa">0</span>;
+<span style="color:#a78bfa">for</span> (<span style="color:#a78bfa">int</span> i = <span style="color:#a78bfa">0</span>; i &lt; <span style="color:#a78bfa">4</span>; i++) sum = sum + qty[i];
+
+<span style="color:#a78bfa">FILE</span> *fp = <span style="color:#22d3ee">fopen</span>(<span style="color:#fbbf24">"report.txt"</span>, <span style="color:#fbbf24">"w"</span>);
+<span style="color:#22d3ee">fprintf</span>(fp, <span style="color:#fbbf24">"สินค้ารวม %d ชิ้น เฉลี่ยลังละ %.2f\n"</span>, sum, (<span style="color:#a78bfa">float</span>) sum / <span style="color:#a78bfa">4</span>);
+<span style="color:#22d3ee">fclose</span>(fp);
+<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"เขียน report.txt เรียบร้อย (รวม %d ชิ้น)\n"</span>, sum);</code></pre>
+        <button class="run-btn" data-output="เขียน report.txt เรียบร้อย (รวม 53 ชิ้น)">▶ คอมไพล์และรัน</button>
+        <div class="code-output"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="simulator">
+    <div class="container">
+      <span class="section-tag reveal">CSV Report Factory</span>
+      <h2 class="section-title reveal">🏭 โรงงานรายงาน: จาก CSV ดิบ → รายงานผู้จัดการ</h2>
+      <p class="section-sub reveal">
+        ข้อมูลซ้าย โปรแกรมตรงกลาง รายงานขวา — <b style="color:var(--text)">แก้ตัวเลขในไฟล์ได้เลย</b>
+        (ลองเปลี่ยนอุณหภูมิ เพิ่มเครื่องใหม่ หรือพิมพ์บรรทัดเสีย ๆ ดูว่าโปรแกรมรับมืออย่างไร) แล้วกดประมวลผล
+      </p>
+
+      <div class="flow-wrap reveal">
+        <div>
+          <div class="code-card" style="margin:0">
+            <div class="code-head"><span>sensors.csv — แก้ไขได้</span><div class="dots"><span></span><span></span><span></span></div></div>
+            <div class="widget" style="border:none;padding:14px;margin:0;border-radius:0">
+              <textarea id="csvData" spellcheck="false" style="min-height:190px">machine,hours,temp
+PUMP-01,8,72.5
+PUMP-02,6,68.0
+MIXER-01,9,84.2
+CONV-01,7,61.8
+PRESS-01,5,79.4</textarea>
+            </div>
+          </div>
+          <div class="btn-row" style="margin-top:16px">
+            <button class="btn btn-primary" id="csvRun">ประมวลผล ▶</button>
+            <button class="btn btn-ghost" id="csvReset">↺ ข้อมูลตั้งต้น</button>
+          </div>
+        </div>
+        <div class="flow-panel">
+          <h3>📋 รายงานสรุปประจำวัน</h3>
+          <div class="widget-result" id="csvReport" style="min-height:230px">— กดประมวลผลเพื่อสร้างรายงาน —</div>
+          <div class="flow-desc" id="csvDesc">โปรแกรมจะข้ามบรรทัดหัวตาราง และข้ามบรรทัดที่ sscanf แกะได้ไม่ครบ 3 คอลัมน์ (พร้อมรายงานว่าข้ามไปกี่บรรทัด) — นี่คือนิสัยของโปรแกรมระดับใช้งานจริง</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" id="quiz">
+    <div class="container">
+      <span class="section-tag reveal">Check Your Understanding</span>
+      <h2 class="section-title reveal">📝 แบบทดสอบท้ายบท (10 ข้อ)</h2>
+      <p class="section-sub reveal">สามจุดตาย: โหมด "w" ลบของเดิม · fopen ต้องตรวจ NULL · fgets มี \n ติดมา</p>
+      <div class="prequiz reveal">
+        <div class="prequiz-head">📘 อ่านก่อนสอบ · สรุปประเด็นสำคัญ</div>
+        <p class="prequiz-intro">เน้น "โหมดเปิดไฟล์" และการอ่าน CSV ให้ปลอดภัย — จำ w/a/r และอย่าลืมเช็ค NULL ทุกครั้ง</p>
+        <div class="pq-item">
+          <span class="pq-num">1</span>
+          <div class="pq-text"><h4>ทำไมต้องบันทึกลงไฟล์</h4><p>ตัวแปรอยู่ใน RAM หายเมื่อปิดโปรแกรม · ไฟล์เก็บข้อมูล<b>ถาวร</b> เปิดมาใช้ต่อวันหลังได้</p></div>
+        </div>
+        <div class="pq-item">
+          <span class="pq-num">2</span>
+          <div class="pq-text"><h4>โหมดเปิดไฟล์ w / a / r</h4><p><b>"w"</b> เขียนใหม่ — <b>ลบเนื้อหาเดิมทิ้งทั้งหมด</b> · <b>"a"</b> เขียน<b>ต่อท้าย</b> (เหมาะกับ log ที่รันซ้ำ) · <b>"r"</b> อ่านอย่างเดียว</p><p><pre class="pq-code">FILE *fp = fopen("log.txt", "a");  <span class="cm">// ต่อท้าย ไม่ลบของเดิม</span></pre></p></div>
+        </div>
+        <div class="pq-item">
+          <span class="pq-num">3</span>
+          <div class="pq-text"><h4>เช็ค fp == NULL เสมอ</h4><p>ถ้าเปิดไฟล์ไม่สำเร็จ (ไม่มีไฟล์/ไม่มีสิทธิ์) <code>fopen</code> คืน <code>NULL</code> ถ้าไม่เช็คแล้วใช้ต่อ โปรแกรม<b>พังทันที</b></p><p><pre class="pq-code">if (fp == NULL) { printf("เปิดไฟล์ไม่ได้"); return 1; }</pre></p></div>
+        </div>
+        <div class="pq-item">
+          <span class="pq-num">4</span>
+          <div class="pq-text"><h4>อ่านบรรทัดด้วย fgets (ระวัง \n)</h4><p><code>fgets</code> อ่านมาทั้ง <b>\n ติดท้าย</b>ด้วย จึงทำให้ <code>strcmp(line,"END")</code> ไม่เท่ากับ 0 (เพราะจริง ๆ คือ "END\n")</p></div>
+        </div>
+        <div class="pq-item">
+          <span class="pq-num">5</span>
+          <div class="pq-text"><h4>CSV + sscanf</h4><p><b>CSV</b> = Comma-Separated Values คั่นคอลัมน์ด้วย<b>จุลภาค ,</b> · <code>sscanf</code> แกะข้อมูลจาก<b>สตริง</b> (ต่างจาก scanf ที่รับจากแป้นพิมพ์) · <code>%[^,]</code> = อ่านจนกว่าจะเจอ ,</p><p><pre class="pq-code">sscanf(line, "%29[^,],%d,%f", name, &amp;qty, &amp;price);</pre></p></div>
+        </div>
+        <div class="pq-item tip">
+          <span class="pq-num">💡</span>
+          <div class="pq-text"><h4>จุดที่ข้อสอบชอบถาม</h4><p>จำ <b>"w" ลบของเดิม</b> ส่วน log ใช้ <b>"a"</b> · ไฟล์ CSV ที่มีหัวตาราง 1 บรรทัด ข้อมูลจริง = จำนวนบรรทัด − 1 · เช็ค NULL ทุกครั้ง</p></div>
+        </div>
+      </div>
+      <div id="quizWrap"></div>
+      <div class="quiz-score" id="quizScore"></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <span class="section-tag reveal">Summary & Assignment</span>
+      <h2 class="section-title reveal">🎯 สรุปบทเรียน</h2>
+      <div class="grid grid-2" style="margin-bottom:50px">
+        <div class="card reveal">
+          <div class="icon">📄</div>
+          <h3>สิ่งที่ได้เรียน</h3>
+          <p>วงจรไฟล์: fopen → ตรวจ NULL → ใช้งาน → fclose เสมอ · โหมด r อ่าน / w เขียนทับ / a ต่อท้าย · fprintf คือ printf ฉบับลงไฟล์ · fgets อ่านทีละบรรทัด (มี \n ติดมา) วนกับ while จน NULL · CSV: fgets + sscanf("%[^,],%d,%f") แกะคอลัมน์ และตรวจจำนวนที่แกะได้</p>
+        </div>
+        <div class="card reveal" data-delay="0.1">
+          <div class="icon">🔮</div>
+          <h3>เชื่อมไปสัปดาห์หน้า</h3>
+          <p>เครื่องมือครบมือแล้ว: ตัวแปร เงื่อนไข ลูป ฟังก์ชัน อาร์เรย์ สตริง ไฟล์ — สัปดาห์ที่ 11–12 คือเวทีจริง: โปรเจกต์กลุ่มของแต่ละสาขา เอาทุกอย่างมาประกอบเป็นระบบเดียว</p>
+        </div>
+      </div>
+      <div class="assign-box reveal">
+        <h3>📌 งานมอบหมายสัปดาห์ที่ 10</h3>
+        <ol>
+          <li>เขียนโปรแกรมสมุดบันทึก: รับข้อความแล้ว fprintf ต่อท้ายไฟล์ diary.txt (โหมด "a") พร้อมเลขลำดับ — รันหลายรอบแล้วเปิดไฟล์ดูว่าข้อมูลเก่ายังอยู่ครบ</li>
+          <li>สร้างไฟล์ scores.csv (ชื่อ,คะแนน อย่างน้อย 8 แถว) ด้วย Notepad แล้วเขียนโปรแกรมอ่านมาแสดงเฉพาะคนที่ได้ ≥ 70 พร้อมนับจำนวน</li>
+          <li>ต่อยอดข้อ 2: สรุปคะแนนเฉลี่ย สูงสุด ต่ำสุด แล้ว "เขียนผลลง report.txt" ด้วย fprintf — ครบวงจร อ่าน → ประมวลผล → เขียน</li>
+          <li>โจทย์สาขา: ออกแบบ CSV ของงานในสาขาตัวเอง (เช่น พัสดุ: รหัส,น้ำหนัก,ปลายทาง หรือชิ้นงาน: รหัส,ขนาด,ผล QC) อย่างน้อย 10 แถว แล้วเขียนรายงานสรุปแบบโรงงานรายงานในบทเรียน</li>
+          <li>ทำแบบทดสอบท้ายบทให้ได้อย่างน้อย 8/10 แล้วแคปหน้าจอส่งใน LMS</li>
+        </ol>
+      </div>
+      <div class="btn-row reveal" style="margin-top:46px;justify-content:center">
+        <a href="week11.html" class="btn btn-ghost">← บทที่ 11</a>
+        <a href="exercises.html#w12" class="btn btn-ghost">📚 แบบฝึกหัดบทนี้</a>
+        <a href="week13.html" class="btn btn-primary">สัปดาห์ที่ 11: โปรเจกต์ประยุกต์ทางวิศวกรรม →</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <p>บทที่ 12: ไฟล์และการจัดการข้อมูล — รายวิชาการเขียนโปรแกรมคอมพิวเตอร์</p>
+      <p class="credits">จัดทำเพื่อการศึกษา</p>
+    </div>
+  </footer>
+
+  <button id="toTop" title="กลับขึ้นด้านบน">↑</button>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/week12.js"></script>
+  <script src="js/runner.js"></script>
+  <script src="js/quiz.js"></script>
+</body>
+</html>
