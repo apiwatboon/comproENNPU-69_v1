@@ -75,7 +75,7 @@
     const wide = i <= 3 ? ' wide' : '';
     html += '<a class="cs-link' + wide + (file === page ? ' active' : '') + '" href="' + file + '" title="' + weekText(i) + ': ' + TITLES[i - 1] + '">' + label(i) + '</a>';
   }
-  html += '<a class="cs-link wide' + (page === 'exercises.html' ? ' active' : '') + '" href="exercises.html" title="คลังแบบฝึกหัด 110 ข้อ">📚 แบบฝึกหัด</a>';
+  html += '<a class="cs-link wide' + (page === 'exercises.html' ? ' active' : '') + '" href="exercises.html" title="คลังแบบฝึกหัด 110 ข้อ">แบบฝึกหัด</a>';
   row.innerHTML = html;
   nav.appendChild(row);
 })();
@@ -148,7 +148,7 @@
       const div = document.createElement('div');
       div.className = 'img-fallback';
       div.style.height = (img.getAttribute('height') || 230) + 'px';
-      div.textContent = '🖼️ ' + (img.alt || 'รูปภาพ') + ' (ต้องเชื่อมต่ออินเทอร์เน็ต)';
+      div.textContent = (img.alt || 'รูปภาพ') + ' (ต้องเชื่อมต่ออินเทอร์เน็ต)';
       img.replaceWith(div);
     });
   });
