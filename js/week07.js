@@ -1,7 +1,7 @@
 /* ============================================================
-   week07.js — บทที่ 7: โครงสร้างควบคุมแบบวนซ้ำ (ภาษาซี)
-   (ปุ่มรันโค้ด, ตัวเดินลูปผลรวม, เครื่องวาดลวดลายดาว,
-    ตัวสแกนหาอุณหภูมิสูงสุด, คำถามแบบทดสอบ)
+   week07.js — คาบที่ 9: ฟังก์ชัน (ภาษาซี)
+   (ปุ่มรันโค้ด, ตัวไล่เส้นทางการเรียกฟังก์ชัน, เครื่องจักรฟังก์ชัน,
+    คำถามแบบทดสอบ)
    ============================================================ */
 
 // ---------- ปุ่ม "▶ คอมไพล์และรัน" : แสดงผลลัพธ์ที่ฝังไว้ใน data-output ----------
@@ -23,52 +23,44 @@
   });
 })();
 
-// ---------- ตัวเดินลูปผลรวม 1–5 ทีละขั้น (ท่าตัวสะสม ฉบับ for ภาษาซี) ----------
-(function sumStepper() {
-  const code = document.getElementById('sumCode');
-  const btnStep = document.getElementById('sumStep');
-  const btnReset = document.getElementById('sumReset');
+// ---------- ตัวไล่เส้นทางการเรียกฟังก์ชัน: เห็นโปรแกรม "กระโดด" ----------
+(function callFlowStepper() {
+  const code = document.getElementById('flowCode');
+  const btnStep = document.getElementById('flowStep');
+  const btnReset = document.getElementById('flowReset');
   if (!code || !btnStep) return;
 
-  const trace = document.getElementById('sumTrace');
-  const out = document.getElementById('sumOut');
-  const desc = document.getElementById('sumDesc');
+  const out = document.getElementById('flowOut');
+  const desc = document.getElementById('flowDesc');
   const lines = {};
   code.querySelectorAll('.pyline').forEach((el) => (lines[el.dataset.line] = el));
 
-  // สร้างลำดับขั้นทั้งหมดล่วงหน้า — เห็นชัดว่าหัวลูปบรรทัด 2 ถูกแวะซ้ำทุกรอบ
-  const steps = [{ line: 1, i: '—', total: 0, desc: 'สร้างตัวสะสม total = 0 — เหมือนแก้วเปล่าที่รอเติมน้ำทีละรอบ' }];
-  let total = 0;
-  for (let i = 1; i <= 5; i++) {
-    steps.push({ line: 2, i: i, total: total, desc: (i === 1 ? 'เข้าหัวลูป: ตั้ง i = 1 (ทำครั้งเดียว) แล้วตรวจ 1 <= 5 จริง → เข้าบล็อก' : 'จบรอบก่อน: i++ ทำให้ i = ' + i + ' แล้วตรวจ ' + i + ' <= 5 จริง → วนต่อ') });
-    const prev = total;
-    total += i;
-    steps.push({ line: 3, i: i, total: total, desc: 'total = ' + prev + ' + ' + i + ' = ' + total + ' (ค่าเก่าถูกทับด้วยค่าใหม่)' });
-  }
-  steps.push({ line: 2, i: 6, total: 15, desc: 'i++ ทำให้ i = 6 → ตรวจ 6 <= 5 ได้ 0 (เท็จ) → ออกจากลูปทันที' });
-  steps.push({ line: 5, i: 6, total: 15, desc: 'พ้นบล็อก { } ของลูปแล้ว: printf แสดงค่า total ออกหน้าจอ', out: '15' });
+  // ลำดับจริง: คอมไพเลอร์จำนิยาม → main เริ่ม → เรียก → กระโดดเข้า → กลับมา → ...
+  const steps = [
+    { line: 1, desc: 'คอมไพเลอร์อ่านนิยาม greet: "จำสูตร" ไว้เฉย ๆ — บรรทัด 2 ยังไม่ทำงาน!' },
+    { line: 3, desc: 'โปรแกรมเริ่มทำงานที่ main() เสมอ — ไม่ใช่บรรทัดแรกของไฟล์' },
+    { line: 4, desc: 'เรียก greet("ฝน"); → กำลังจะกระโดดขึ้นไปทำในฟังก์ชัน โดยพารามิเตอร์ name รับค่า "ฝน"' },
+    { line: 2, out: 'สวัสดีคุณฝน ยินดีต้อนรับ', desc: 'กระโดดเข้าฟังก์ชัน! printf ทำงานด้วย name = "ฝน" — เสร็จแล้วจะ "กลับไปที่จุดเรียก"' },
+    { line: 5, desc: 'กลับมาทำต่อบรรทัดถัดไปใน main: เรียก greet("เมฆ"); → กระโดดขึ้นไปอีกรอบ คราวนี้ name = "เมฆ"' },
+    { line: 2, out: 'สวัสดีคุณเมฆ ยินดีต้อนรับ', desc: 'บรรทัด 2 ทำงานรอบที่สอง ด้วยค่าใหม่ — โค้ดบรรทัดเดียว ใช้ซ้ำได้ไม่จำกัด นี่คือพลังของฟังก์ชัน' },
+    { line: 6, out: 'จบโปรแกรม', desc: 'กลับมาจบที่บรรทัด 6 — สรุปลำดับที่ทำงานจริง: 1 → 3 → 4 → 2 → 5 → 2 → 6 ไม่ใช่บนลงล่างเฉย ๆ!' },
+  ];
 
   let pos = -1;
+  const printed = [];
 
   btnStep.addEventListener('click', () => {
     if (pos >= steps.length - 1) return;
-    if (pos === -1) trace.innerHTML = '';
     pos++;
     const s = steps[pos];
-
     Object.keys(lines).forEach((k) => lines[k].classList.remove('active'));
     lines[s.line].classList.add('active');
     if (typeof gsap !== 'undefined') gsap.fromTo(lines[s.line], { x: -6 }, { x: 0, duration: 0.25, ease: 'power2.out' });
-
-    trace.querySelectorAll('tr').forEach((r) => r.classList.remove('current'));
-    const row = document.createElement('tr');
-    row.className = 'current';
-    row.innerHTML = '<td>' + (pos + 1) + '</td><td>' + s.line + '</td><td>' + s.i + '</td><td>' + s.total + '</td>';
-    trace.appendChild(row);
-
-    if (s.out) out.textContent = s.out;
+    if (s.out) {
+      printed.push(s.out);
+      out.textContent = printed.join('\n');
+    }
     desc.textContent = s.desc;
-
     if (pos >= steps.length - 1) {
       btnStep.disabled = true;
       btnStep.textContent = 'จบโปรแกรม ✓';
@@ -77,223 +69,170 @@
 
   btnReset.addEventListener('click', () => {
     pos = -1;
+    printed.length = 0;
     btnStep.disabled = false;
     btnStep.textContent = 'รันทีละขั้น ▶';
     Object.keys(lines).forEach((k) => lines[k].classList.remove('active'));
-    trace.innerHTML = '<tr><td colspan="4">— กดรันทีละขั้นเพื่อเริ่ม —</td></tr>';
     out.textContent = '— หน้าจอผลลัพธ์ (Console) —';
-    desc.textContent = 'สังเกตว่าบรรทัด 2 จะถูกแวะซ้ำทุกรอบ — มันคือ "ด่านเช็ค" เงื่อนไข i <= 5 และจุดปรับค่า i++';
+    desc.textContent = 'เริ่มกันเลย — เดาก่อนไหมว่าบรรทัดไหนทำงานเป็นลำดับแรก?';
   });
 })();
 
-// ---------- เครื่องวาดลวดลายดาว (ลูปซ้อนภาษาซี) ----------
-(function patternPrinter() {
-  const select = document.getElementById('patSelect');
-  const rowsInput = document.getElementById('patRows');
-  const btn = document.getElementById('patDraw');
-  const out = document.getElementById('patOut');
-  const codeEl = document.getElementById('patCode');
-  if (!select || !btn) return;
+// ---------- เครื่องจักรฟังก์ชัน: พารามิเตอร์เข้า → return ออก ----------
+(function functionMachine() {
+  const select = document.getElementById('fnSelect');
+  const input = document.getElementById('fnInput');
+  const btnRun = document.getElementById('fnRun');
+  if (!select || !btnRun) return;
 
-  const PATTERNS = {
-    triangle: {
-      row: (i, n) => '*'.repeat(i),
-      code: (n) => 'int n = ' + n + ';\nfor (int i = 1; i <= n; i++) {\n    for (int j = 1; j <= i; j++)\n        printf("*");\n    printf("\\n");\n}',
+  const inBox = document.getElementById('fnIn');
+  const box = document.getElementById('fnBox');
+  const outBox = document.getElementById('fnOut');
+  const codeEl = document.getElementById('fnCode');
+
+  const MACHINES = {
+    c_to_f: {
+      sig: 'c_to_f(c)',
+      code: 'float c_to_f(float c) {\n    return c * 9 / 5 + 32;\n}',
+      run: (x) => Math.round((x * 9 / 5 + 32) * 100) / 100,
+      hint: 'แปลงอุณหภูมิ คืน float',
     },
-    square: {
-      row: (i, n) => '*'.repeat(n),
-      code: (n) => 'int n = ' + n + ';\nfor (int i = 1; i <= n; i++) {\n    for (int j = 1; j <= n; j++)\n        printf("*");\n    printf("\\n");\n}',
+    square_area: {
+      sig: 'square_area(side)',
+      code: 'int square_area(int side) {\n    return side * side;\n}',
+      run: (x) => Math.trunc(x) * Math.trunc(x),
+      hint: 'คำนวณพื้นที่ คืน int',
     },
-    pyramid: {
-      row: (i, n) => ' '.repeat(n - i) + '*'.repeat(2 * i - 1),
-      code: (n) => 'int n = ' + n + ';\nfor (int i = 1; i <= n; i++) {\n    for (int j = 1; j <= n - i; j++)\n        printf(" ");\n    for (int j = 1; j <= 2*i - 1; j++)\n        printf("*");\n    printf("\\n");\n}',
+    is_even: {
+      sig: 'is_even(n)',
+      code: 'int is_even(int n) {\n    return n % 2 == 0;\n}',
+      run: (x) => (Math.trunc(x) % 2 === 0 ? '1 (จริง)' : '0 (เท็จ)'),
+      hint: 'ตรวจเลขคู่ คืน 1/0',
     },
   };
 
-  function clampRows() {
-    let n = parseInt(rowsInput.value, 10);
-    if (isNaN(n)) n = 5;
-    n = Math.max(1, Math.min(10, n));
-    rowsInput.value = n;
-    return n;
+  function updateMachine() {
+    const m = MACHINES[select.value];
+    box.innerHTML = m.sig + '<small>' + m.hint + '</small>';
+    codeEl.textContent = m.code;
+    outBox.textContent = '?';
   }
 
-  function updateCode() {
-    codeEl.textContent = PATTERNS[select.value].code(clampRows());
-  }
-
-  let timer = null;
-  btn.addEventListener('click', () => {
-    const n = clampRows();
-    const pat = PATTERNS[select.value];
-    updateCode();
-    if (timer) clearInterval(timer);
-    const wrap = document.createElement('div');
-    wrap.style.whiteSpace = 'pre';
-    out.innerHTML = '';
-    out.appendChild(wrap);
-    let i = 0;
-    timer = setInterval(() => {
-      i++;
-      wrap.textContent += (i > 1 ? '\n' : '') + pat.row(i, n);
-      if (i >= n) { clearInterval(timer); timer = null; }
-    }, 130);
-  });
-
-  select.addEventListener('change', updateCode);
-  rowsInput.addEventListener('input', updateCode);
-})();
-
-// ---------- ตัวสแกนหาอุณหภูมิสูงสุด (ลูป + ตัวจำแชมป์) ----------
-(function maxFinder() {
-  const barsBox = document.getElementById('tempBars');
-  const btnStep = document.getElementById('maxStep');
-  const btnReset = document.getElementById('maxReset');
-  if (!barsBox || !btnStep) return;
-
-  const vars = document.getElementById('maxVars');
-  const desc = document.getElementById('maxDesc');
-  const TEMPS = [62, 71, 58, 84, 66, 79, 73]; // °C รายชั่วโมง
-
-  const bars = TEMPS.map((t, idx) => {
-    const bar = document.createElement('div');
-    bar.className = 'bar';
-    bar.style.height = ((t - 50) * 4 + 40) + 'px';
-    bar.textContent = t + '°';
-    bar.title = 'temps[' + idx + '] = ' + t + '°C';
-    barsBox.appendChild(bar);
-    return bar;
-  });
-
-  let pos = -1;
-  let maxIdx = 0;
-
-  btnStep.addEventListener('click', () => {
-    pos++;
-    bars.forEach((b) => b.classList.remove('compare'));
-
-    if (pos === 0) {
-      maxIdx = 0;
-      bars[0].classList.add('found');
-      vars.textContent = 'max_t = ' + TEMPS[0] + '° | ตั้งต้น: ให้ตัวแรกเป็นแชมป์ไปก่อน';
-      desc.textContent = 'max_t = temps[0]; ได้ ' + TEMPS[0] + '° — ยังไม่ต้องเทียบกับใคร เพราะเพิ่งเจอค่าเดียว';
-      return;
-    }
-
-    const t = TEMPS[pos];
-    bars[pos].classList.add('compare');
-    if (t > TEMPS[maxIdx]) {
-      bars[maxIdx].classList.remove('found');
-      const old = TEMPS[maxIdx];
-      maxIdx = pos;
-      bars[pos].classList.remove('compare');
-      bars[pos].classList.add('found');
-      vars.textContent = 'max_t = ' + t + '° | ชั่วโมงที่ ' + pos + ' ขึ้นแชมป์ใหม่!';
-      desc.textContent = 'if (temps[' + pos + '] > max_t) → ' + t + ' > ' + old + ' จริง → อัปเดต max_t = ' + t + '° 👑';
+  btnRun.addEventListener('click', () => {
+    const m = MACHINES[select.value];
+    const x = parseFloat(input.value) || 0;
+    inBox.textContent = x;
+    outBox.textContent = '...';
+    if (typeof gsap !== 'undefined') {
+      const tl = gsap.timeline();
+      tl.fromTo(inBox.parentElement, { scale: 1 }, { scale: 1.1, yoyo: true, repeat: 1, duration: 0.2 })
+        .fromTo(box, { scale: 1 }, { scale: 1.08, yoyo: true, repeat: 1, duration: 0.25 })
+        .call(() => { outBox.textContent = m.run(x); })
+        .fromTo(outBox.parentElement, { scale: 0.8 }, { scale: 1, duration: 0.4, ease: 'back.out(2.5)' });
     } else {
-      vars.textContent = 'max_t = ' + TEMPS[maxIdx] + '° | กำลังเทียบชั่วโมงที่ ' + pos;
-      desc.textContent = 'if (temps[' + pos + '] > max_t) → ' + t + ' > ' + TEMPS[maxIdx] + ' ได้ 0 (เท็จ) → แชมป์เดิมอยู่ต่อ';
-    }
-
-    if (pos >= TEMPS.length - 1) {
-      btnStep.disabled = true;
-      btnStep.textContent = 'สแกนครบ ✓';
-      bars.forEach((b) => b.classList.remove('compare'));
-      desc.textContent = 'สแกนครบ 7 ค่า — อุณหภูมิสูงสุดคือ ' + TEMPS[maxIdx] + '°C (ชั่วโมงที่ ' + maxIdx + ') ลูปเดียวกันนี้ใช้กับข้อมูลล้านค่าก็ได้ โค้ดยาวเท่าเดิม!';
+      outBox.textContent = m.run(x);
     }
   });
 
-  btnReset.addEventListener('click', () => {
-    pos = -1;
-    maxIdx = 0;
-    btnStep.disabled = false;
-    btnStep.textContent = 'เทียบตัวถัดไป ▶';
-    bars.forEach((b) => b.classList.remove('compare', 'found', 'sorted'));
-    vars.textContent = 'max_t = — | กำลังเทียบชั่วโมงที่ —';
-    desc.textContent = 'โค้ดเบื้องหลัง: max_t = temps[0]; แล้ววน for เทียบ — if (temps[i] > max_t) ก็อัปเดตแชมป์ (สีชมพู = แชมป์ปัจจุบัน, สีเหลือง = ตัวที่กำลังเทียบ)';
-  });
+  select.addEventListener('change', updateMachine);
+  updateMachine();
 })();
 
-// ---------- คำถามแบบทดสอบท้ายบท (quiz.js เป็นผู้วาดหน้าจอ) ----------
+// ---------- คำถามแบบทดสอบท้ายคาบ (quiz.js เป็นผู้วาดหน้าจอ) ----------
 window.QUIZ_QUESTIONS = [
   {
-    q: 'for (int i = 0; i < 5; i++) — ลูปนี้ทำงานกี่รอบ และ i มีค่าใดบ้าง?',
-    opts: ['5 รอบ: 0, 1, 2, 3, 4', '5 รอบ: 1, 2, 3, 4, 5', '6 รอบ: 0 ถึง 5', '4 รอบ: 1, 2, 3, 4'],
-    ans: 0,
-    explain: 'เริ่ม 0 วนตราบใดที่ i < 5 → ได้ 0–4 รวม 5 รอบ (ไม่รวม 5 เพราะเงื่อนไขเป็น "น้อยกว่า") — ถ้าอยากได้ 1–5 เขียน for (i = 1; i <= 5; i++)'
-  },
-  {
-    q: 'for (int i = 2; i <= 8; i += 2) printf("%d ", i); แสดงผลว่าอะไร?',
-    opts: ['2 4 6 8', '2 4 6', '2 3 4 5 6 7 8', '4 6 8'],
-    ans: 0,
-    explain: 'เริ่ม 2 ก้าวทีละ 2 และเงื่อนไข <= 8 "รวม" 8 ด้วย → 2 4 6 8 — เทียบกับข้อบน: < ไม่รวมขอบ, <= รวมขอบ อ่านเครื่องหมายให้ดีทุกครั้ง'
-  },
-  {
-    q: 'ไล่โค้ด: int total = 0; for (int i = 1; i <= 3; i++) { total = total + i; } สุดท้าย total เป็นเท่าใด?',
-    opts: ['3', '6', '10', '0'],
-    ans: 1,
-    explain: 'i = 1, 2, 3 → total สะสม 0+1 = 1 → 1+2 = 3 → 3+3 = 6 — ท่าตัวสะสมแบบเดียวกับตัวเดินลูปในบทเรียน'
-  },
-  {
-    q: 'สถานการณ์ใดเหมาะกับ while มากกว่า for?',
+    q: 'รูปแบบการนิยามฟังก์ชันภาษาซีที่ถูกต้องคือข้อใด?',
     opts: [
-      'พิมพ์สูตรคูณแม่ 3 ครบ 12 บรรทัด',
-      'อ่านข้อมูลเซ็นเซอร์ 1,000 ค่า',
-      'วนถามรหัสผ่านซ้ำจนกว่าผู้ใช้จะตอบถูก',
-      'แสดงรายชื่อนักศึกษา 40 คน'
-    ],
-    ans: 2,
-    explain: 'ถามรหัสจนถูก "ไม่รู้ล่วงหน้าว่ากี่รอบ" รู้แค่เงื่อนไขหยุด จึงเหมาะกับ while (หรือ do-while ยิ่งเหมาะ เพราะต้องถามก่อนอย่างน้อยหนึ่งครั้ง) — อีกสามข้อรู้จำนวนรอบแน่นอน ใช้ for'
-  },
-  {
-    q: 'int x = 3; while (x > 0) { printf("%d", x); } — โค้ดนี้ "ไม่มีบรรทัดแก้ค่า x" จะเกิดอะไรขึ้น?',
-    opts: [
-      'พิมพ์ 3 2 1 แล้วจบ',
-      'พิมพ์ 3 ครั้งเดียวแล้วจบ',
-      'พิมพ์ 3 ซ้ำไม่รู้จบ โปรแกรมไม่มีวันหยุด',
-      'คอมไพล์ไม่ผ่าน'
-    ],
-    ans: 2,
-    explain: 'x ค้างที่ 3 ตลอด เงื่อนไข 3 > 0 จริงชั่วนิรันดร์ = ลูปไม่รู้จบ ขัดคุณสมบัติ Finiteness จากบทที่ 3 — ทุกลูปต้องมีบรรทัดขยับค่าเข้าใกล้จุดจบ เช่น x--; (กด Ctrl+C บังคับหยุด)'
-  },
-  {
-    q: 'do { ... } while (เงื่อนไข); ต่างจาก while ธรรมดาอย่างไร?',
-    opts: [
-      'do-while เร็วกว่า',
-      'do-while ทำบล็อกก่อนหนึ่งรอบเสมอ แล้วค่อยตรวจเงื่อนไข',
-      'do-while วนได้ไม่เกิน 1 รอบ',
-      'ไม่ต่างกันเลย'
+      'function add(a, b) { ... }',
+      'int add(int a, int b) { ... }',
+      'def add(a, b):',
+      'add(int a, int b) returns int'
     ],
     ans: 1,
-    explain: 'while ตรวจ "ก่อนทำ" (อาจไม่ทำเลยสักรอบ) ส่วน do-while ทำ "ก่อนตรวจ" จึงการันตีอย่างน้อย 1 รอบ — เหมาะกับเมนูและการถามรหัส เพราะต้องถามก่อนถึงจะรู้ว่าผิด (อย่าลืม ; หลัง while ปิดท้าย!)'
+    explain: 'ภาษาซีต้องระบุ "ชนิดค่าที่คืน" นำหน้า ตามด้วยชื่อและพารามิเตอร์ที่ระบุชนิดทุกตัว: int add(int a, int b) — ไม่มีคำว่า function หรือ def'
   },
   {
-    q: 'ลูปซ้อน for (i = 0; i < 3; i++) for (j = 0; j < 4; j++) printf("ตรวจ"); จะพิมพ์คำว่า "ตรวจ" ทั้งหมดกี่ครั้ง?',
-    opts: ['3 ครั้ง', '4 ครั้ง', '7 ครั้ง', '12 ครั้ง'],
+    q: 'คำว่า void หน้าชื่อฟังก์ชัน เช่น void show_menu() หมายความว่าอะไร?',
+    opts: [
+      'ฟังก์ชันนี้ว่างเปล่า ไม่มีโค้ด',
+      'ฟังก์ชันนี้ทำงานแต่ "ไม่คืนค่า" กลับมา',
+      'ฟังก์ชันนี้รับพารามิเตอร์ไม่ได้',
+      'ฟังก์ชันนี้เรียกได้ครั้งเดียว'
+    ],
+    ans: 1,
+    explain: 'void = ไม่คืนค่า — เหมาะกับฟังก์ชันที่ "ทำงาน" อย่างเดียว เช่น แสดงเมนู พิมพ์หัวรายงาน — เอาผลไปเก็บใส่ตัวแปรไม่ได้เพราะไม่มีอะไรส่งกลับมา'
+  },
+  {
+    q: 'จาก float shipping_fee(float weight) การเรียก shipping_fee(3.5) — ข้อใดถูกต้อง?',
+    opts: [
+      'weight คืออาร์กิวเมนต์, 3.5 คือพารามิเตอร์',
+      'weight คือพารามิเตอร์, 3.5 คืออาร์กิวเมนต์',
+      'ทั้งคู่เรียกว่าพารามิเตอร์',
+      'ทั้งคู่เรียกว่าอาร์กิวเมนต์'
+    ],
+    ans: 1,
+    explain: 'พารามิเตอร์คือ "ช่องรับ" ในนิยาม (weight) ส่วนอาร์กิวเมนต์คือ "ค่าจริง" ที่ส่งตอนเรียก (3.5) — จำ: Parameter อยู่กับนิยาม, Argument อยู่กับการเรียก'
+  },
+  {
+    q: 'ความแตกต่างสำคัญที่สุดระหว่าง return กับ printf ในฟังก์ชันคือข้อใด?',
+    opts: [
+      'return แสดงผลสวยกว่า printf',
+      'printf เร็วกว่า return',
+      'return ส่งค่ากลับให้โค้ดที่เรียกเอาไปใช้ต่อได้ ส่วน printf แค่แสดงขึ้นจอ',
+      'ใช้แทนกันได้ทุกกรณี'
+    ],
+    ans: 2,
+    explain: 'return คือการส่งมอบผลลัพธ์ให้โปรแกรม (เก็บใส่ตัวแปร คำนวณต่อได้) ส่วน printf ส่งให้ "ตาคน" เท่านั้น — ฟังก์ชันคำนวณที่ดีควร return แล้วให้ผู้เรียกตัดสินใจเองว่าจะแสดงหรือไม่'
+  },
+  {
+    q: 'ทำไมธรรมเนียมเริ่มต้นจึงเขียนนิยามฟังก์ชันไว้ "เหนือ" main()?',
+    opts: [
+      'เพื่อความสวยงามเท่านั้น',
+      'เพราะคอมไพเลอร์อ่านบนลงล่าง ต้องรู้จักฟังก์ชันก่อนถึงจุดที่ถูกเรียก',
+      'เพราะ main ต้องอยู่บรรทัดสุดท้ายของไฟล์เสมอ',
+      'เพราะฟังก์ชันที่อยู่ใต้ main จะรันก่อน'
+    ],
+    ans: 1,
+    explain: 'คอมไพเลอร์อ่านไฟล์จากบนลงล่าง — เจอการเรียกฟังก์ชันที่ยังไม่รู้จักจะฟ้องหรือเตือนทันที จึงนิยามไว้ก่อน main (ภายหลังจะได้เรียนการประกาศโครงหรือ prototype เพื่อแก้ข้อจำกัดนี้)'
+  },
+  {
+    q: 'ไล่โค้ด: int twice(int x) { return x * 2; } แล้วรัน printf("%d", twice(3) + 1); จะแสดงค่าใด?',
+    opts: ['6', '7', '61', 'คอมไพล์ไม่ผ่าน'],
+    ans: 1,
+    explain: 'twice(3) คืนค่า 6 กลับมา แล้วบวก 1 ได้ 7 — เห็นพลังของ return ไหม? ค่าที่คืนมาเอาไปคำนวณต่อในนิพจน์ได้เลย ถ้าข้างในเป็น printf จะทำแบบนี้ไม่ได้'
+  },
+  {
+    q: 'ตัวแปรที่ประกาศ "ภายในฟังก์ชัน" มีคุณสมบัติอย่างไร?',
+    opts: [
+      'ใช้ได้ทุกที่ในโปรแกรม',
+      'เป็น local — ใช้ได้เฉพาะในฟังก์ชันนั้น และหายไปเมื่อฟังก์ชันจบ',
+      'ถูกเก็บถาวรจนปิดเครื่อง',
+      'ใช้ได้ในฟังก์ชันอื่นที่นิยามไฟล์เดียวกัน'
+    ],
+    ans: 1,
+    explain: 'ตัวแปร local เกิดเมื่อฟังก์ชันถูกเรียกและตายเมื่อฟังก์ชันจบ — อ้างถึงจากข้างนอกจะคอมไพล์ไม่ผ่าน (undeclared) อยากได้ค่าต้องส่งออกทาง return เท่านั้น'
+  },
+  {
+    q: 'จาก greet.c ในบทเรียน (นิยาม greet บรรทัด 1–2, main บรรทัด 3, เรียก 2 ครั้งบรรทัด 4–5) ลำดับบรรทัดที่ "ทำงานจริง" คือข้อใด?',
+    opts: ['1 → 2 → 3 → 4 → 5 → 6', '1 → 3 → 4 → 2 → 5 → 2 → 6', '3 → 4 → 5 → 6 → 1 → 2', '2 → 2 → 4 → 5 → 6'],
+    ans: 1,
+    explain: 'นิยามแค่ถูกจำ (บรรทัด 2 ยังไม่ทำ) → main เริ่ม → เรียกครั้งแรกกระโดดเข้าบรรทัด 2 → กลับมาเรียกครั้งสอง → บรรทัด 2 อีกรอบ → จบ — ลองกดตัวไล่เส้นทางในบทเรียนดูอีกครั้งได้'
+  },
+  {
+    q: 'เหตุผลข้อใด "ไม่ใช่" ประโยชน์ของการแบ่งโปรแกรมเป็นฟังก์ชัน?',
+    opts: [
+      'ลดการเขียนโค้ดซ้ำ แก้ที่เดียวมีผลทุกจุด',
+      'อ่านและแบ่งงานในทีมง่ายขึ้น',
+      'ทดสอบแยกทีละชิ้นได้',
+      'ทำให้โปรแกรมรันเร็วขึ้นเสมอ'
+    ],
     ans: 3,
-    explain: 'ลูปนอก 3 รอบ × ลูปใน 4 รอบ = 12 ครั้ง — ลูปนอกหมุน 1 ครั้ง ลูปในต้องหมุนจนครบชุดของมันก่อนเสมอ เหมือนเข็มชั่วโมงกับเข็มนาที'
+    explain: 'ฟังก์ชันไม่ได้ทำให้โปรแกรมเร็วขึ้น (จริง ๆ มีต้นทุนการเรียกนิดหน่อยด้วยซ้ำ) — ประโยชน์ของมันคือเรื่อง "คน": ลดซ้ำ อ่านง่าย แบ่งงานได้ ทดสอบเป็นชิ้น'
   },
   {
-    q: 'int count = 10; while (count > 7) { printf("%d ", count); count--; } แสดงผลว่าอะไร?',
-    opts: ['10 9 8 7', '10 9 8', '9 8 7', '10 9 8 7 6'],
-    ans: 1,
-    explain: 'เช็คก่อนทำ: 10 > 7 พิมพ์ 10 → 9 > 7 พิมพ์ 9 → 8 > 7 พิมพ์ 8 → ลดเหลือ 7 แล้ว 7 > 7 ได้ 0 ออกจากลูป — 7 จึงไม่ถูกพิมพ์'
-  },
-  {
-    q: 'คำสั่ง i++; มีความหมายเหมือนข้อใด?',
-    opts: ['i = i + 1;', 'i = 1;', 'i = i * 2;', 'printf("%d", i);'],
-    ans: 0,
-    explain: 'i++ คือตัวย่อของ i = i + 1 (และ i-- คือลบหนึ่ง) — เป็นเอกลักษณ์ภาษาซีที่เจอทุกหัวลูป for ชื่อภาษา C++ ก็มาจากตัวดำเนินการนี้!'
-  },
-  {
-    q: 'จากตัวสแกนหาค่าสูงสุดในบทเรียน ทำไมต้องตั้ง max_t = temps[0]; ก่อนเริ่มลูป?',
-    opts: [
-      'เพราะ temps[0] เป็นค่ามากที่สุดเสมอ',
-      'เพื่อให้มี "แชมป์ตั้งต้น" ไว้เปรียบเทียบกับค่าถัด ๆ ไป',
-      'เพราะภาษาซีบังคับให้ทำ',
-      'เพื่อให้ลูปวนเร็วขึ้น'
-    ],
-    ans: 1,
-    explain: 'การเปรียบเทียบต้องมีคู่เทียบ — ให้ตัวแรกเป็นแชมป์ชั่วคราว แล้ววนเทียบตัวที่เหลือ ใครมากกว่าก็ขึ้นแทน ครบลูปแชมป์คือค่าสูงสุดจริง (ถ้าตั้ง max_t = 0 จะพังทันทีเมื่อข้อมูลติดลบทั้งชุด!)'
+    q: 'ไล่โค้ด: int add(int a, int b) { return a + b; } แล้ว int x = add(2, 3); int y = add(x, 4); สุดท้าย y มีค่าใด?',
+    opts: ['5', '7', '9', '24'],
+    ans: 2,
+    explain: 'add(2, 3) คืน 5 เก็บใน x → add(x, 4) = add(5, 4) คืน 9 — การส่ง "ผลของฟังก์ชัน" ต่อเป็นอาร์กิวเมนต์ของรอบถัดไป คือท่าประกอบร่างที่ใช้ทุกวันในงานจริง'
   }
 ];

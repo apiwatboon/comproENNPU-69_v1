@@ -1,5 +1,5 @@
 /* ============================================================
-   week02.js — บทที่ 2: องค์ประกอบของระบบคอมพิวเตอร์
+   week02.js — คาบที่ 2: องค์ประกอบของระบบคอมพิวเตอร์
    (เครื่องแปลงเลขฐานแบบโต้ตอบ, คำถามแบบทดสอบ)
    ============================================================ */
 
@@ -179,6 +179,76 @@
 
   input.addEventListener('input', renderOut);
   renderOut();
+})();
+
+
+// ---------- กิจกรรม: encode ข้อความ (A-Z + วรรค) -> ฐาน 2 / ฐาน 16 ----------
+(function encodeTool() {
+  const input = document.getElementById('encInput');
+  const binOut = document.getElementById('encBin');
+  const hexOut = document.getElementById('encHex');
+  const hint = document.getElementById('encHint');
+  const clearBtn = document.getElementById('encClear');
+  if (!input || !binOut || !hexOut) return;
+  const HINT_DEFAULT = 'พิมพ์ได้เฉพาะ A-Z และเว้นวรรค (พิมพ์เล็กจะแปลงเป็นตัวใหญ่ให้อัตโนมัติ)';
+  const EMPTY_MSG = 'ผลลัพธ์จะขึ้นที่นี่เมื่อพิมพ์ข้อความ...';
+  function setEmpty() {
+    binOut.textContent = EMPTY_MSG; hexOut.textContent = EMPTY_MSG;
+    binOut.classList.add('empty'); hexOut.classList.add('empty');
+  }
+  function render() {
+    const raw = input.value;
+    const cleaned = raw.toUpperCase().replace(/[^A-Z ]/g, '');
+    if (cleaned !== raw) {
+      const pos = input.selectionStart;
+      input.value = cleaned;
+      const removed = raw.length - cleaned.length;
+      try { input.setSelectionRange(pos - removed, pos - removed); } catch (e) {}
+      if (removed > 0 && hint) { hint.textContent = 'ตัดอักขระที่ไม่ใช่ A-Z หรือเว้นวรรคออกให้แล้ว'; hint.classList.add('warn'); }
+    } else if (hint) { hint.textContent = HINT_DEFAULT; hint.classList.remove('warn'); }
+    if (!cleaned) { setEmpty(); return; }
+    const bins = [], hexes = [];
+    for (const ch of cleaned) {
+      const code = ch.charCodeAt(0);
+      bins.push(code.toString(2).padStart(8, '0'));
+      hexes.push(code.toString(16).toUpperCase().padStart(2, '0'));
+    }
+    binOut.textContent = bins.join(' '); hexOut.textContent = hexes.join(' ');
+    binOut.classList.remove('empty'); hexOut.classList.remove('empty');
+  }
+  document.querySelectorAll('.enc-copy').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      const target = document.getElementById(btn.dataset.target);
+      if (!target || target.classList.contains('empty')) return;
+      const text = target.textContent;
+      const label = btn.querySelector('span');
+      const original = label ? label.textContent : '';
+      const flashDone = function () {
+        btn.classList.add('done');
+        if (label) label.textContent = 'คัดลอกแล้ว!';
+        setTimeout(function () { btn.classList.remove('done'); if (label) label.textContent = original; }, 1400);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(flashDone).catch(function () { fallbackCopy(text); flashDone(); });
+      } else { fallbackCopy(text); flashDone(); }
+    });
+  });
+  function fallbackCopy(text) {
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+  if (clearBtn) {
+    clearBtn.addEventListener('click', function () {
+      input.value = '';
+      if (hint) { hint.textContent = HINT_DEFAULT; hint.classList.remove('warn'); }
+      setEmpty(); input.focus();
+    });
+  }
+  input.addEventListener('input', render);
+  setEmpty();
 })();
 
 // ---------- การบวกเลขฐานสอง: บวกทีละหลัก + ตัวทด ----------
@@ -572,7 +642,7 @@
   setTimeout(layoutBuses, 500);
 })();
 
-// ---------- คำถามแบบทดสอบท้ายบท (เรนเดอร์โดย quiz.js) ----------
+// ---------- คำถามแบบทดสอบท้ายคาบ (เรนเดอร์โดย quiz.js) ----------
 window.QUIZ_QUESTIONS = [
   {
     q: 'องค์ประกอบของ "ระบบคอมพิวเตอร์" ที่ครบถ้วน ประกอบด้วยอะไรบ้าง?',
@@ -655,3 +725,389 @@ window.QUIZ_QUESTIONS = [
     explain: 'ในฐานสอง 1 + 1 = 10 คือได้ 0 แล้ว "ทด" 1 ขึ้นหลักหน้า — เหมือนฐานสิบที่ 9 + 1 = 10 · การบวกแบบนี้คืองานหลักของ ALU ใน CPU',
   },
 ];
+
+
+// ---------- อนิเมชัน bandwidth: บิต (1 จุด = 1 bit) วิ่งจากเสาสัญญาณเข้ามือถือ + ถังข้อมูลที่ใช้ ----------
+(function bandwidthDemo() {
+  const canvas = document.getElementById('bwCanvas');
+  const tank = document.getElementById('bwTank');
+  const input = document.getElementById('bwInput');
+  if (!canvas || !tank || !input) return;
+  const rateEl = document.getElementById('bwRate');
+  const usedEl = document.getElementById('bwUsed');
+  const perSecEl = document.getElementById('bwPerSec');
+  const noteEl = document.getElementById('bwNote');
+  const clearBtn = document.getElementById('bwClear');
+  const toggleBtn = document.getElementById('bwToggle');
+  const presets = document.querySelectorAll('.bw-preset');
+  const ctx = canvas.getContext('2d');
+
+  const TRAVEL = 1.15, MAX_DOTS = 170, SPAWN_CAP = 110, EYE_COUNT = 15, STREAM = 60, TANK_CAP = 320;
+  let rate = 8, dots = [], spawnAcc = 0, realBits = 0, shownDots = 0, overflowEl = null;
+  let running = false, raf = null, last = performance.now();
+  let dpr = 1, W = 0, H = 0, sprite = null, spriteR = 0;
+
+  function makeSprite() {
+    const r = Math.round(6 * dpr); spriteR = r;
+    const c = document.createElement('canvas'); c.width = c.height = r * 2;
+    const cx = c.getContext('2d');
+    const g = cx.createRadialGradient(r, r, 0, r, r, r);
+    g.addColorStop(0, 'rgba(150,240,255,1)');
+    g.addColorStop(0.35, 'rgba(34,211,238,0.95)');
+    g.addColorStop(1, 'rgba(34,211,238,0)');
+    cx.fillStyle = g; cx.beginPath(); cx.arc(r, r, r, 0, Math.PI * 2); cx.fill();
+    sprite = c;
+  }
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const rect = canvas.getBoundingClientRect();
+    W = Math.max(1, Math.round(rect.width * dpr));
+    H = Math.max(1, Math.round(rect.height * dpr));
+    canvas.width = W; canvas.height = H; makeSprite();
+  }
+  function fmtInt(n) { return Math.floor(n).toLocaleString('en-US'); }
+  function fmtData(bits) {
+    const B = bits / 8; let big;
+    if (B < 1024) big = (B < 10 ? B.toFixed(1) : Math.round(B)) + ' B';
+    else if (B < 1048576) big = (B / 1024).toFixed(1) + ' KB';
+    else if (B < 1073741824) big = (B / 1048576).toFixed(2) + ' MB';
+    else big = (B / 1073741824).toFixed(2) + ' GB';
+    return (bits < 100000 ? fmtInt(bits) + ' bit = ' : '') + big;
+  }
+  function setNote() {
+    let msg = '';
+    if (rate <= 0) msg = 'ความเร็ว 0 - ไม่มีบิตวิ่งเข้ามา';
+    else if (rate > STREAM) {
+      msg = 'เร็วเกิน ~' + STREAM + ' จุด/วินาที - ตาแยกจุดไม่ออก เห็นเป็นสายต่อเนื่อง';
+      if (rate > SPAWN_CAP) msg += ' · ของจริง ' + fmtInt(rate) + ' bps เร็วกว่าที่ตาเห็นมาก (สาธิตแค่พอเห็นภาพ แต่ตัวเลขวิ่งจริง)';
+    } else if (rate > EYE_COUNT) msg = '~' + rate + ' จุด/วินาที เริ่มเร็วจนนับตามแทบไม่ทัน';
+    else msg = 'ส่งทีละบิต ' + rate + ' จุด/วินาที - นับตามได้สบาย';
+    noteEl.textContent = msg;
+  }
+  function setRate(v) {
+    rate = Math.max(0, Math.min(1e9, Math.round(v) || 0));
+    rateEl.textContent = fmtInt(rate);
+    perSecEl.textContent = rate > 0 ? fmtData(rate) + '/วินาที' : '-';
+    setNote();
+    presets.forEach((b) => b.classList.toggle('active', +b.dataset.bps === rate));
+  }
+  function syncTank() {
+    const target = Math.min(Math.floor(realBits), TANK_CAP);
+    while (shownDots < target) {
+      const d = document.createElement('span');
+      d.className = 'bw-bit' + (shownDots % 8 === 7 ? ' byte' : '');
+      if (overflowEl) tank.insertBefore(d, overflowEl); else tank.appendChild(d);
+      shownDots++;
+    }
+    if (realBits > TANK_CAP && !overflowEl) {
+      overflowEl = document.createElement('span');
+      overflowEl.className = 'bw-tank-more';
+      overflowEl.textContent = '... เต็มจอ';
+      tank.appendChild(overflowEl);
+    }
+  }
+  function frame(now) {
+    const dt = Math.min((now - last) / 1000, 0.05); last = now;
+    if (running) {
+      realBits += rate * dt;
+      const vRate = Math.min(rate, SPAWN_CAP);
+      spawnAcc += vRate * dt;
+      while (spawnAcc >= 1) { spawnAcc -= 1; if (dots.length < MAX_DOTS) dots.push({ p: 0, lane: Math.random() * 2 - 1 }); }
+      if (dots.length >= MAX_DOTS) spawnAcc = 0;
+    }
+    const step = dt / TRAVEL;
+    for (let i = dots.length - 1; i >= 0; i--) { dots[i].p += step; if (dots[i].p >= 1) dots.splice(i, 1); }
+    syncTank();
+    usedEl.textContent = fmtData(realBits);
+    perSecEl.textContent = rate > 0 ? fmtData(rate) + '/วินาที' : '-';
+    ctx.clearRect(0, 0, W, H);
+    const stream = rate > STREAM;
+    if (stream) {
+      const grad = ctx.createLinearGradient(0, 0, W, 0);
+      grad.addColorStop(0, 'rgba(34,211,238,0)');
+      grad.addColorStop(0.5, 'rgba(34,211,238,0.5)');
+      grad.addColorStop(1, 'rgba(34,211,238,0)');
+      ctx.strokeStyle = grad; ctx.lineWidth = 2 * dpr;
+      ctx.beginPath(); ctx.moveTo(0, H / 2); ctx.lineTo(W, H / 2); ctx.stroke();
+    }
+    const amp = H * 0.2;
+    for (const d of dots) { const x = d.p * W; const y = H / 2 + d.lane * amp; ctx.drawImage(sprite, x - spriteR, y - spriteR); }
+    if (running || dots.length > 0) raf = requestAnimationFrame(frame); else raf = null;
+  }
+  const PLAY = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4v16l13-8z"/></svg>';
+  const PAUSE = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>';
+  function setToggle() {
+    toggleBtn.classList.toggle('running', running);
+    toggleBtn.innerHTML = running ? PAUSE : PLAY;
+    toggleBtn.setAttribute('aria-label', running ? 'หยุด' : 'เริ่ม');
+    toggleBtn.title = running ? 'หยุด' : 'เริ่ม';
+  }
+  function start() { if (running) return; running = true; last = performance.now(); setToggle(); if (!raf) raf = requestAnimationFrame(frame); }
+  function stop() { running = false; setToggle(); }
+  toggleBtn.addEventListener('click', function () { running ? stop() : start(); });
+  clearBtn.addEventListener('click', function () {
+    realBits = 0; shownDots = 0; dots = []; spawnAcc = 0; overflowEl = null;
+    tank.innerHTML = ''; usedEl.textContent = '0 bit = 0 B'; ctx.clearRect(0, 0, W, H);
+  });
+  input.addEventListener('input', function () { setRate(parseInt(input.value, 10)); });
+  presets.forEach(function (b) { b.addEventListener('click', function () { const v = parseInt(b.dataset.bps, 10); input.value = v; setRate(v); }); });
+  window.addEventListener('resize', resize);
+  resize(); setRate(8); setToggle();
+})();
+
+
+// ---------- WOW: เครื่องนับหลายฐาน — จุดบิต + เปรียบเทียบ ฐาน 2/10/16 + การทดขึ้นหลัก ----------
+(function multiBaseCounter() {
+  const dotsEl = document.getElementById('mbaseDots');
+  const countEl = document.getElementById('mbaseCount');
+  const binEl = document.getElementById('mbaseBin');
+  const decEl = document.getElementById('mbaseDec');
+  const hexEl = document.getElementById('mbaseHex');
+  const note = document.getElementById('mbaseNote');
+  if (!dotsEl || !binEl) return;
+  let count = 0;
+  let prev = { 2: '', 10: '', 16: '' };
+  const CAP = 64;
+
+  function digitsHtml(str, prevStr) {
+    let h = '';
+    for (let i = 0; i < str.length; i++) {
+      const ch = str[i];
+      const pj = prevStr.length - (str.length - i);
+      const pch = (pj >= 0) ? prevStr[pj] : null;
+      let cls = 'mbd';
+      if (pch === null) cls += ' neww';                              // หลักใหม่ที่เพิ่งเกิด
+      else if (pch !== ch) cls += (ch === '0' && pch !== '0') ? ' carried' : ' changed'; // พลิกเป็น 0 (ทดออก) vs เปลี่ยนค่า
+      h += '<span class="' + cls + '">' + ch + '</span>';
+    }
+    return h;
+  }
+  // ---- จุดบิตแบบ incremental: จุดเดิมค้างนิ่ง เพิ่ม=เด้งเข้า ลด=หายออก ----
+  function countDots() { return dotsEl.querySelectorAll('.mbase-dot:not(.leaving)').length; }
+  function addDot() {
+    const groups = dotsEl.querySelectorAll('.mbase-dot-group');
+    let g = groups.length ? groups[groups.length - 1] : null;
+    if (!g || g.querySelectorAll('.mbase-dot:not(.leaving)').length >= 5) {   // กลุ่มละ 5
+      g = document.createElement('span'); g.className = 'mbase-dot-group'; dotsEl.appendChild(g);
+    }
+    const d = document.createElement('span'); d.className = 'mbase-dot'; g.appendChild(d);
+  }
+  function removeDot() {
+    const dots = dotsEl.querySelectorAll('.mbase-dot:not(.leaving)');
+    if (!dots.length) return;
+    const d = dots[dots.length - 1], g = d.parentElement;
+    d.classList.add('leaving');
+    setTimeout(function () { d.remove(); if (g && !g.querySelector('.mbase-dot')) g.remove(); }, 200);
+  }
+  function updateDots() {
+    let empty = dotsEl.querySelector('.mbase-empty');
+    if (count === 0) {
+      dotsEl.querySelectorAll('.mbase-dot-group, .mbase-more').forEach(function (e) { e.remove(); });
+      if (!empty) { empty = document.createElement('span'); empty.className = 'mbase-empty'; empty.textContent = '0 จุด — กด + 1 เพื่อเริ่มนับ'; dotsEl.appendChild(empty); }
+      return;
+    }
+    if (empty) empty.remove();
+    const target = Math.min(count, CAP);
+    let cur = countDots();
+    while (cur < target) { addDot(); cur++; }
+    while (cur > target) { removeDot(); cur--; }
+    let more = dotsEl.querySelector('.mbase-more');
+    if (count > CAP) {
+      if (!more) { more = document.createElement('span'); more.className = 'mbase-more'; dotsEl.appendChild(more); }
+      more.textContent = '+ อีก ' + (count - CAP) + ' จุด';
+    } else if (more) more.remove();
+  }
+  const timers = { 2: null, 10: null, 16: null };
+  function clearTimers() {
+    [2, 10, 16].forEach(function (b) { if (timers[b]) { clearTimeout(timers[b]); timers[b] = null; } });
+    [binEl, decEl, hexEl].forEach(function (el) { el.querySelectorAll('.mbase-carry').forEach(function (t) { t.remove(); }); });
+  }
+  function baseStr(b) { return b === 10 ? String(count) : count.toString(b).toUpperCase(); }
+
+  function renderInstant() {
+    binEl.innerHTML = digitsHtml(baseStr(2), prev[2]);
+    decEl.innerHTML = digitsHtml(baseStr(10), prev[10]);
+    hexEl.innerHTML = digitsHtml(baseStr(16), prev[16]);
+    prev = { 2: baseStr(2), 10: baseStr(10), 16: baseStr(16) };
+  }
+  function draw() { clearTimers(); updateDots(); countEl.textContent = count; renderInstant(); }
+
+  // ---- การทดวิ่งไปหลักหน้า: หลักเต็ม→0, "1" วิ่งไปซ้าย, แล้วหลักหน้าค่อยเพิ่ม ----
+  function oldCharAt(oldStr, newLen, i) { const pj = oldStr.length - (newLen - i); return pj >= 0 ? oldStr[pj] : null; }
+  function intermediateHtml(oldStr, newStr, landingIdx, hasNewLead) {
+    let h = '';
+    for (let i = 0; i < newStr.length; i++) {
+      if (i > landingIdx) h += '<span class="mbd carried">0</span>';                         // หลักที่พลิกเป็น 0
+      else if (i === landingIdx) h += '<span class="mbd hold">' + ((hasNewLead && i === 0) ? '' : (oldCharAt(oldStr, newStr.length, i) || '0')) + '</span>';  // ยังเป็นค่าเดิม/ยังไม่โผล่
+      else h += '<span class="mbd">' + newStr[i] + '</span>';                                 // หลักที่ไม่เปลี่ยน
+    }
+    return h;
+  }
+  function spawnCarryToken(el, landingIdx) {
+    const cells = el.querySelectorAll('.mbd');
+    if (cells.length < 2) return;
+    const last = cells[cells.length - 1], land = cells[landingIdx] || cells[0];
+    el.style.position = 'relative';
+    const token = document.createElement('span');
+    token.className = 'mbase-carry'; token.textContent = '1';
+    el.appendChild(token);
+    token.style.left = (last.offsetLeft + last.offsetWidth / 2) + 'px';
+    void token.offsetWidth;
+    token.style.left = (land.offsetLeft + land.offsetWidth / 2) + 'px';
+    setTimeout(function () { token.remove(); }, 480);
+  }
+  function animateCarryBase(el, b, oldStr, newStr) {
+    let tz = 0; for (let i = newStr.length - 1; i >= 0 && newStr[i] === '0'; i--) tz++;
+    const hasNewLead = newStr.length > oldStr.length;
+    const landingIdx = newStr.length - 1 - tz;
+    el.innerHTML = intermediateHtml(oldStr, newStr, landingIdx, hasNewLead);
+    requestAnimationFrame(function () { spawnCarryToken(el, landingIdx); });
+    timers[b] = setTimeout(function () { el.innerHTML = digitsHtml(newStr, oldStr); timers[b] = null; }, 430);
+  }
+  function carryNote(v) {
+    const rolled = [];
+    [[2, 'ฐาน 2', '1'], [10, 'ฐาน 10', '9'], [16, 'ฐาน 16', 'F']].forEach(function (t) {
+      if (v % t[0] === t[0] - 1) rolled.push('<b>' + t[1] + '</b> เต็มหลัก (' + t[2] + ') &rarr; หลักนี้เป็น 0 แล้วทด 1 วิ่งไปหลักหน้า');
+    });
+    if (!rolled.length) note.innerHTML = 'เพิ่มอีก 1 จุด &rarr; ทุกฐานเพิ่มหลักขวาทีละ 1 (ยังไม่เต็ม เลยไม่ต้องทดหลัก)';
+    else note.innerHTML = '<b style="color:var(--amber)">ทดขึ้นหลัก!</b> ' + rolled.join(' · ');
+  }
+
+  document.getElementById('mbasePlus1').addEventListener('click', function () {
+    clearTimers();
+    const v = count; count++;
+    updateDots(); countEl.textContent = count;
+    [[binEl, 2], [decEl, 10], [hexEl, 16]].forEach(function (t) {
+      const el = t[0], b = t[1], oldStr = prev[b], newStr = baseStr(b);
+      if (v % b === b - 1) animateCarryBase(el, b, oldStr, newStr);
+      else el.innerHTML = digitsHtml(newStr, oldStr);
+      prev[b] = newStr;
+    });
+    carryNote(v);
+  });
+  document.getElementById('mbaseMinus1').addEventListener('click', function () { if (count > 0) { count--; draw(); note.textContent = 'ลบ 1 จุด (ทำย้อนกลับการนับ)'; } });
+  document.getElementById('mbasePlus8').addEventListener('click', function () { count += 8; draw(); note.innerHTML = 'เพิ่มทีเดียว 8 จุด — ในฐาน 2 คือทด 1 ขึ้นไปหลักที่ 4 (2×2×2 = 8 = <b class="mono">1000</b>)'; });
+  document.getElementById('mbaseReset').addEventListener('click', function () { count = 0; prev = { 2: '', 10: '', 16: '' }; draw(); note.textContent = 'รีเซ็ตกลับเป็น 0'; });
+  draw();
+})();
+
+
+// ---------- WOW: บวกเลขฐานสอง (วงจรบวกของ ALU) — ทดทีละหลัก ----------
+(function binAdder() {
+  const grid = document.getElementById('baddGrid');
+  const note = document.getElementById('baddNote');
+  const aEl = document.getElementById('baddAval'), bEl = document.getElementById('baddBval');
+  const stepBtn = document.getElementById('baddStep'), resetBtn = document.getElementById('baddReset');
+  if (!grid || !stepBtn) return;
+  const N = 4, W = 5;                 // 4 บิตอินพุต, แสดง 5 หลัก (เผื่อทดขึ้น MSB)
+  let A = 6, B = 5;
+  let carry, sum, col, done;
+
+  function bits(v) { return [0].concat(v.toString(2).padStart(N, '0').split('').map(Number)); }
+  function cell(txt, cls) { return '<span class="badd-cell ' + cls + '">' + txt + '</span>'; }
+  function reset() {
+    carry = [0, 0, 0, 0, 0]; sum = [null, null, null, null, null]; col = -1; done = false;
+    aEl.textContent = A; bEl.textContent = B;
+    stepBtn.textContent = 'ทดทีละหลัก ›';
+    note.innerHTML = 'A = ' + A + ' , B = ' + B + ' — กด “ทดทีละหลัก” เพื่อบวกจากหลักขวาสุด (LSB) ไปซ้าย เหมือนที่ ALU ทำ';
+    render();
+  }
+  function render() {
+    const a = bits(A), b = bits(B);
+    let cr = '', ar = '', br = '', sr = '';
+    for (let p = 0; p < W; p++) {
+      const cur = (p === col) ? ' cur' : '';
+      cr += cell(carry[p] ? '1' : '', 'carry' + (carry[p] ? ' has' : '') + cur);
+      ar += cell(p === 0 ? '' : a[p], (p === 0 ? 'ghost' : '') + cur);
+      br += cell(p === 0 ? '' : b[p], (p === 0 ? 'ghost' : '') + cur);
+      sr += cell(sum[p] === null ? '' : sum[p], 'sum' + (sum[p] !== null ? ' filled' : '') + cur);
+    }
+    grid.innerHTML =
+      '<div class="badd-row carryrow"><span class="badd-label">ตัวทด →</span>' + cr + '</div>' +
+      '<div class="badd-row arow"><span class="badd-label">A = ' + A + '</span>' + ar + '</div>' +
+      '<div class="badd-row brow"><span class="badd-label">+ B = ' + B + '</span>' + br + '</div>' +
+      '<div class="badd-sep"></div>' +
+      '<div class="badd-row sumrow"><span class="badd-label">ผลรวม</span>' + sr + '</div>';
+  }
+  function step() {
+    if (done) return;
+    if (col < 0) col = W - 1;
+    const a = bits(A), b = bits(B);
+    const cin = carry[col];
+    const s = a[col] + b[col] + cin;
+    sum[col] = s % 2;
+    if (col > 0) carry[col - 1] = (s >= 2) ? 1 : 0;
+    let msg = 'หลักนี้: ' + a[col] + ' + ' + b[col] + ' + ทด ' + cin + ' = ' + s + ' → ';
+    if (s >= 2) msg += 'เขียน <b style="color:var(--green)">' + (s % 2) + '</b> แล้ว<b style="color:var(--amber)">ทด 1</b> ขึ้นหลักหน้า';
+    else msg += 'เขียน <b style="color:var(--green)">' + s + '</b> (ไม่ต้องทด)';
+    if (col === 0) { done = true; msg += ' · <b style="color:var(--green)">เสร็จ! ' + A + ' + ' + B + ' = ' + (A + B) + '</b>'; stepBtn.textContent = '✓ เสร็จ'; }
+    render();
+    if (col > 0) col--;
+    note.innerHTML = msg;
+  }
+  document.querySelectorAll('.badd-sbtn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      const v = btn.dataset.v, d = +btn.dataset.d;
+      if (v === 'A') A = Math.max(0, Math.min(15, A + d)); else B = Math.max(0, Math.min(15, B + d));
+      reset();
+    });
+  });
+  stepBtn.addEventListener('click', step);
+  resetBtn.addEventListener('click', reset);
+  reset();
+})();
+
+
+// ---------- WOW: ประกอบบิตเป็นไบต์ — 1 -> 2 -> 4 -> 8 บิต ----------
+(function byteBuilder() {
+  const tabs = document.getElementById('bybTabs');
+  const bitsEl = document.getElementById('bybBits');
+  const statEl = document.getElementById('bybStat');
+  const note = document.getElementById('bybNote');
+  if (!tabs || !bitsEl) return;
+  let n = 1, val = [];
+
+  function render(pop) {
+    let h = '';
+    for (let i = 0; i < n; i++) {
+      const pv = Math.pow(2, n - 1 - i);
+      if (n === 8 && i === 4) h += '<span class="byb-gap"></span>';
+      h += '<div class="byb-cell' + (pop ? ' pop' : '') + '" data-i="' + i + '" style="animation-delay:' + (i * 0.04) + 's">' +
+        '<div class="byb-pv">' + pv + '</div>' +
+        '<div class="byb-box' + (val[i] ? ' on' : '') + '">' + val[i] + '</div></div>';
+    }
+    bitsEl.innerHTML = h;
+    bitsEl.querySelectorAll('.byb-box').forEach(function (box) {
+      box.addEventListener('click', function () {
+        const i = +box.parentElement.dataset.i;
+        val[i] = val[i] ? 0 : 1;
+        box.classList.toggle('on', !!val[i]);
+        box.textContent = val[i];
+        updateStat();
+      });
+    });
+    updateStat();
+  }
+  function updateStat() {
+    const count = Math.pow(2, n);
+    let dec = 0;
+    for (let i = 0; i < n; i++) dec += val[i] * Math.pow(2, n - 1 - i);
+    const signedVal = (n >= 2 && val[0] === 1) ? dec - count : dec;
+    const signedTxt = (n >= 2) ? ' · <b style="color:var(--pink)">signed = ' + signedVal + '</b>' : '';
+    statEl.innerHTML = n + ' บิต · <span class="big">2^' + n + ' = ' + count + '</span> ค่า · <b style="color:var(--cyan)">unsigned = ' + dec + '</b>' + signedTxt;
+    let msg;
+    if (n === 1) msg = '1 บิต = สวิตช์ไฟ 1 ดวง — เก็บได้แค่ <b>2 ค่า</b> (0 หรือ 1)';
+    else if (n === 2) msg = '2 บิต → 2×2 = <b>4 ค่า</b> (00, 01, 10, 11) — <b style="color:var(--violet)">เพิ่มทุก 1 บิต ค่าที่เก็บได้ ×2</b>';
+    else if (n === 4) msg = '4 บิต = 1 “นิบเบิล” → <b style="color:var(--cyan)">unsigned 0–15</b> · <b style="color:var(--pink)">signed −8 ถึง 7</b> (บิตซ้ายสุด = 1 → ค่าติดลบ แบบ two’s complement) · เท่ากับเลข<b>ฐานสิบหก 1 หลัก</b> (0–F)';
+    else msg = '<b style="color:var(--violet)">8 บิต = 1 ไบต์</b> → <b style="color:var(--cyan)">unsigned 0–255</b> · <b style="color:var(--pink)">signed −128 ถึง 127</b> — เก็บ 1 ตัวอักษร ASCII (เช่น \'A\' = 65) หรือจำนวนเต็มเล็ก ๆ';
+    note.innerHTML = msg;
+  }
+  function setN(nn) { n = nn; val = new Array(n).fill(0); render(true); }
+  tabs.querySelectorAll('button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      tabs.querySelectorAll('button').forEach(function (x) { x.classList.remove('active'); });
+      b.classList.add('active'); setN(+b.dataset.n);
+    });
+  });
+  setN(1);
+})();

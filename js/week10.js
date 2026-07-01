@@ -1,6 +1,6 @@
 /* ============================================================
-   week10.js — บทที่ 10: อาร์เรย์ (ภาษาซี)
-   (ปุ่มรันโค้ด, สนามทดลองอาร์เรย์, เครื่องจัดเรียง Bubble Sort,
+   week10.js — คาบที่ 11: สตริงและการประมวลผลข้อความ (ภาษาซี)
+   (ปุ่มรันโค้ด, เครื่องส่อง char array + \0, เครื่องตรวจรหัสสินค้า,
     คำถามแบบทดสอบ)
    ============================================================ */
 
@@ -23,263 +23,174 @@
   });
 })();
 
-// ---------- สนามทดลองอาร์เรย์: arr[n] = x; n++; / n--; / arr[i] ----------
-(function arrayPlayground() {
-  const boxesEl = document.getElementById('listBoxes');
-  if (!boxesEl) return;
+// ---------- เครื่องส่อง char array: เห็นดัชนี + \0 ปิดท้าย ----------
+(function charArrayInspector() {
+  const textInput = document.getElementById('slText');
+  const boxes = document.getElementById('slBoxes');
+  const result = document.getElementById('slResult');
+  if (!textInput || !boxes) return;
 
-  const valueInput = document.getElementById('lpValue');
-  const indexInput = document.getElementById('lpIndex');
-  const lenEl = document.getElementById('lpLen');
-  const desc = document.getElementById('lpDesc');
-  const CAP = 8;                 // ความจุของ int arr[8]
-  let arr = [12, 7, 25];         // ค่าที่ใช้จริง n ตัวแรก
+  function render() {
+    const s = [...textInput.value];
+    const n = s.length;
 
-  function render(highlightIdx) {
-    boxesEl.innerHTML = '';
-    for (let i = 0; i < CAP; i++) {
+    boxes.innerHTML = '';
+    s.forEach((ch, i) => {
       const box = document.createElement('div');
       box.className = 'machine-io';
-      if (i < arr.length) {
-        box.innerHTML = '<span class="label">[' + i + ']</span>' + arr[i];
-      } else {
-        box.innerHTML = '<span class="label">[' + i + ']</span>?';
-        box.style.opacity = '0.35';
-        box.title = 'ช่องว่างที่ยังไม่ถูกใช้ — ค่าข้างในคือ "ค่าขยะ" ไม่ใช่ศูนย์!';
-      }
-      if (i === highlightIdx) box.style.outline = '2px solid var(--amber)';
-      boxesEl.appendChild(box);
-    }
-    lenEl.textContent = 'arr = {' + arr.join(', ') + '}   |   n = ' + arr.length + '   |   ความจุ 8 ช่อง';
+      box.style.minWidth = '52px';
+      box.style.padding = '10px 12px';
+      box.innerHTML = '<span class="label">[' + i + ']</span>\'' + ch + '\'';
+      boxes.appendChild(box);
+    });
+    // โบกี้ \0 ปิดท้าย — พระเอกของคาบนี้
+    const nul = document.createElement('div');
+    nul.className = 'machine-io';
+    nul.style.minWidth = '52px';
+    nul.style.padding = '10px 12px';
+    nul.style.outline = '2px solid var(--amber)';
+    nul.innerHTML = '<span class="label">[' + n + ']</span>\\0';
+    nul.title = 'อักขระ null ที่คอมไพเลอร์เติมให้ — บอกว่าข้อความจบตรงนี้';
+    boxes.appendChild(nul);
+
+    result.innerHTML = 'strlen(s) = <b style="color:#a7f3d0">' + n + '</b>' +
+      '<span style="color:#94a3b8"> (ไม่นับ \\0)</span> &nbsp;·&nbsp; ' +
+      'ต้องจองอย่างน้อย char s[<b style="color:#fbbf24">' + (n + 1) + '</b>]' +
+      '<span style="color:#94a3b8"> (เผื่อ \\0 หนึ่งช่องเสมอ)</span>';
   }
 
-  document.getElementById('lpAppend').addEventListener('click', () => {
-    if (arr.length >= CAP) {
-      desc.textContent = '💥 อาร์เรย์เต็มแล้ว! arr[8] ไม่มีอยู่จริง — เขียนต่อคือทับหน่วยความจำข้างเคียง (undefined behavior) โปรแกรมจริงต้องตรวจ n < ความจุ ก่อนเสมอ';
-      return;
-    }
-    const v = parseInt(valueInput.value, 10) || 0;
-    arr.push(v);
-    render(arr.length - 1);
-    desc.textContent = 'arr[' + (arr.length - 1) + '] = ' + v + '; n++; → เติมช่องถัดไปแล้วขยับตัวนับ — ท่ามาตรฐานของการ "เพิ่มท้าย" ในภาษาซี';
-    if (typeof gsap !== 'undefined') gsap.from(boxesEl.children[arr.length - 1], { scale: 0.4, duration: 0.4, ease: 'back.out(2.2)' });
-  });
-
-  document.getElementById('lpPop').addEventListener('click', () => {
-    if (!arr.length) {
-      desc.textContent = '⚠️ n เป็น 0 อยู่แล้ว — ลดต่อจะติดลบ แล้วทุกการอ้าง arr[n-1] จะพังหมด ต้องตรวจ n > 0 ก่อน';
-      return;
-    }
-    const v = arr.pop();
-    render();
-    desc.textContent = 'n--; → ตัวนับลดลง ช่องที่เคยเก็บ ' + v + ' ยังอยู่ในหน่วยความจำ แต่ถือว่า "ไม่ใช้แล้ว" — ลบของอาร์เรย์คือแค่เลิกนับ';
-  });
-
-  document.getElementById('lpGet').addEventListener('click', () => {
-    const i = parseInt(indexInput.value, 10);
-    if (isNaN(i)) return;
-    if (i < 0) {
-      render();
-      desc.textContent = '💥 arr[' + i + '] — ภาษาซีไม่มีดัชนีติดลบ! มันจะไปอ่านหน่วยความจำ "ก่อนหน้า" อาร์เรย์ = undefined behavior ได้ค่าขยะหรือพังแบบสุ่ม';
-      return;
-    }
-    if (i >= arr.length) {
-      render(i < CAP ? i : undefined);
-      desc.textContent = '💥 arr[' + i + '] ' + (i < CAP ? 'อยู่ในความจุแต่ยังไม่ถูกใช้ (i >= n) — ได้ "ค่าขยะ" ที่ค้างในหน่วยความจำ' : 'เกินความจุ 8 ช่อง — อ่านล้ำแดนหน่วยความจำคนอื่น') + ' โดยไม่มี error เตือนเลย นี่คือความอันตรายอันดับหนึ่งของอาร์เรย์ซี';
-      return;
-    }
-    render(i);
-    desc.textContent = 'arr[' + i + '] = ' + arr[i] + ' — นับจากหัวโดยเริ่มที่ศูนย์ ช่องที่ใช้ได้ตอนนี้คือ 0 ถึง ' + (arr.length - 1);
-  });
-
+  textInput.addEventListener('input', render);
   render();
 })();
 
-// ---------- เครื่องจัดเรียง Bubble Sort ทีละขั้น ----------
-(function bubbleSortViz() {
-  const barsBox = document.getElementById('sortBars');
-  const btnStep = document.getElementById('sortStep');
-  const btnAuto = document.getElementById('sortAuto');
-  const btnReset = document.getElementById('sortReset');
-  if (!barsBox || !btnStep) return;
+// ---------- เครื่องตรวจรหัสสินค้า XX-9999 (strlen + isupper + isdigit) ----------
+(function productCodeValidator() {
+  const input = document.getElementById('pcInput');
+  const verdict = document.getElementById('pcVerdict');
+  if (!input) return;
 
-  const desc = document.getElementById('sortDesc');
-  const START = [5, 2, 8, 3, 7, 1];
-  let data, bars, i, j, finished, autoTimer = null;
+  const rules = document.querySelectorAll('#pcRules .cond-item');
 
-  function makeBars() {
-    barsBox.innerHTML = '';
-    bars = data.map((v) => {
-      const bar = document.createElement('div');
-      bar.className = 'bar';
-      setBar(bar, v);
-      barsBox.appendChild(bar);
-      return bar;
-    });
-  }
+  // กฎทั้งสี่ ตรวจตามนิยามใน validate_code.c บนหน้า
+  const CHECKS = [
+    (c) => c.length === 7,
+    (c) => c.length >= 2 && /^[A-Z]{2}$/.test(c.slice(0, 2)),
+    (c) => c.length >= 3 && c[2] === '-',
+    (c) => c.length >= 7 && /^[0-9]{4}$/.test(c.slice(3, 7)),
+  ];
 
-  function setBar(bar, v) {
-    bar.style.height = (v * 24 + 28) + 'px';
-    bar.textContent = v;
-  }
-
-  function init() {
-    data = START.slice();
-    i = 0;
-    j = 0;
-    finished = false;
-    stopAuto();
-    btnStep.disabled = false;
-    btnAuto.disabled = false;
-    btnAuto.textContent = '⏩ เล่นอัตโนมัติ';
-    makeBars();
-    desc.textContent = 'ข้อมูลตั้งต้น: {' + data.join(', ') + '} — สีเหลือง = คู่ที่กำลังเทียบ, สีเขียว = เข้าที่แล้ว';
-  }
-
-  function step() {
-    if (finished) return;
-    const n = data.length;
-    bars.forEach((b) => b.classList.remove('compare'));
-
-    bars[j].classList.add('compare');
-    bars[j + 1].classList.add('compare');
-
-    let msg = 'รอบที่ ' + (i + 1) + ': if (arr[' + j + '] > arr[' + (j + 1) + ']) → เทียบ ' + data[j] + ' กับ ' + data[j + 1];
-    if (data[j] > data[j + 1]) {
-      const temp = data[j];           // สลับ 3 จังหวะด้วย temp แบบเดียวกับโค้ดซีบนหน้า
-      data[j] = data[j + 1];
-      data[j + 1] = temp;
-      setBar(bars[j], data[j]);
-      setBar(bars[j + 1], data[j + 1]);
-      msg += ' → จริง สลับด้วย temp! ตอนนี้: {' + data.join(', ') + '}';
-    } else {
-      msg += ' → เท็จ (0) ไม่สลับ';
-    }
-
-    j++;
-    if (j >= n - i - 1) {
-      bars[n - i - 1].classList.add('sorted');
-      msg += ' — จบรอบที่ ' + (i + 1) + ': ตัวใหญ่สุดของรอบ "ลอย" ไปเข้าที่ทางขวาแล้ว';
-      i++;
-      j = 0;
-      if (i >= n - 1) {
-        finished = true;
-        bars.forEach((b) => { b.classList.remove('compare'); b.classList.add('sorted'); });
-        msg = '🎉 เรียงเสร็จ: {' + data.join(', ') + '} — รวมการเทียบทั้งหมด ' + (n * (n - 1) / 2) + ' ครั้ง นี่คือเหตุผลที่ข้อมูลใหญ่ ๆ ต้องใช้อัลกอริทึมฉลาดกว่านี้';
-        btnStep.disabled = true;
-        btnAuto.disabled = true;
-        stopAuto();
+  function render() {
+    const code = input.value;
+    let passAll = true;
+    rules.forEach((el, i) => {
+      const ok = CHECKS[i](code);
+      el.classList.remove('checking', 'matched', 'skipped');
+      if (ok) {
+        el.classList.add('matched');
+        el.style.borderColor = '';
+        el.style.color = '';
+      } else {
+        passAll = false;
+        el.style.borderColor = 'rgba(248, 113, 113, 0.5)';
+        el.style.color = '#fca5a5';
       }
-    }
-    desc.textContent = msg;
+    });
+    verdict.textContent = code === ''
+      ? '— พิมพ์รหัสเพื่อตรวจ —'
+      : passAll
+        ? '✅ is_valid("' + code + '") → 1 (จริง) — รหัสถูกต้องตามรูปแบบ XX-9999 รับเข้าคลังได้'
+        : '❌ is_valid("' + code + '") → 0 (เท็จ) — แก้ตามกฎข้อที่เป็นสีแดงด้านบน';
   }
 
-  function stopAuto() {
-    if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
-    btnAuto.textContent = '⏩ เล่นอัตโนมัติ';
-  }
-
-  btnStep.addEventListener('click', () => { stopAuto(); step(); });
-  btnAuto.addEventListener('click', () => {
-    if (autoTimer) { stopAuto(); return; }
-    btnAuto.textContent = '⏸ หยุดชั่วคราว';
-    autoTimer = setInterval(() => { step(); if (finished) stopAuto(); }, 480);
-  });
-  btnReset.addEventListener('click', init);
-
-  init();
+  input.addEventListener('input', render);
+  render();
 })();
 
-// ---------- คำถามแบบทดสอบท้ายบท (quiz.js เป็นผู้วาดหน้าจอ) ----------
+// ---------- คำถามแบบทดสอบท้ายคาบ (quiz.js เป็นผู้วาดหน้าจอ) ----------
 window.QUIZ_QUESTIONS = [
   {
-    q: 'int items[3] = {10, 20, 30}; — items[1] คือค่าใด?',
-    opts: ['10', '20', '30', 'คอมไพล์ไม่ผ่าน'],
-    ans: 1,
-    explain: 'ดัชนีเริ่มนับที่ 0: items[0] = 10, items[1] = 20 — กฎข้อแรกของอาร์เรย์ที่ทุกคนเคยพลาดอย่างน้อยหนึ่งครั้ง'
-  },
-  {
-    q: 'อาร์เรย์ int scores[5]; สมาชิก "ตัวสุดท้าย" อ้างถึงด้วยข้อใด?',
-    opts: ['scores[5]', 'scores[4]', 'scores[-1]', 'scores[last]'],
-    ans: 1,
-    explain: '5 ช่องมีดัชนี 0–4 ตัวสุดท้ายคือ scores[4] — scores[5] เกินขอบเขต และภาษาซีไม่มีดัชนีติดลบแบบภาษาอื่น'
-  },
-  {
-    q: 'อ้างถึง scores[10] ทั้งที่อาร์เรย์มีแค่ 5 ช่อง ภาษาซีจะทำอย่างไร?',
+    q: 'สตริงในภาษาซีคืออะไรกันแน่?',
     opts: [
-      'ฟ้อง IndexError แล้วหยุดโปรแกรม',
-      'คืนค่า 0 ให้เสมอ',
-      'ไม่เตือนอะไร — อ่าน/เขียนหน่วยความจำข้างเคียง ได้ค่าขยะหรือพังแบบสุ่ม',
-      'ขยายอาร์เรย์ให้อัตโนมัติ'
+      'ชนิดข้อมูล string เหมือนภาษาอื่น',
+      'อาร์เรย์ของ char ที่ปิดท้ายด้วยอักขระ \\0',
+      'ตัวแปร char ตัวเดียวที่เก็บได้หลายอักษร',
+      'ลิสต์ของตัวเลขรหัส ASCII ที่ไม่มีจุดจบ'
     ],
+    ans: 1,
+    explain: 'ภาษาซีไม่มีชนิด string ในตัว — ข้อความคือ char array ธรรมดาที่มีกติกาว่า \\0 ปิดท้ายเพื่อบอกว่าจบตรงไหน ทุกฟังก์ชันสตริงทำงานบนกติกานี้'
+  },
+  {
+    q: 'จะเก็บคำว่า "ENGINE" (6 ตัวอักษร) ต้องประกาศอาร์เรย์อย่างน้อยกี่ช่อง?',
+    opts: ['5', '6', '7', '8'],
     ans: 2,
-    explain: 'ภาษาซีไม่ตรวจขอบเขตให้ — มันทำตามสั่งตรง ๆ คือไปแตะหน่วยความจำตำแหน่งนั้น (undefined behavior) ผู้เขียนต้องคุมขอบเขตเองด้วยเงื่อนไข i < n เสมอ'
+    explain: '6 ตัวอักษร + \\0 อีก 1 = อย่างน้อย char s[7] — ลืมเผื่อช่อง \\0 คือบั๊กสตริงคลาสสิกอันดับหนึ่ง ข้อความจะ "ไม่มีจุดจบ" แล้วลามไปอ่านหน่วยความจำข้างเคียง'
   },
   {
-    q: 'ท่ามาตรฐานของการ "เพิ่มข้อมูลต่อท้าย" อาร์เรย์ (มีตัวนับ n) คือข้อใด?',
-    opts: ['arr.append(x);', 'arr[n] = x; n++;', 'arr += x;', 'push(arr, x);'],
+    q: 'strlen("MOTOR-01") มีค่าเท่าใด?',
+    opts: ['7', '8', '9', 'ขึ้นกับขนาดอาร์เรย์ที่ประกาศ'],
     ans: 1,
-    explain: 'ภาษาซีไม่มี append สำเร็จรูป — วางค่าลงช่องถัดไป arr[n] = x; แล้วขยับตัวนับ n++; (และต้องตรวจก่อนว่า n ยังไม่เกินความจุ!)'
+    explain: 'นับตัวอักษรจริง M-O-T-O-R-(-)-0-1 = 8 ตัว — strlen นับถึงก่อน \\0 และไม่สนใจว่าอาร์เรย์จองไว้ใหญ่แค่ไหน (จอง 100 ช่องก็ได้ 8 เท่าเดิม)'
   },
   {
-    q: 'ไล่โค้ด: int a[4] = {3, 1, 2, 9}; a[1] = a[3]; printf("%d", a[0] + a[1]); — ได้ค่าใด?',
-    opts: ['4', '12', '11', '10'],
+    q: 'char name[20] = "PUMP"; แล้วต้องการเปลี่ยนเป็น "MIXER" — ข้อใดถูกต้อง?',
+    opts: ['name = "MIXER";', 'strcpy(name, "MIXER");', 'name == "MIXER";', 'name[] = "MIXER";'],
     ans: 1,
-    explain: 'a[1] = a[3] คัดลอก 9 ทับช่อง 1 → {3, 9, 2, 9} แล้ว a[0] + a[1] = 3 + 9 = 12 — การอ้างดัชนีคือหัวใจของทุกข้อสอบอาร์เรย์'
+    explain: 'อาร์เรย์กำหนดค่าใหม่ทั้งก้อนด้วย = ไม่ได้ (คอมไพล์ไม่ผ่าน!) ต้องใช้ strcpy คัดลอกเนื้อหาลงไป — = ใช้ได้เฉพาะตอนประกาศครั้งแรกเท่านั้น'
   },
   {
-    q: 'ทำไมภาษาซีต้องเขียนลูปหาผลรวมของอาร์เรย์เอง?',
+    q: 'การตรวจว่ารหัสผ่านที่ผู้ใช้พิมพ์ (pass) ตรงกับ "eng1234" หรือไม่ ข้อใดถูกต้อง?',
     opts: [
-      'เพราะ sum() ของซีช้ามาก',
-      'เพราะภาษาซีไม่มีฟังก์ชัน sum/max/len สำเร็จรูปสำหรับอาร์เรย์',
-      'ไม่จริง — ภาษาซีมี sum() ในตัว',
-      'เพราะอาร์เรย์ซีเก็บตัวเลขไม่ได้'
+      'if (pass == "eng1234")',
+      'if (strcmp(pass, "eng1234") == 0)',
+      'if (strcmp(pass, "eng1234") == 1)',
+      'if (pass.equals("eng1234"))'
     ],
     ans: 1,
-    explain: 'ภาษาซีให้เครื่องมือพื้นฐานแล้วให้เราประกอบเอง: for + ตัวสะสม — ข้อดีคือเข้าใจไส้ในที่ภาษาอื่นซ่อนไว้ และโค้ดเร็วเพราะไม่มีอะไรแอบทำงานเบื้องหลัง'
+    explain: 'strcmp คืน 0 เมื่อเนื้อหา "เท่ากัน" (สวนความรู้สึกแต่ต้องจำ!) — ส่วน == เทียบตำแหน่งกล่องในหน่วยความจำ ไม่ใช่เนื้อหา ได้ผลผิดแบบเงียบ ๆ'
   },
   {
-    q: 'ฟังก์ชัน float average(int scores[], int n) — ทำไมต้องส่งจำนวนสมาชิก n เข้าไปด้วย?',
-    opts: [
-      'เพื่อความสวยงามของโค้ด',
-      'เพราะอาร์เรย์ที่ส่งเข้าฟังก์ชันไม่ได้พกขนาดของตัวเองไปด้วย',
-      'เพราะภาษาซีห้ามฟังก์ชันรับพารามิเตอร์ตัวเดียว',
-      'เพื่อให้ลูปวนเร็วขึ้น'
-    ],
+    q: 'การรับข้อความด้วย scanf ข้อใดถูกต้อง?',
+    opts: ['scanf("%s", &name);', 'scanf("%s", name);', 'scanf("%c", name);', 'scanf(name);'],
     ans: 1,
-    explain: 'อาร์เรย์ซีไม่เก็บขนาดไว้ในตัว — ฟังก์ชันรับมาแค่ "ตำแหน่งเริ่มต้น" จึงต้องบอกจำนวนแยกเสมอ ไม่งั้นไม่รู้จะวนถึงไหน — แบบแผนมาตรฐานที่เจอทุกโปรแกรมซี'
+    explain: 'อาร์เรย์ "เป็นตำแหน่ง" อยู่แล้ว จึงไม่ใส่ & — ข้อยกเว้นของกฎ scanf จากคาบที่ 5! (และจำไว้ว่า %s หยุดรับที่ช่องว่างแรก)'
   },
   {
-    q: 'การสลับค่า arr[j] กับ arr[j+1] ที่ถูกต้องคือข้อใด?',
-    opts: [
-      'arr[j] = arr[j+1]; arr[j+1] = arr[j];',
-      'int temp = arr[j]; arr[j] = arr[j+1]; arr[j+1] = temp;',
-      'swap(arr[j], arr[j+1]);',
-      'arr[j] <=> arr[j+1];'
-    ],
+    q: 'char s[10] = "ROBOT"; s[0] = \'L\'; printf("%s", s); — แสดงอะไร?',
+    opts: ['ROBOT', 'LOBOT', 'L', 'คอมไพล์ไม่ผ่าน เพราะสตริงแก้ไม่ได้'],
     ans: 1,
-    explain: 'ต้องมีแก้วพัก temp เสมอ — แบบแรกค่า arr[j] ถูกทับหายก่อนจะย้าย ได้ค่าซ้ำสองช่อง! (ภาษาซีมาตรฐานไม่มี swap สำเร็จรูป) นี่คือสามบรรทัดหัวใจของ Bubble Sort'
+    explain: 'สตริงซีคืออาร์เรย์ — แก้ "ทีละช่อง" ได้เสมอ: s[0] = \'L\' ทับตัวแรก ได้ LOBOT (ที่ทำไม่ได้คือกำหนดใหม่ทั้งก้อนด้วย =)'
   },
   {
-    q: 'Bubble Sort กับอาร์เรย์ {5, 2, 8} การเทียบ "ครั้งแรก" คือคู่ใด และผลคืออะไร?',
+    q: 'ฟังก์ชัน isdigit(c) และ isupper(c) มาจากคลังใด และคืนค่าแบบไหน?',
     opts: [
-      'เทียบ 5 กับ 8 → ไม่สลับ',
-      'เทียบ 5 กับ 2 → สลับ ได้ {2, 5, 8}',
-      'เทียบ 2 กับ 8 → สลับ ได้ {5, 8, 2}',
-      'เทียบ 5 กับ 2 → ไม่สลับ'
+      'string.h — คืนข้อความ',
+      'ctype.h — คืนค่าจริง/เท็จแบบ int (ไม่ใช่ 0 = จริง)',
+      'stdio.h — คืน char',
+      'math.h — คืน float'
     ],
     ans: 1,
-    explain: 'Bubble Sort เทียบคู่ติดกันจากซ้าย: คู่แรกคือดัชนี 0–1 (5 กับ 2) → 5 ใหญ่กว่า สลับ ได้ {2, 5, 8} — รอบนี้เทียบต่อ 5 กับ 8 ไม่สลับ ก็เรียงเสร็จเลย'
+    explain: 'ctype.h คือคลังตรวจชนิดอักขระทีละตัว — ใช้คู่กับลูปไล่สตริงเพื่อตรวจรูปแบบ เช่น "สี่ตัวท้ายเป็นเลขหมดไหม" แบบเครื่องตรวจรหัสสินค้าในบทเรียน'
   },
   {
-    q: 'ประกาศ int arr[100]; แล้วใช้จริงแค่ 7 ค่า — ตัวแปร n ในโปรแกรมมีหน้าที่อะไร?',
+    q: 'วนนับว่าในสตริง s มีตัวอักษร \'A\' กี่ตัว — หัวลูปที่ถูกต้องคือข้อใด?',
     opts: [
-      'เก็บความจุสูงสุด (100)',
-      'นับว่าใช้จริงกี่ช่อง (7) — ทุกลูปวนถึง n ไม่ใช่ 100',
-      'เก็บค่าสูงสุดในอาร์เรย์',
-      'ไม่จำเป็นต้องมี'
+      'for (int i = 0; i < strlen(s); i++)',
+      'for (int i = 1; i <= strlen(s); i++)',
+      'for (int i = 0; s[i] == \'A\'; i++)',
+      'while (s != \'\\0\')'
+    ],
+    ans: 0,
+    explain: 'ดัชนีสตริงเริ่ม 0 และตัวสุดท้ายอยู่ที่ strlen-1 → i < strlen(s) พอดีเป๊ะ — แบบ i <= strlen จะไปแตะช่อง \\0 เกินมาหนึ่ง'
+  },
+  {
+    q: 'จากเครื่องตรวจรหัสสินค้า XX-9999 ในบทเรียน รหัส "ab-1234" จะผ่านหรือไม่ เพราะอะไร?',
+    opts: [
+      'ผ่าน เพราะครบ 7 ตัวอักษร',
+      'ไม่ผ่าน เพราะ isupper(\'a\') ได้เท็จ — สองตัวแรกต้องพิมพ์ใหญ่',
+      'ไม่ผ่าน เพราะมีเครื่องหมายขีด',
+      'ผ่าน เพราะภาษาซีไม่สนตัวพิมพ์เล็ก-ใหญ่'
     ],
     ans: 1,
-    explain: 'ขนาดอาร์เรย์ตายตัว จึงประกาศเผื่อแล้วใช้ n นับของจริง — ลูปทุกตัววน i < n เพื่อไม่ไปอ่าน "ค่าขยะ" ในช่องที่ยังไม่ใช้ (8–99) — คู่หู arr + n คือหัวใจของโปรเจกต์สัปดาห์ที่ 13'
+    explain: 'ความยาว 7 ✓ ขีด ✓ ท้ายเป็นเลข ✓ แต่กฎข้อสอง isupper ไม่ผ่านเพราะ a, b เป็นตัวพิมพ์เล็ก — ภาษาซีจริงจังกับตัวพิมพ์เสมอ (ลองพิมพ์ในเครื่องตรวจดูได้)'
   }
 ];

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>บทที่ 3: อัลกอริทึมและผังงาน | Computer Programming</title>
+  <title>คาบที่ 3: รู้จักการเขียนโปรแกรมภาษาซีและเริ่มต้นโปรแกรมแรก | Computer Programming</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2322d3ee'/%3E%3Ctext x='50' y='68' font-size='48' text-anchor='middle' fill='%23071018' font-family='monospace'%3E%26lt;/%26gt;%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,10 +17,11 @@
       <a href="index.html" class="nav-logo"><span class="logo-dot">&lt;/&gt;</span> Computer Programming</a>
       <ul class="nav-links">
         <li><a href="#objectives">วัตถุประสงค์</a></li>
-        <li><a href="#algo">อัลกอริทึม</a></li>
-        <li><a href="#pseudo">Pseudocode</a></li>
-        <li><a href="#flowchart">ผังงาน</a></li>
-        <li><a href="#simulator">ทดลองเดินผังงาน</a></li>
+        <li><a href="#clang">รู้จักภาษาซี</a></li>
+        <li><a href="#variables">ตัวแปร</a></li>
+        <li><a href="#array">อาร์เรย์</a></li>
+        <li><a href="#operators">ตัวดำเนินการ</a></li>
+        <li><a href="#runexamples">ตัวอย่างรันได้</a></li>
         <li><a href="#quiz">แบบทดสอบ</a></li>
       </ul>
     </div>
@@ -29,24 +30,24 @@
   <header class="hero">
     <canvas id="binary-canvas"></canvas>
     <div class="container">
-      <div class="hero-kicker reveal">สัปดาห์ที่ 1 · คาบที่ 3</div>
-      <h1 class="reveal" data-delay="0.1">บทที่ 3<br><span class="grad-text">อัลกอริทึมและผังงาน</span></h1>
+      <div class="hero-kicker reveal">คาบที่ 3</div>
+      <h1 class="reveal" data-delay="0.1"><span class="grad-text">รู้จักการเขียนโปรแกรมภาษาซีและเริ่มต้นโปรแกรมแรก</span></h1>
       <p class="hero-desc reveal" data-delay="0.2">
-        ก่อนสั่งให้เครื่องทำงาน เราต้องคิดให้ออกก่อนว่า "ขั้นตอน" คืออะไร —
-        บทนี้คือทักษะคิดอย่างเป็นระบบที่สำคัญกว่าตัวภาษาโปรแกรมใด ๆ
-        และเป็นทักษะที่ใช้ได้ตลอดชีวิตวิศวกร
+        ถึงเวลาแล้ว! สองคาบแรกเราเตรียมความคิดและรู้จักองค์ประกอบคอมพิวเตอร์
+        วันนี้ลงมือเขียนโปรแกรมภาษาซีโปรแกรมแรกในชีวิต — รู้จักโครงสร้างโปรแกรม
+        การประกาศตัวแปร และตัวดำเนินการคำนวณ พร้อมกดรันดูผลได้จริงทุกตัวอย่างในหน้านี้
       </p>
       <div class="hero-badges reveal" data-delay="0.3">
-        <span class="badge">⏱️ <b>ใช้เวลาเรียน ~2 ชั่วโมง</b></span>
-        <span class="badge">🧭 <b>ตัวจำลองผังงานแบบกดเดินทีละขั้น</b></span>
-        <span class="badge">📝 <b>แบบทดสอบ 10 ข้อ</b></span>
+        <span class="badge"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> <b>ใช้เวลาเรียน ~2.5 ชั่วโมง</b></span>
+        <span class="badge"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M2 20h20"/></svg> <b>โค้ดทุกกล่องกดรันดูผลได้</b></span>
+        <span class="badge"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4Z"/></svg> <b>แบบทดสอบ 10 ข้อ</b></span>
       </div>
       <div class="btn-row reveal" data-delay="0.4">
         <a href="#objectives" class="btn btn-primary">เริ่มบทเรียน ↓</a>
-        <a href="week02.html" class="btn btn-ghost">← บทที่ 2</a>
+        <a href="week02.html" class="btn btn-ghost">← คาบที่ 2</a>
       </div>
     </div>
-    <div class="scroll-hint">เลื่อนลงเพื่อเริ่มเรียน<br>⌄</div>
+    <div class="scroll-hint">เลื่อนลงเพื่อเริ่มเรียน<br><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></div>
   </header>
 
   <section class="section" id="objectives">
@@ -54,210 +55,506 @@
       <span class="section-tag reveal">Learning Objectives</span>
       <h2 class="section-title reveal">วัตถุประสงค์การเรียนรู้</h2>
       <div class="obj-list">
-        <div class="obj-item reveal">อธิบายความหมายและคุณสมบัติ 5 ประการของอัลกอริทึมที่ดีได้</div>
-        <div class="obj-item reveal" data-delay="0.05">เขียนรหัสเทียม (Pseudocode) อธิบายขั้นตอนการแก้ปัญหาได้</div>
-        <div class="obj-item reveal" data-delay="0.1">จดจำสัญลักษณ์ผังงานมาตรฐานทั้ง 6 แบบ และใช้ได้ถูกความหมาย</div>
-        <div class="obj-item reveal" data-delay="0.15">เขียนผังงานของปัญหาที่มีทั้งลำดับ เงื่อนไข และการวนซ้ำได้</div>
-        <div class="obj-item reveal" data-delay="0.2">ไล่ค่าตัวแปร (Trace) ตามผังงานเพื่อพยากรณ์ผลลัพธ์ของโปรแกรมได้</div>
+        <div class="obj-item reveal">อธิบายที่มาของภาษาซี และกระบวนการคอมไพล์โปรแกรมเป็นภาษาเครื่องได้</div>
+        <div class="obj-item reveal" data-delay="0.05">ประกาศตัวแปรพร้อมระบุชนิดข้อมูล int, float, double, char และเข้าใจการเก็บค่าในบิต (signed / unsigned)</div>
+        <div class="obj-item reveal" data-delay="0.1">ใช้ตัวดำเนินการคณิตศาสตร์ (+ − × ÷ %) และเข้าใจกับดัก “จำนวนเต็มหารจำนวนเต็ม” ได้</div>
+        <div class="obj-item reveal" data-delay="0.15">เข้าใจอาร์เรย์: ประกาศ ระบุขนาด และเข้าถึงด้วย index (เริ่มที่ 0) ทั้งแบบ 1, 2 และ 3 มิติ</div>
+        <div class="obj-item reveal" data-delay="0.2">เขียนและรันโปรแกรมภาษาซีสั้น ๆ ที่ใช้ตัวแปร ตัวดำเนินการ และอาร์เรย์ ได้จริงในเบราว์เซอร์</div>
       </div>
     </div>
   </section>
 
-  <section class="section alt" id="algo">
+  <section class="section alt" id="clang">
     <div class="container">
-      <span class="section-tag reveal">Algorithm</span>
-      <h2 class="section-title reveal">🧠 อัลกอริทึมคืออะไร?</h2>
+      <span class="section-tag reveal">Meet the C Language</span>
+      <h2 class="section-title reveal"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76Z"/></svg> ทำไมต้องภาษาซี?</h2>
       <p class="section-sub reveal">
-        <b style="color:var(--text)">อัลกอริทึม (Algorithm)</b> คือ ลำดับขั้นตอนการแก้ปัญหาที่ชัดเจน ทำตามได้ และจบในเวลาจำกัด
-        — ชื่อนี้มาจาก <i>al-Khwarizmi</i> นักคณิตศาสตร์ชาวเปอร์เซียในศตวรรษที่ 9
-        จริง ๆ แล้วคุณใช้อัลกอริทึมทุกวัน: สูตรทำอาหาร เส้นทางไปมหาวิทยาลัย วิธีซักผ้า ล้วนเป็นอัลกอริทึมทั้งสิ้น
+        ภาษาซีถูกสร้างโดย <b style="color:var(--text)">Dennis Ritchie</b> ที่ Bell Labs ปี ค.ศ. 1972
+        เพื่อใช้เขียนระบบปฏิบัติการ UNIX — ผ่านมาห้าทศวรรษ มันยังคงเป็นรากฐานของแทบทุกอย่าง:
+        ระบบปฏิบัติการ ไมโครคอนโทรลเลอร์ เครื่องจักรในโรงงาน และเป็น "ภาษาแม่" ที่ทำให้เรียนภาษาอื่นต่อได้ง่ายทั้งหมด
       </p>
-      <div class="grid grid-3">
+      <div class="grid grid-2" style="align-items:center">
+        <div class="gen-figure reveal">
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Dennis_Ritchie_2011.jpg?width=900"
+               alt="Dennis Ritchie ผู้สร้างภาษาซี" height="320" style="width:100%;height:320px"
+               data-fallback="1">
+        </div>
+        <div class="reveal" data-delay="0.1" style="text-align:center">
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/The_C_Programming_Language_logo.svg?width=400"
+               alt="สัญลักษณ์ภาษาซี" height="180" style="height:180px;margin:0 auto" data-fallback="1">
+          <div class="stats-grid" style="margin-top:26px">
+            <div class="stat-card"><div class="stat-value grad-text" data-count="1972">0</div><div class="stat-label">ปีที่ถือกำเนิด (ค.ศ.)</div></div>
+            <div class="stat-card"><div class="stat-value grad-text" data-count="50">0</div><div class="stat-label">ปีที่ยังครองโลกระบบฝังตัว</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="grid grid-3" style="margin-top:40px">
         <div class="card reveal">
-          <div class="icon">🎯</div>
-          <h3>1. ชัดเจนไม่กำกวม</h3>
-          <p>"ใส่น้ำพอประมาณ" ❌ — "ใส่น้ำ 300 มล." ✅ คอมพิวเตอร์เดาใจไม่เป็น ทุกขั้นต้องระบุได้แน่นอน (Definiteness)</p>
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 12.5-9.17 4.16a2 2 0 0 1-1.66 0L2 12.5"/><path d="m22 17.5-9.17 4.16a2 2 0 0 1-1.66 0L2 17.5"/></svg></div>
+          <h3>ภาษาแม่ของทุกภาษา</h3>
+          <p>C++, Java, JavaScript, C# ล้วนสืบไวยากรณ์จากซี — เรียนซีแน่นหนึ่งภาษา เปิดประตูสู่ภาษาอื่นได้แทบทั้งหมด นี่คือเหตุผลที่หลักสูตรวิศวกรรมทั่วโลกเริ่มที่ซี</p>
         </div>
         <div class="card reveal" data-delay="0.05">
-          <div class="icon">📥</div>
-          <h3>2. มีข้อมูลเข้า–ออกชัดเจน</h3>
-          <p>ระบุได้ว่ารับอะไรเข้า (Input ≥ 0 ตัว) และให้ผลลัพธ์อะไรออกมา (Output ≥ 1 ตัว)</p>
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18"/><path d="M3 21V10l6 3.5V10l6 3.5V10l6 3.5V21"/><path d="M3 10V5h2.5v4"/></svg></div>
+          <h3>หัวใจของงานวิศวกรรม</h3>
+          <p>PLC และไมโครคอนโทรลเลอร์ในสายการผลิต · ระบบควบคุมแขนกล · เฟิร์มแวร์เครื่องสแกนพัสดุ — โลกฮาร์ดแวร์และโรงงานพูดภาษาซีเป็นหลัก</p>
         </div>
         <div class="card reveal" data-delay="0.1">
-          <div class="icon">🏁</div>
-          <h3>3. ต้องจบ (Finiteness)</h3>
-          <p>ทำงานเสร็จในจำนวนขั้นที่จำกัด — อัลกอริทึมที่วนไม่รู้จบคืออัลกอริทึมที่ผิด</p>
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg></div>
+          <h3>ทำงานแบบคอมไพล์</h3>
+          <p>ซีใช้ <b style="color:var(--cyan)">คอมไพเลอร์</b> แปลโค้ด "ทั้งโปรแกรม" เป็นภาษาเครื่องก่อน แล้วจึงรัน —
+          ถ้ามีจุดผิดแม้แต่เครื่องหมายเดียว คอมไพล์ไม่ผ่านทั้งไฟล์ โปรแกรมจึงเข้มงวดแต่เร็วมาก</p>
         </div>
-        <div class="card reveal" data-delay="0.15">
-          <div class="icon">🪜</div>
-          <h3>4. เป็นลำดับขั้นตอน</h3>
-          <p>ขั้นตอนเรียงต่อกันชัดเจน รู้เสมอว่าทำขั้นไหนก่อน–หลัง และขั้นถัดไปคืออะไร</p>
-        </div>
-        <div class="card reveal" data-delay="0.2">
-          <div class="icon">⚙️</div>
-          <h3>5. ปฏิบัติได้จริง</h3>
-          <p>แต่ละขั้นต้องทำได้ด้วยทรัพยากรที่มี (Effectiveness) ไม่ใช่ "ขั้นที่ 3: เดาเลขที่ถูกต้อง"</p>
-        </div>
-        <div class="card reveal" data-delay="0.25">
-          <div class="icon">🛣️</div>
-          <h3>ปัญหาเดียว หลายอัลกอริทึม</h3>
-          <p>ไปเชียงใหม่ได้ทั้งเครื่องบิน รถทัวร์ รถไฟ — ถูกทุกทางแต่ "ประสิทธิภาพ" ต่างกัน นี่คือหัวใจของวิทยาการคอมพิวเตอร์</p>
-        </div>
+      </div>
+      <div class="card reveal" style="margin-top:26px">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76Z"/></svg></div>
+        <h3>ใช้เครื่องมืออะไรเขียน?</h3>
+        <p>เริ่มง่ายสุด: เว็บ <b style="color:var(--green)">onlinegdb.com</b> (เลือกภาษา C) เขียน–คอมไพล์–รันได้ทันทีไม่ต้องติดตั้ง ·
+        บนเครื่องตัวเอง: ติดตั้ง <b style="color:var(--green)">Code::Blocks</b> หรือ <b style="color:var(--green)">Dev-C++</b> ซึ่งมีคอมไพเลอร์ GCC มาให้พร้อม — ในห้องแล็บใช้ตามที่อาจารย์กำหนด</p>
       </div>
     </div>
   </section>
 
-  <section class="section" id="pseudo">
+  <section class="section alt" id="variables">
     <div class="container">
-      <span class="section-tag reveal">Pseudocode</span>
-      <h2 class="section-title reveal">📝 รหัสเทียม (Pseudocode) — เขียนความคิดก่อนเขียนโค้ด</h2>
+      <span class="section-tag reveal">Variables & Data Types</span>
+      <h2 class="section-title reveal"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg> ตัวแปรและชนิดข้อมูล — กล่องที่ต้อง "เลือกขนาด" ก่อนใช้</h2>
       <p class="section-sub reveal">
-        Pseudocode คือการเขียนอัลกอริทึมด้วยภาษาคนผสมโครงสร้างแบบโปรแกรม —
-        ไม่มีไวยากรณ์ตายตัว ขอแค่อ่านแล้วเข้าใจตรงกัน ลองดูตัวอย่าง "คำนวณเกรดเฉลี่ย":
-      </p>
-      <div class="grid grid-2">
-        <div class="card reveal">
-          <h3 style="margin-bottom:14px">🗣️ แบบบรรยาย (ไม่ดี)</h3>
-          <p>"ก็เอาคะแนนทุกวิชามารวมกันแล้วก็หารด้วยจำนวนวิชา ถ้าได้เยอะก็เกรดดี อะไรประมาณนั้น..."</p>
-          <p style="margin-top:12px;color:#fca5a5">⚠️ กำกวม: "เยอะ" คือเท่าไร? คะแนนมาจากไหน? แสดงผลยังไง?</p>
-        </div>
-        <div class="card reveal" data-delay="0.1">
-          <h3 style="margin-bottom:14px">✅ แบบ Pseudocode (ดี)</h3>
-          <div style="font-family:'Kanit',sans-serif;font-size:0.92rem;color:var(--text-dim);line-height:2">
-            <span style="color:var(--cyan)">START</span><br>
-            &nbsp;&nbsp;READ จำนวนวิชา n<br>
-            &nbsp;&nbsp;SET sum = 0<br>
-            &nbsp;&nbsp;<span style="color:var(--amber)">FOR</span> i = 1 <span style="color:var(--amber)">TO</span> n<br>
-            &nbsp;&nbsp;&nbsp;&nbsp;READ คะแนนวิชาที่ i<br>
-            &nbsp;&nbsp;&nbsp;&nbsp;sum = sum + คะแนน<br>
-            &nbsp;&nbsp;<span style="color:var(--amber)">END FOR</span><br>
-            &nbsp;&nbsp;SET average = sum / n<br>
-            &nbsp;&nbsp;PRINT average<br>
-            <span style="color:var(--cyan)">END</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section alt" id="flowchart">
-    <div class="container">
-      <span class="section-tag reveal">Flowchart Symbols</span>
-      <h2 class="section-title reveal">🔷 สัญลักษณ์ผังงานมาตรฐาน 6 แบบ</h2>
-      <p class="section-sub reveal">ผังงาน (Flowchart) คืออัลกอริทึมฉบับ "วาดเป็นภาพ" — ใช้สัญลักษณ์สากล (ANSI/ISO) ที่วิศวกรทั่วโลกอ่านเข้าใจตรงกัน</p>
-      <div class="shape-grid">
-        <div class="shape-card reveal">
-          <div class="shape-demo"><div class="sh terminator">Start / End</div></div>
-          <h3>Terminator — เริ่ม/จบ</h3>
-          <p>วงรีหรือทรงแคปซูล ทุกผังงานมีจุดเริ่ม 1 จุดและจุดจบอย่างน้อย 1 จุด</p>
-        </div>
-        <div class="shape-card reveal" data-delay="0.05">
-          <div class="shape-demo"><div class="sh io"><span>Input / Output</span></div></div>
-          <h3>ข้อมูลเข้า/ออก</h3>
-          <p>สี่เหลี่ยมด้านขนาน — รับข้อมูล (READ) หรือแสดงผล (PRINT)</p>
-        </div>
-        <div class="shape-card reveal" data-delay="0.1">
-          <div class="shape-demo"><div class="sh process">Process</div></div>
-          <h3>การประมวลผล</h3>
-          <p>สี่เหลี่ยมผืนผ้า — การคำนวณหรือกำหนดค่า เช่น sum = a + b</p>
-        </div>
-        <div class="shape-card reveal" data-delay="0.15">
-          <div class="shape-demo"><div class="sh decision">?</div></div>
-          <h3>การตัดสินใจ</h3>
-          <p>สี่เหลี่ยมข้าวหลามตัด — ตรวจเงื่อนไข แตกทางออกเป็น "จริง / เท็จ"</p>
-        </div>
-        <div class="shape-card reveal" data-delay="0.2">
-          <div class="shape-demo"><div class="sh process" style="padding:12px 14px">→ ↓</div></div>
-          <h3>ลูกศรทิศทาง</h3>
-          <p>Flow line — บอกลำดับการไหลของงาน ปกติไหลจากบนลงล่าง ซ้ายไปขวา</p>
-        </div>
-        <div class="shape-card reveal" data-delay="0.25">
-          <div class="shape-demo"><div class="sh connector">A</div></div>
-          <h3>จุดเชื่อมต่อ</h3>
-          <p>วงกลม — เชื่อมผังงานที่ยาวเกินหน้ากระดาษ ให้ตามไปต่อที่จุดอักษรเดียวกัน</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="simulator">
-    <div class="container">
-      <span class="section-tag reveal">Interactive Simulator</span>
-      <h2 class="section-title reveal">🧭 ทดลองเดินผังงานทีละขั้น: หาค่ามากที่สุดของ 2 จำนวน</h2>
-      <p class="section-sub reveal">
-        นี่คือทักษะ "Trace" — ไล่ตามผังงานทีละขั้นพร้อมจดค่าตัวแปร ลองเปลี่ยนค่า a, b แล้วกด
-        <b style="color:var(--cyan)">"ก้าวถัดไป ▶"</b> ดูเส้นทางของข้อมูล สังเกตว่าเมื่อ a, b เปลี่ยน เส้นทางก็เปลี่ยน!
+        ตัวแปรคือกล่องเก็บข้อมูลในหน่วยความจำ (RAM จากคาบที่ 2!) — จุดสำคัญของภาษาซี:
+        <b style="color:var(--amber)">ต้องประกาศชนิดก่อนใช้เสมอ</b> ตามรูปแบบ
+        <b style="color:var(--cyan)">ชนิดข้อมูล ชื่อตัวแปร = ค่า;</b> เพื่อให้คอมไพเลอร์จองหน่วยความจำได้ถูกขนาด
       </p>
 
-      <div class="flow-wrap reveal">
-        <div class="flow" id="flowDiagram">
-          <div class="flow-node terminator" data-step="0">START</div>
-          <div class="flow-link"></div>
-          <div class="flow-node io" data-step="1"><span>รับค่า a, b</span></div>
-          <div class="flow-link"></div>
-          <div class="flow-node decision" data-step="2">a &gt; b ?</div>
-          <div class="flow-label">จริง ↓ &nbsp;&nbsp;|&nbsp;&nbsp; เท็จ ↘</div>
-          <div class="flow-node process" data-step="3">max = a</div>
-          <div class="flow-node process" data-step="4" style="margin-top:10px">max = b</div>
-          <div class="flow-link"></div>
-          <div class="flow-node io" data-step="5"><span>แสดงค่า max</span></div>
-          <div class="flow-link"></div>
-          <div class="flow-node terminator" data-step="6">END</div>
+      <div style="overflow-x:auto" class="reveal">
+        <table class="data-table op-table">
+          <thead><tr><th>ชนิด</th><th>เก็บอะไร</th><th>ตัวอย่างประกาศ</th><th>ตัวกำหนดรูปแบบ</th></tr></thead>
+          <tbody>
+            <tr><td>int</td><td>จำนวนเต็ม (นิยมมากที่สุด)</td><td>int age = 20;</td><td>%d</td></tr>
+            <tr><td>float</td><td>จำนวนจริงมีทศนิยม</td><td>float height = 175.5;</td><td>%f</td></tr>
+            <tr><td>double</td><td>ทศนิยมความละเอียดสูง</td><td>double pi = 3.14159265359;</td><td>%lf</td></tr>
+            <tr><td>char</td><td>ตัวอักษร 1 ตัว (ใน ' ')</td><td>char grade = 'A';</td><td>%c</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="section-sub reveal" style="margin-top:14px">
+        สังเกต: char ใช้ <b style="color:var(--amber)">เครื่องหมายคำพูดเดี่ยว 'A'</b> เก็บได้ทีละตัวอักษรเท่านั้น
+        ส่วนข้อความยาว ๆ ใน " " จะได้พบในบทสตริง — และภาษาซี <b style="color:#fca5a5">ไม่มีชนิด bool ในตัว</b> ใช้ int แทน (0 = เท็จ, อื่น ๆ = จริง)
+      </p>
+
+      <!-- WOW: การประกาศตัวแปร — เอาค่าทางขวาไปเก็บในตัวแปรทางซ้าย -->
+      <div class="asgn-demo reveal">
+        <div class="asgn-head">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="7" height="16" rx="1.5"/><path d="M21 12h-8"/><path d="m16 8-4 4 4 4"/></svg>
+          วิธีประกาศตัวแปร — และกฎทองของเครื่องหมาย =
+        </div>
+        <p class="asgn-sub">รูปแบบ: <b class="mono">ชนิด&nbsp;&nbsp;ชื่อ&nbsp;&nbsp;=&nbsp;&nbsp;ค่า ;</b> — เครื่องหมาย <b>=</b> ไม่ได้แปลว่า “เท่ากับ” แต่แปลว่า <b style="color:var(--amber)">“เอาค่าทางขวา ไปเก็บในตัวแปรทางซ้าย”</b></p>
+
+        <div class="asgn-code" id="asgnCode"></div>
+        <div class="asgn-labels">
+          <span>ชนิด (type)</span><span>ชื่อตัวแปร</span><span>กำหนดค่า</span><span>ค่า</span><span>จบคำสั่ง</span>
         </div>
 
-        <div class="flow-panel">
-          <h3>🎛️ แผงควบคุม</h3>
-          <div class="widget-controls" style="justify-content:flex-start">
-            <label>a = <input type="number" id="simA" value="7" style="width:80px"></label>
-            <label>b = <input type="number" id="simB" value="12" style="width:80px"></label>
+        <div class="asgn-stage" id="asgnStage">
+          <div class="asgn-box" id="asgnBox"><span class="asgn-bn" id="asgnBoxName">a</span><span class="asgn-bv" id="asgnBoxVal">?</span></div>
+          <div class="asgn-track">
+            <span class="asgn-hint">ค่าจะวิ่งจากขวา &rarr; ซ้าย ไปเก็บในกล่อง</span>
+            <span class="asgn-fly" id="asgnFly"></span>
           </div>
-          <div class="btn-row" style="margin-bottom:18px">
-            <button class="btn btn-primary" id="simStep">ก้าวถัดไป ▶</button>
-            <button class="btn btn-ghost" id="simReset">↺ เริ่มใหม่</button>
+        </div>
+
+        <div class="asgn-presets" id="asgnPresets">
+          <button type="button" class="asgn-p active" data-type="int" data-name="a" data-val="10">int a = 10</button>
+          <button type="button" class="asgn-p" data-type="float" data-name="price" data-val="59.5">float price = 59.5</button>
+          <button type="button" class="asgn-p" data-type="char" data-name="grade" data-val="'A'">char grade = 'A'</button>
+          <button type="button" class="asgn-p" data-type="double" data-name="pi" data-val="3.14159">double pi = 3.14159</button>
+          <button type="button" class="asgn-p" data-type="int" data-name="score" data-val="255">int score = 255</button>
+        </div>
+        <div class="asgn-run">
+          <button type="button" class="mem-btn" id="asgnRun">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="width:14px;height:14px;vertical-align:-2px"><path d="M7 4v16l13-8z"/></svg>
+            รัน — เก็บค่าลงตัวแปร
+          </button>
+        </div>
+        <div class="asgn-note" id="asgnNote">กด “รัน” เพื่อดูค่าทางขวาวิ่งไปเก็บในกล่องตัวแปรทางซ้าย</div>
+      </div>
+
+      <!-- WOW: ประกาศตัวแปร → เห็นกล่องในหน่วยความจำจริง -->
+      <div class="mem-demo reveal">
+        <div class="mem-head">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
+          ลองประกาศตัวแปร แล้วดูว่ามันจอง “กล่อง” ในหน่วยความจำอย่างไร
+        </div>
+        <div class="mem-controls">
+          <div class="mem-types" id="memTypes">
+            <button type="button" class="mem-type int active" data-type="int" data-bytes="4">int</button>
+            <button type="button" class="mem-type float" data-type="float" data-bytes="4">float</button>
+            <button type="button" class="mem-type double" data-type="double" data-bytes="8">double</button>
+            <button type="button" class="mem-type char" data-type="char" data-bytes="1">char</button>
           </div>
-          <table class="trace-table">
-            <thead><tr><th>ขั้นที่</th><th>a</th><th>b</th><th>max</th></tr></thead>
-            <tbody id="traceBody"><tr><td colspan="4">— กดก้าวถัดไปเพื่อเริ่ม —</td></tr></tbody>
-          </table>
-          <div class="flow-desc" id="simDesc">พร้อมเริ่มเดินผังงาน — ลองตั้งค่า a ให้มากกว่า b แล้วดูว่าเส้นทางเปลี่ยนไหม</div>
+          <input type="text" id="memName" class="mem-in" placeholder="ชื่อ เช่น age" autocomplete="off" spellcheck="false">
+          <input type="text" id="memVal" class="mem-in" placeholder="ค่า เช่น 20" autocomplete="off" spellcheck="false">
+          <button type="button" class="mem-btn" id="memDeclare">ประกาศ / กำหนดค่า</button>
+          <button type="button" class="mem-btn ghost" id="memClear">ล้างหน่วยความจำ</button>
+        </div>
+        <div class="mem-code mono" id="memCode">// เลือกชนิด พิมพ์ชื่อและค่า แล้วกด “ประกาศ”</div>
+        <div class="mem-ram" id="memRam"><span class="mem-empty">หน่วยความจำว่าง — ยังไม่มีตัวแปร</span></div>
+        <p class="mem-note">1 ช่อง = 1 ไบต์ · <b style="color:var(--cyan)">char</b> 1 · <b style="color:var(--green)">int/float</b> 4 · <b style="color:var(--violet)">double</b> 8 — ประกาศชื่อเดิมซ้ำ = <b>กำหนดค่าใหม่ทับของเดิม</b> (ไม่ได้สร้างกล่องใหม่)</p>
+      </div>
+
+      <!-- ตัวอย่างนำ: เข้าใจ 8 บิตก่อน แล้วค่อยขยายไป 16/32 บิต -->
+      <div class="bit8-intro reveal">
+        <div class="bit8-head">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l2 2"/></svg>
+          เริ่มจากตัวอย่างเล็ก ๆ ก่อน: 8 บิต = 1 ไบต์
+        </div>
+        <p class="bit8-sub">แต่ละบิตมี “ค่าประจำหลัก” เพิ่มเป็น 2 เท่าจากขวาไปซ้าย — บวกเฉพาะหลักที่เป็น <b>1</b> ก็ได้ค่าที่เก็บ</p>
+        <div class="bit8-strip">
+          <div class="bit8-col"><span class="pv">128</span><span class="bt">0</span></div>
+          <div class="bit8-col on"><span class="pv">64</span><span class="bt">1</span></div>
+          <div class="bit8-col"><span class="pv">32</span><span class="bt">0</span></div>
+          <div class="bit8-col"><span class="pv">16</span><span class="bt">0</span></div>
+          <div class="bit8-col"><span class="pv">8</span><span class="bt">0</span></div>
+          <div class="bit8-col"><span class="pv">4</span><span class="bt">0</span></div>
+          <div class="bit8-col"><span class="pv">2</span><span class="bt">0</span></div>
+          <div class="bit8-col on"><span class="pv">1</span><span class="bt">1</span></div>
+        </div>
+        <div class="bit8-calc"><b class="mono">0 1 0 0 0 0 0 1</b> &rarr; บวกหลักที่เป็น 1: <b style="color:var(--green)">64 + 1 = 65</b> &rarr; ตรงกับ <code style="color:var(--amber)">'A'</code> ในรหัส ASCII (คาบที่ 2!)</div>
+        <div class="bit8-cmp">
+          <div class="bit8-mode u"><b>unsigned</b> (ไม่มีลบ)<br>เก็บได้ <b style="color:var(--cyan)">0 ถึง 255</b><br><small>ทุกบิตเป็นค่าบวกล้วน</small></div>
+          <div class="bit8-mode s"><b>signed</b> (มีลบ)<br>เก็บได้ <b style="color:var(--pink)">−128 ถึง 127</b><br><small>บิตซ้ายสุด (MSB) = 1 &rarr; ค่าติดลบ</small></div>
+        </div>
+        <p class="bit8-next">พอเข้าใจ 8 บิตแล้ว &rarr; ลองสลับบิตเอง และขยายไป 16 / 32 บิต (int) กับเครื่องมือด้านล่าง</p>
+      </div>
+
+      <!-- WOW: เจาะลึกชนิดตัวแปรถึงระดับบิต — sign bit / signed vs unsigned -->
+      <div class="bits-demo reveal">
+        <div class="bits-head">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/><path d="M9 9h6v6H9z"/></svg>
+          เจาะลึกถึงบิต — แต่ละชนิดเก็บค่าได้เท่าไร และบิตไหนบอก “บวก/ลบ”
+        </div>
+        <div class="bits-controls">
+          <div class="bits-cgroup">
+            <span class="bits-label">ชนิด</span>
+            <div class="bits-types" id="bitsTypes">
+              <button type="button" class="bits-type active" data-bits="8">char <small>8 บิต · 1 ไบต์</small></button>
+              <button type="button" class="bits-type" data-bits="16">short <small>16 บิต · 2 ไบต์</small></button>
+              <button type="button" class="bits-type" data-bits="32">int <small>32 บิต · 4 ไบต์</small></button>
+            </div>
+          </div>
+          <div class="bits-cgroup">
+            <span class="bits-label">โหมด</span>
+            <div class="bits-sign" id="bitsSign">
+              <button type="button" class="bits-signbtn active" data-sign="signed">signed <small>มีลบได้</small></button>
+              <button type="button" class="bits-signbtn" data-sign="unsigned">unsigned <small>ไม่มีลบ</small></button>
+            </div>
+          </div>
+        </div>
+        <p class="bits-tip">คลิกที่บิตเพื่อสลับ 0/1 — บิตซ้ายสุดคือ <b>MSB</b> (บิตค่ามากสุด และเป็น “ตัวบอกเครื่องหมาย” เมื่อเป็น signed)</p>
+        <div class="bits-strip" id="bitsStrip"></div>
+        <div class="bits-readout">
+          <div class="bits-val-box">ค่าที่เก็บได้ (ฐานสิบ): <b id="bitsVal">0</b></div>
+          <div class="bits-quick">
+            <button type="button" class="mem-btn ghost" id="bitsZero">0 ทั้งหมด</button>
+            <button type="button" class="mem-btn ghost" id="bitsMin">ค่าน้อยสุด</button>
+            <button type="button" class="mem-btn ghost" id="bitsMax">ค่ามากสุด</button>
+          </div>
+        </div>
+        <div class="bits-explain" id="bitsExplain"></div>
+      </div>
+
+      <div class="grid grid-2 reveal" style="margin-top:26px">
+        <div class="card">
+          <h3 style="margin-bottom:10px">แล้ว float เก็บทศนิยมยังไง?</h3>
+          <p>float (32 บิต) ไม่ได้เก็บเป็นเลขตรง ๆ แต่แยกเป็น 3 ส่วนแบบ “วิทยาศาสตร์” (มาตรฐาน IEEE 754):
+          <b style="color:var(--pink)">1 บิตเครื่องหมาย</b> + <b style="color:var(--amber)">8 บิตเลขชี้กำลัง (exponent)</b> + <b style="color:var(--cyan)">23 บิตค่าตัวเลข (mantissa)</b>
+          — จึงเก็บได้ทั้งเล็กมากและใหญ่มาก แลกกับการ “ปัดเศษ” (double = 64 บิต ละเอียดกว่า)</p>
+        </div>
+        <div class="card">
+          <h3 style="margin-bottom:10px">char ก็คือจำนวนเต็ม 8 บิต</h3>
+          <p>char เก็บ 1 ไบต์ = ตัวเลข 0–255 (unsigned) หรือ −128–127 (signed) — เวลาเก็บ <code style="color:var(--green)">'A'</code> จริง ๆ คือเก็บเลข <b>65</b> ตามรหัส ASCII (คาบที่ 2!) นั่นเอง ตัวอักษรกับจำนวนเต็มเล็ก ๆ จึงเป็นสิ่งเดียวกันในภาษาซี</p>
+        </div>
+      </div>
+
+      <div class="code-card reveal" style="margin-top:26px">
+        <div class="code-head"><span>ตัวอย่างที่ 4.2 — about_me.c</span><div class="dots"><span></span><span></span><span></span></div></div>
+        <pre><code><span style="color:#a78bfa">#include</span> <span style="color:#fbbf24">&lt;stdio.h&gt;</span>
+
+<span style="color:#a78bfa">int</span> <span style="color:#22d3ee">main</span>() {
+    <span style="color:#a78bfa">int</span> age = <span style="color:#a78bfa">19</span>;          <span style="color:#6b7280">// จำนวนเต็ม</span>
+    <span style="color:#a78bfa">float</span> gpa = <span style="color:#a78bfa">3.45</span>;      <span style="color:#6b7280">// ทศนิยม</span>
+    <span style="color:#a78bfa">char</span> grade = <span style="color:#fbbf24">'B'</span>;      <span style="color:#6b7280">// ตัวอักษรเดี่ยวใน ' '</span>
+    age = age + <span style="color:#a78bfa">1</span>;         <span style="color:#6b7280">// วันเกิด! ค่าใหม่ทับค่าเดิม</span>
+    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"อายุ %d ปี เกรด %.2f ระดับ %c\n"</span>, age, gpa, grade);
+    <span style="color:#a78bfa">return</span> <span style="color:#a78bfa">0</span>;
+}</code></pre>
+        <button class="run-btn" data-output="อายุ 20 ปี เกรด 3.45 ระดับ B">▶ คอมไพล์และรัน</button>
+        <div class="code-output"></div>
+      </div>
+      <p class="section-sub reveal" style="margin-top:10px">
+        สังเกตบรรทัด <code style="color:var(--amber)">age = age + 1;</code> — เครื่องหมาย = คือ "กำหนดค่าให้"
+        ไม่ใช่เท่ากับทางคณิตศาสตร์: คำนวณฝั่งขวาก่อน (19 + 1 = 20) แล้วเก็บกลับเข้ากล่อง
+      </p>
+
+      <div class="code-card reveal">
+        <div class="code-head"><span>ตัวอย่างที่ 4.3 — circle.c (double กับงานคำนวณละเอียด)</span><div class="dots"><span></span><span></span><span></span></div></div>
+        <pre><code><span style="color:#a78bfa">double</span> r = <span style="color:#a78bfa">2.5</span>;
+<span style="color:#a78bfa">double</span> area = <span style="color:#a78bfa">3.14159</span> * r * r;
+<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"รัศมี %.1f เมตร\n"</span>, r);
+<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"พื้นที่วงกลม = %.2f ตร.ม.\n"</span>, area);</code></pre>
+        <button class="run-btn" data-output="รัศมี 2.5 เมตร&#10;พื้นที่วงกลม = 19.63 ตร.ม.">▶ คอมไพล์และรัน</button>
+        <div class="code-output"></div>
+      </div>
+
+      <div class="grid grid-2" style="margin-top:36px">
+        <div class="card reveal">
+          <h3 style="margin-bottom:14px"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.3 8.7 8.7 21.3a1 1 0 0 1-1.4 0l-4.6-4.6a1 1 0 0 1 0-1.4L15.3 2.7a1 1 0 0 1 1.4 0l4.6 4.6a1 1 0 0 1 0 1.4Z"/><path d="m7.5 10.5 2 2"/><path d="m10.5 7.5 2 2"/><path d="m13.5 4.5 2 2"/></svg> กฎการตั้งชื่อตัวแปรภาษาซี</h3>
+          <p><svg class="ico ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> ใช้ตัวอักษรอังกฤษ a–z, A–Z, ตัวเลข และ _ ได้<br>
+             <svg class="ico ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> ขึ้นต้นด้วยตัวอักษรหรือ _ เท่านั้น<br>
+             <svg class="ico bad" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg> ขึ้นต้นด้วยตัวเลขไม่ได้ (<code style="color:#fca5a5">2score</code>)<br>
+             <svg class="ico bad" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg> ห้ามเว้นวรรค ห้ามใช้ - และห้ามตัวอักษรไทย<br>
+             <svg class="ico bad" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg> ห้ามซ้ำคำสงวน เช่น <code style="color:#fca5a5">int, return, if, for</code><br>
+             <svg class="ico warn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.3h6c0-1 .4-1.8 1-2.3A7 7 0 0 0 12 2Z"/></svg> ธรรมเนียมนิยม: ตัวเล็กคั่นด้วย _ เช่น <code style="color:var(--green)">total_price</code></p>
+        </div>
+        <div class="card reveal" data-delay="0.1">
+          <h3 style="margin-bottom:14px"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 2v6l-5.5 9.5A2 2 0 0 0 5.3 21h13.4a2 2 0 0 0 1.8-3.5L15 8V2"/><path d="M8 2h8"/><path d="M7 16h10"/></svg> เครื่องตรวจชื่อตัวแปร</h3>
+          <p style="margin-bottom:14px">พิมพ์ชื่อตัวแปรที่อยากใช้ แล้วดูว่าคอมไพเลอร์ซียอมรับไหม:</p>
+          <div class="widget" style="padding:20px;margin-top:0">
+            <div class="widget-controls" style="margin-bottom:14px">
+              <input type="text" id="nameInput" placeholder="เช่น total_price" style="width:100%;max-width:280px">
+            </div>
+            <div class="widget-result" id="nameResult" style="min-height:72px">— พิมพ์ชื่อตัวแปรเพื่อตรวจสอบ —</div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="section alt">
+  <section class="section alt" id="array">
     <div class="container">
-      <span class="section-tag reveal">Worked Example</span>
-      <h2 class="section-title reveal">📐 ตัวอย่างครบวงจร: จากโจทย์ → อัลกอริทึม → ผังงาน</h2>
-      <p class="section-sub reveal"><b style="color:var(--text)">โจทย์:</b> คำนวณดัชนีมวลกาย (BMI) แล้วแจ้งว่า "น้ำหนักเกิน" หรือ "ปกติ" (เกณฑ์ BMI ≥ 25 คือเกิน)</p>
-      <div class="grid grid-3">
-        <div class="card reveal">
-          <div class="icon">1️⃣</div>
-          <h3>วิเคราะห์ปัญหา</h3>
-          <p><b style="color:var(--cyan)">Input:</b> น้ำหนัก (กก.), ส่วนสูง (ม.)<br>
-             <b style="color:var(--violet)">Process:</b> BMI = น้ำหนัก ÷ ส่วนสูง²  แล้วเทียบกับ 25<br>
-             <b style="color:var(--green)">Output:</b> ค่า BMI + ข้อความแจ้งผล</p>
+      <span class="section-tag reveal">Arrays</span>
+      <h2 class="section-title reveal">อาร์เรย์ (Array) — ตัวแปรเดียวที่มีหลายกล่อง</h2>
+      <p class="section-sub reveal">
+        แทนที่จะประกาศตัวแปรทีละตัว (a, b, c, …) — <b style="color:var(--cyan)">อาร์เรย์</b> คือตัวแปรเดียวที่จอง “หลายกล่องเรียงติดกัน”
+        เข้าถึงแต่ละกล่องด้วย <b style="color:var(--amber)">index (เริ่มที่ 0)</b> · อาร์เรย์มี “หลายชั้น (มิติ)” ได้ —
+        ด้านล่างมี <b>3 ชุดให้เทียบกัน</b> แต่ละชุดปรับขนาดเองได้ ชี้/กดกล่องเพื่อดู index (สูงสุด 10 ต่อแกน · 3 มิติ 5 ต่อแกน)
+      </p>
+
+      <div class="arr-demo reveal" data-dim="1">
+        <div class="arr-title"><span class="arr-badge" style="color:var(--cyan);border-color:var(--cyan)">1 มิติ</span> อาร์เรย์แถวเดียว — <span class="mono">box[คอลัมน์]</span></div>
+        <div class="arr-controls"><div class="arr-axes"></div></div>
+        <div class="arr-decl mono"></div>
+        <div class="arr-stagewrap"><div class="arr-stage"></div></div>
+        <div class="arr-info">ชี้หรือกดที่กล่อง เพื่อดู index</div>
+      </div>
+
+      <div class="arr-demo reveal" data-dim="2">
+        <div class="arr-title"><span class="arr-badge" style="color:var(--green);border-color:var(--green)">2 มิติ</span> เพิ่มแถว (row × col) — <span class="mono">box[แถว][คอลัมน์]</span></div>
+        <div class="arr-controls"><div class="arr-axes"></div></div>
+        <div class="arr-decl mono"></div>
+        <div class="arr-stagewrap"><div class="arr-stage"></div></div>
+        <div class="arr-info">ชี้หรือกดที่กล่อง เพื่อดู index</div>
+      </div>
+
+      <div class="arr-demo reveal" data-dim="3">
+        <div class="arr-title"><span class="arr-badge" style="color:var(--amber);border-color:var(--amber)">3 มิติ</span> เพิ่มชั้น z (layer × row × col) — <span class="mono">box[ชั้น][แถว][คอลัมน์]</span></div>
+        <div class="arr-controls"><div class="arr-axes"></div></div>
+        <div class="arr-decl mono"></div>
+        <div class="arr-stagewrap"><div class="arr-stage"></div></div>
+        <div class="arr-info">ชี้หรือกดที่กล่อง เพื่อดู index</div>
+      </div>
+
+      <p class="arr-key reveal">
+        <b style="color:var(--amber)">มาตรฐาน C (row-major):</b> วงเล็บแรก = นอกสุด (ก้อนใหญ่: ชั้น) · วงเล็บสุดท้าย = ช่องเดี่ยวที่เรียงติดกันในหน่วยความจำ (คอลัมน์ ซ้าย→ขวา)
+      </p>
+
+      <div class="bdrill reveal">
+        <div class="bdrill-head">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7V5a1 1 0 0 1 1-1h2"/><path d="M17 4h2a1 1 0 0 1 1 1v2"/><path d="M20 17v2a1 1 0 0 1-1 1h-2"/><path d="M7 20H5a1 1 0 0 1-1-1v-2"/><circle cx="12" cy="12" r="2.5"/></svg>
+          อ่านวงเล็บทีละชั้น — <span class="mono">box[ชั้น][แถว][คอลัมน์]</span> เลือกอะไรบ้าง?
         </div>
-        <div class="card reveal" data-delay="0.1">
-          <div class="icon">2️⃣</div>
-          <h3>เขียน Pseudocode</h3>
-          <p style="font-family:'Kanit',sans-serif;font-size:0.85rem;line-height:1.9">
-            START<br>
-            &nbsp;READ weight, height<br>
-            &nbsp;bmi = weight / height²<br>
-            &nbsp;IF bmi ≥ 25 THEN<br>
-            &nbsp;&nbsp;PRINT "น้ำหนักเกิน"<br>
-            &nbsp;ELSE<br>
-            &nbsp;&nbsp;PRINT "ปกติ"<br>
-            &nbsp;END IF<br>
-            END</p>
+        <p class="bdrill-sub">ตั้งดัชนีที่อยากดู แล้วกด <b>“ถัดไป”</b> เพื่อดูการ<b style="color:var(--amber)">ไล่เลือกทีละวงเล็บ</b> — จากก้อนใหญ่ (ชั้นทั้งแผ่น) → แคบลงเป็นแถว → เหลือช่องเดียว</p>
+
+        <div class="bdrill-expr" id="bdrillExpr"></div>
+        <div class="bdrill-axes" id="bdrillAxes"></div>
+        <div class="bdrill-stagewrap"><div class="bdrill-stage" id="bdrillStage"></div></div>
+        <div class="bdrill-player">
+          <button type="button" class="mem-btn" id="bdrillPrev">‹ ย้อน</button>
+          <button type="button" class="mem-btn" id="bdrillNext">ถัดไป ›</button>
+          <button type="button" class="mem-btn" id="bdrillReset">รีเซ็ต</button>
         </div>
-        <div class="card reveal" data-delay="0.2">
-          <div class="icon">3️⃣</div>
-          <h3>วาดผังงาน</h3>
-          <p>วงรี START → ด้านขนาน "รับ weight, height" → สี่เหลี่ยม "bmi = w/h²" → ข้าวหลามตัด "bmi ≥ 25?"
-            แตกสองทางไปด้านขนานแสดงข้อความ → วงรี END — ลองวาดเองในสมุดตอนนี้เลย!</p>
+        <div class="bdrill-note" id="bdrillNote"></div>
+      </div>
+
+      <h3 class="reveal" style="font-family:var(--font-head);font-size:1.4rem;margin-top:44px;color:var(--text)">วิธีประกาศ และ กำหนดค่าอาร์เรย์</h3>
+      <p class="section-sub reveal" style="margin-top:10px">
+        ประกาศ: <b class="mono" style="color:var(--cyan)">ชนิด ชื่อ[ขนาด];</b> — เช่น <b class="mono">int box[5];</b> จอง 5 กล่อง เข้าถึงด้วย index <b>0 ถึง 4</b> ·
+        กำหนดค่าได้ 2 แบบ: ใส่ตอนประกาศด้วย <b style="color:var(--amber)">{ }</b> หรือกำหนดทีละกล่องด้วย <b class="mono" style="color:var(--green)">box[i] = ค่า;</b>
+      </p>
+
+      <div class="grid grid-2 reveal" style="align-items:start;margin-top:8px">
+        <div class="card">
+          <h3 style="margin-bottom:10px">กฎที่ต้องจำ</h3>
+          <p><b style="color:var(--cyan)">index เริ่มที่ 0</b> — box[5] มีกล่อง box[0], box[1], …, box[4] (กล่องสุดท้ายคือ <b>ขนาด − 1</b>) · <b style="color:#fca5a5">ห้ามอ้างเกินขอบเขต</b> เช่น box[5] ในอาร์เรย์ 5 ช่อง (ภาษาซีไม่เตือน แต่ได้ค่าขยะ/พัง) · ขนาด <b>ตายตัว</b> ประกาศแล้วเปลี่ยนไม่ได้</p>
         </div>
+        <div class="card">
+          <h3 style="margin-bottom:10px">กำหนดค่า 2 แบบ</h3>
+          <p><b>1) ตอนประกาศ:</b> <code style="color:var(--green)">int box[5] = {10, 20, 30, 40, 50};</code><br>
+          <b>2) ทีละกล่องภายหลัง:</b> <code style="color:var(--green)">box[2] = 99;</code> (แก้เฉพาะกล่อง index 2)<br>
+          อ่านค่า: <code style="color:var(--cyan)">printf("%d", box[2]);</code></p>
+        </div>
+      </div>
+
+      <div class="code-card reveal" style="margin-top:26px">
+        <div class="code-head"><span>ตัวอย่าง — ประกาศพร้อมกำหนดค่าเริ่มต้นด้วย { }</span><div class="dots"><span></span><span></span><span></span></div></div>
+        <pre><code><span style="color:#a78bfa">#include</span> <span style="color:#fbbf24">&lt;stdio.h&gt;</span>
+
+<span style="color:#a78bfa">int</span> <span style="color:#22d3ee">main</span>() {
+    <span style="color:#a78bfa">int</span> box[<span style="color:#a78bfa">5</span>] = {<span style="color:#a78bfa">10</span>, <span style="color:#a78bfa">20</span>, <span style="color:#a78bfa">30</span>, <span style="color:#a78bfa">40</span>, <span style="color:#a78bfa">50</span>};   <span style="color:#6b7280">// จอง 5 กล่อง ใส่ค่าเลย</span>
+    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"box[0] = %d\n"</span>, box[<span style="color:#a78bfa">0</span>]);   <span style="color:#6b7280">// กล่องแรก</span>
+    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"box[4] = %d\n"</span>, box[<span style="color:#a78bfa">4</span>]);   <span style="color:#6b7280">// กล่องสุดท้าย</span>
+    <span style="color:#a78bfa">return</span> <span style="color:#a78bfa">0</span>;
+}</code></pre>
+        <button class="run-btn" data-output="box[0] = 10&#10;box[4] = 50">▶ คอมไพล์และรัน</button>
+        <div class="code-output"></div>
+      </div>
+
+      <div class="code-card reveal" style="margin-top:26px">
+        <div class="code-head"><span>ตัวอย่าง — ประกาศก่อน แล้วกำหนดค่าทีละกล่อง (box[i] = …)</span><div class="dots"><span></span><span></span><span></span></div></div>
+        <pre><code><span style="color:#a78bfa">#include</span> <span style="color:#fbbf24">&lt;stdio.h&gt;</span>
+
+<span style="color:#a78bfa">int</span> <span style="color:#22d3ee">main</span>() {
+    <span style="color:#a78bfa">int</span> score[<span style="color:#a78bfa">3</span>];        <span style="color:#6b7280">// จอง 3 กล่อง (ยังเป็นค่าขยะ)</span>
+    score[<span style="color:#a78bfa">0</span>] = <span style="color:#a78bfa">85</span>;       <span style="color:#6b7280">// กำหนดค่าทีละ index</span>
+    score[<span style="color:#a78bfa">1</span>] = <span style="color:#a78bfa">90</span>;
+    score[<span style="color:#a78bfa">2</span>] = <span style="color:#a78bfa">78</span>;
+    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"score[1] = %d\n"</span>, score[<span style="color:#a78bfa">1</span>]);
+    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"รวม = %d\n"</span>, score[<span style="color:#a78bfa">0</span>] + score[<span style="color:#a78bfa">1</span>] + score[<span style="color:#a78bfa">2</span>]);
+    <span style="color:#a78bfa">return</span> <span style="color:#a78bfa">0</span>;
+}</code></pre>
+        <button class="run-btn" data-output="score[1] = 90&#10;รวม = 253">▶ คอมไพล์และรัน</button>
+        <div class="code-output"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="operators">
+    <div class="container">
+      <span class="section-tag reveal">Operators &amp; Expressions</span>
+      <h2 class="section-title reveal">ตัวดำเนินการและนิพจน์ — ให้ตัวแปรได้ทำงาน</h2>
+      <p class="section-sub reveal">
+        มีตัวแปรแล้วก็ต้องคำนวณ! ภาษาซีมีตัวดำเนินการคณิตศาสตร์ครบชุด — แต่มี
+        <b style="color:var(--pink)">กับดักใหญ่</b> ที่หลอกมือใหม่ทุกคน:
+        <b>จำนวนเต็มหารจำนวนเต็ม ได้จำนวนเต็ม</b> (เศษหายเงียบ ๆ ไม่มีใครเตือน)
+      </p>
+
+      <div style="overflow-x:auto" class="reveal">
+        <table class="data-table op-table">
+          <thead><tr><th>ตัวดำเนินการ</th><th>ความหมาย</th><th>ตัวอย่าง</th><th>ผลลัพธ์</th></tr></thead>
+          <tbody>
+            <tr><td>+</td><td>บวก</td><td>7 + 2</td><td>9</td></tr>
+            <tr><td>−</td><td>ลบ</td><td>7 − 2</td><td>5</td></tr>
+            <tr><td>*</td><td>คูณ</td><td>7 * 2</td><td>14</td></tr>
+            <tr><td>/</td><td>หาร</td><td>7 / 2</td><td><b style="color:var(--pink)">3</b> (int — เศษหาย!) · 7.0 / 2 = 3.5</td></tr>
+            <tr><td>%</td><td>เศษจากการหาร (modulo)</td><td>7 % 2</td><td>1 — ใช้ได้กับจำนวนเต็มเท่านั้น</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- WOW: เครื่องคำนวณนิพจน์ + กับดักหารจำนวนเต็ม -->
+      <div class="op-demo reveal">
+        <div class="op-head">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="8" y2="10"/><line x1="12" y1="10" x2="12" y2="10"/><line x1="16" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="8" y2="14"/><line x1="12" y1="14" x2="12" y2="14"/><line x1="16" y1="14" x2="16" y2="18"/><line x1="8" y1="18" x2="12" y2="18"/></svg>
+          เครื่องคำนวณนิพจน์ — สลับโหมด int / ทศนิยม แล้วดู “เศษที่หายไป”
+        </div>
+        <div class="op-calc">
+          <input type="number" id="opA" class="op-num" value="7">
+          <div class="op-ops" id="opOps">
+            <button type="button" class="op-op" data-op="+">+</button>
+            <button type="button" class="op-op" data-op="-">−</button>
+            <button type="button" class="op-op" data-op="*">×</button>
+            <button type="button" class="op-op active" data-op="/">÷</button>
+            <button type="button" class="op-op" data-op="%">%</button>
+          </div>
+          <input type="number" id="opB" class="op-num" value="2">
+          <span class="op-eq">=</span>
+          <span class="op-result" id="opResult">—</span>
+        </div>
+        <div class="op-mode">
+          <span class="op-mode-label">โหมดตัวแปร:</span>
+          <button type="button" class="op-modebtn active" data-mode="int">จำนวนเต็ม (int)</button>
+          <button type="button" class="op-modebtn" data-mode="float">ทศนิยม (float/double)</button>
+        </div>
+        <div class="op-explain" id="opExplain">พิมพ์ตัวเลขสองตัว เลือกตัวดำเนินการ แล้วดูผลลัพธ์และคำอธิบายกลไก</div>
+      </div>
+
+      <!-- ลำดับการคำนวณ: × ก่อน + -->
+      <div class="prec-demo reveal">
+        <div class="op-head">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V4h16"/><path d="m8 16 3-6 3 4 3-8"/></svg>
+          ลำดับการคำนวณ — “คูณ/หาร” มาก่อน “บวก/ลบ” เสมอ
+        </div>
+        <div class="prec-expr" id="precExpr"></div>
+        <div class="btn-row" style="margin-top:14px">
+          <button type="button" class="mem-btn" id="precRun">เล่นทีละขั้น</button>
+          <button type="button" class="mem-btn ghost" id="precReset">เริ่มใหม่</button>
+        </div>
+        <div class="op-explain" id="precDesc">โจทย์: <b class="mono">2 + 3 * 4</b> — เดาก่อนว่าได้เท่าไร แล้วกด “เล่นทีละขั้น”</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" id="runexamples">
+    <div class="container">
+      <span class="section-tag reveal">Run It Yourself</span>
+      <h2 class="section-title reveal">ตัวอย่างโปรแกรม — กดรันได้จริงในเบราว์เซอร์</h2>
+      <p class="section-sub reveal">
+        รวมทุกอย่างในคาบนี้: <b>ประกาศตัวแปร + ตัวดำเนินการ</b> → โปรแกรมที่รันได้จริง
+        กดปุ่มรัน (หรือกด <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg> แก้โค้ดแล้วรันซ้ำ) — คอมไพล์จริงด้วย GCC ออนไลน์
+      </p>
+
+      <div class="code-card reveal">
+        <div class="code-head"><span>ตัวอย่างที่ 3.1 — rectangle.c (ตัวแปร int + การคูณ)</span><div class="dots"><span></span><span></span><span></span></div></div>
+        <pre><code><span style="color:#a78bfa">#include</span> <span style="color:#fbbf24">&lt;stdio.h&gt;</span>
+
+<span style="color:#a78bfa">int</span> <span style="color:#22d3ee">main</span>() {
+    <span style="color:#a78bfa">int</span> w = <span style="color:#a78bfa">8</span>, h = <span style="color:#a78bfa">5</span>;
+    <span style="color:#a78bfa">int</span> area = w * h;         <span style="color:#6b7280">// ตัวดำเนินการคูณ</span>
+    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"พื้นที่ = %d ตร.หน่วย\n"</span>, area);
+    <span style="color:#a78bfa">return</span> <span style="color:#a78bfa">0</span>;
+}</code></pre>
+        <button class="run-btn" data-output="พื้นที่ = 40 ตร.หน่วย">▶ คอมไพล์และรัน</button>
+        <div class="code-output"></div>
+      </div>
+
+      <div class="code-card reveal" style="margin-top:30px">
+        <div class="code-head"><span>ตัวอย่างที่ 3.2 — division_trap.c (กับดักหารจำนวนเต็ม!)</span><div class="dots"><span></span><span></span><span></span></div></div>
+        <pre><code><span style="color:#a78bfa">#include</span> <span style="color:#fbbf24">&lt;stdio.h&gt;</span>
+
+<span style="color:#a78bfa">int</span> <span style="color:#22d3ee">main</span>() {
+    <span style="color:#a78bfa">int</span> a = <span style="color:#a78bfa">7</span>, b = <span style="color:#a78bfa">2</span>;
+    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"7 / 2   (int)   = %d\n"</span>, a / b);   <span style="color:#6b7280">// เศษหาย!</span>
+    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"7 %% 2   (เศษ)   = %d\n"</span>, a % b);
+    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"7.0 / 2 (float) = %.1f\n"</span>, <span style="color:#a78bfa">7.0</span> / b);
+    <span style="color:#a78bfa">return</span> <span style="color:#a78bfa">0</span>;
+}</code></pre>
+        <button class="run-btn" data-output="7 / 2   (int)   = 3&#10;7 %% 2   (เศษ)   = 1&#10;7.0 / 2 (float) = 3.5">▶ คอมไพล์และรัน</button>
+        <div class="code-output"></div>
+      </div>
+
+      <div class="code-card reveal" style="margin-top:30px">
+        <div class="code-head"><span>ตัวอย่างที่ 3.3 — invoice.c (ตัวแปรหลายชนิด + คำนวณ VAT)</span><div class="dots"><span></span><span></span><span></span></div></div>
+        <pre><code><span style="color:#a78bfa">#include</span> <span style="color:#fbbf24">&lt;stdio.h&gt;</span>
+
+<span style="color:#a78bfa">int</span> <span style="color:#22d3ee">main</span>() {
+    <span style="color:#a78bfa">int</span> price = <span style="color:#a78bfa">120</span>, qty = <span style="color:#a78bfa">3</span>;
+    <span style="color:#a78bfa">int</span> subtotal = price * qty;
+    <span style="color:#a78bfa">double</span> total = subtotal * <span style="color:#a78bfa">1.07</span>;   <span style="color:#6b7280">// บวก VAT 7%</span>
+    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"รวมสินค้า  = %d บาท\n"</span>, subtotal);
+    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"รวม VAT 7%% = %.2f บาท\n"</span>, total);
+    <span style="color:#a78bfa">return</span> <span style="color:#a78bfa">0</span>;
+}</code></pre>
+        <button class="run-btn" data-output="รวมสินค้า  = 360 บาท&#10;รวม VAT 7%% = 385.20 บาท">▶ คอมไพล์และรัน</button>
+        <div class="code-output"></div>
       </div>
     </div>
   </section>
@@ -265,36 +562,38 @@
   <section class="section" id="quiz">
     <div class="container">
       <span class="section-tag reveal">Check Your Understanding</span>
-      <h2 class="section-title reveal">📝 แบบทดสอบท้ายบท (10 ข้อ)</h2>
-      <p class="section-sub reveal">ข้อ Trace ลองใช้กระดาษทดไล่ค่าตัวแปรตามที่ฝึกในตัวจำลอง</p>
+      <h2 class="section-title reveal"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4Z"/></svg> แบบทดสอบท้ายคาบ (10 ข้อ)</h2>
+      <p class="section-sub reveal">จุดที่ข้อสอบชอบ: โครงสร้างโปรแกรม · ประกาศชนิดตัวแปร · กับดักจำนวนเต็มหารจำนวนเต็ม · เซมิโคลอน</p>
       <div class="prequiz reveal">
-        <div class="prequiz-head">📘 อ่านก่อนสอบ · สรุปประเด็นสำคัญ</div>
-        <p class="prequiz-intro">บทนี้เน้น "สัญลักษณ์ผังงาน" และการ "ไล่ค่า (trace)" — จำรูปสัญลักษณ์และฝึกเดินตามขั้นตอนทีละบรรทัด</p>
+        <div class="prequiz-head"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg> อ่านก่อนสอบ · สรุปประเด็นสำคัญ</div>
+        <p class="prequiz-intro">สรุปก่อนทำแบบทดสอบ: ทบทวนการประกาศตัวแปร ชนิดข้อมูล/บิต ตัวดำเนินการ และอาร์เรย์ (index / มิติ) แล้วลองทำ 10 ข้อ</p>
         <div class="pq-item">
           <span class="pq-num">1</span>
-          <div class="pq-text"><h4>อัลกอริทึมคืออะไร + คุณสมบัติที่ดี</h4><p>อัลกอริทึม = ลำดับขั้นตอนแก้ปัญหาที่ชัดเจนและมี <b>จุดสิ้นสุด</b> · คุณสมบัติที่ดี: ขั้นตอนชัดเจนไม่กำกวม, ทำได้จริง, และ<b>ต้องจบ</b> (โปรแกรมวนไม่จบ = ผิดคุณสมบัติข้อนี้)</p></div>
+          <div class="pq-text"><h4>โครงสร้างโปรแกรมภาษาซี</h4><p>ทุกโปรแกรมเริ่มทำงานที่ฟังก์ชัน <code>main()</code> และต้องมี <code>#include &lt;stdio.h&gt;</code> เพื่อใช้ <code>printf</code>/<code>scanf</code></p><p><pre class="pq-code">#include &lt;stdio.h&gt;
+int main() {
+    printf("Hello");
+    return 0;
+}</pre></p></div>
         </div>
         <div class="pq-item">
           <span class="pq-num">2</span>
-          <div class="pq-text"><h4>สัญลักษณ์ผังงานที่ต้องจำ</h4><p><b>ข้าวหลามตัด ◇</b> = ตัดสินใจ/เงื่อนไข · <b>สี่เหลี่ยมผืนผ้า ▭</b> = ประมวลผล/คำนวณ · <b>สี่เหลี่ยมด้านขนาน ▱</b> = รับเข้า/แสดงผล · <b>วงรี ⬭</b> = เริ่ม/จบ</p></div>
+          <div class="pq-text"><h4>ชนิดข้อมูลพื้นฐาน</h4><p><b>int</b> = จำนวนเต็ม · <b>float</b> = ทศนิยม · <b>char</b> = อักขระ 1 ตัว (ใช้ '...' ครอบ)</p><p><pre class="pq-code">int age = 25;
+float gpa = 3.45;
+char grade = 'A';</pre></p></div>
         </div>
         <div class="pq-item">
           <span class="pq-num">3</span>
-          <div class="pq-text"><h4>โครงสร้างควบคุม 3 แบบ</h4><p>ทุกอัลกอริทึมประกอบจาก 3 โครงสร้าง: <b>ลำดับ</b> (Sequence), <b>การเลือก</b> (Selection/เงื่อนไข), <b>การวนซ้ำ</b> (Repetition/ลูป)</p></div>
+          <div class="pq-text"><h4>ตัวดำเนินการ + กับดักหารจำนวนเต็ม</h4><p><code>+ − * /</code> และ <code>%</code> (เศษ) · <b style="color:#fca5a5">ระวัง!</b> int หาร int ได้ int เศษหายทันที · คูณ/หาร มาก่อน บวก/ลบ</p><p><pre class="pq-code">7 / 2    = 3    <span class="cm">// เศษหาย!</span>
+7.0 / 2  = 3.5  <span class="cm">// float ได้เศษ</span>
+2 + 3 * 4 = 14  <span class="cm">// × ก่อน +</span></pre></p></div>
         </div>
         <div class="pq-item">
           <span class="pq-num">4</span>
-          <div class="pq-text"><h4>การไล่ค่า (Trace)</h4><p>เดินทีละบรรทัด อัปเดตค่าตัวแปรตามลำดับ เช่น:</p><p><pre class="pq-code">x = 5
-x = x + 3   <span class="cm">// x = 8</span>
-x = x × 2   <span class="cm">// x = 16</span></pre></p></div>
-        </div>
-        <div class="pq-item">
-          <span class="pq-num">5</span>
-          <div class="pq-text"><h4>Pseudocode ต่างจากภาษาจริง</h4><p>Pseudocode เขียนด้วยภาษาคนเพื่อสื่อความคิด <b>ไม่ต้องสนใจไวยากรณ์</b>และคอมไพล์ไม่ได้ ส่วนภาษาโปรแกรมจริงต้องตรงไวยากรณ์เป๊ะ</p></div>
+          <div class="pq-text"><h4>เซมิโคลอน ; และกฎตั้งชื่อตัวแปร</h4><p>ทุกคำสั่งต้องจบด้วย <code>;</code> มิฉะนั้น <b>คอมไพล์ไม่ผ่าน</b> · ชื่อตัวแปร <b>ห้ามขึ้นต้นด้วยตัวเลข</b> และห้ามมีเว้นวรรค (เช่น <code>2name</code> ผิด, <code>name2</code> ถูก)</p></div>
         </div>
         <div class="pq-item tip">
-          <span class="pq-num">💡</span>
-          <div class="pq-text"><h4>จุดที่ข้อสอบชอบถาม</h4><p>โจทย์ "นับจำนวนข้าวหลามตัด" = นับจำนวนการตัดสินใจ (เงื่อนไข if แต่ละจุด) และโจทย์ trace ค่า — คิดทีละบรรทัดอย่าข้าม</p></div>
+          <span class="pq-num"><svg class="ico warn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.3h6c0-1 .4-1.8 1-2.3A7 7 0 0 0 12 2Z"/></svg></span>
+          <div class="pq-text"><h4>จุดที่ข้อสอบชอบถาม</h4><p>3 จุดยอดฮิต: ลืม <code>;</code> → error · จับคู่ <code>%</code> ผิดชนิด · ชื่อตัวแปรขึ้นต้นด้วยเลข — ระวังให้ดี</p></div>
         </div>
       </div>
       <div id="quizWrap"></div>
@@ -305,40 +604,42 @@ x = x × 2   <span class="cm">// x = 16</span></pre></p></div>
   <section class="section alt">
     <div class="container">
       <span class="section-tag reveal">Summary & Assignment</span>
-      <h2 class="section-title reveal">🎯 สรุปบทเรียน</h2>
+      <h2 class="section-title reveal"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg> สรุปบทเรียน</h2>
       <div class="grid grid-2" style="margin-bottom:50px">
         <div class="card reveal">
-          <div class="icon">🧭</div>
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M2 20h20"/></svg></div>
           <h3>สิ่งที่ได้เรียน</h3>
-          <p>อัลกอริทึม = ลำดับขั้นแก้ปัญหาที่ชัดเจนและจบได้ · เครื่องมือถ่ายทอดความคิด 2 แบบ: Pseudocode (เขียน) และ Flowchart (วาด) · โครงสร้างพื้นฐาน 3 แบบที่ประกอบกันเป็นทุกโปรแกรม: ลำดับ (Sequence), เงื่อนไข (Selection), วนซ้ำ (Iteration)</p>
+          <p>ภาษาซีคอมไพล์ทั้งโปรแกรมก่อนรัน · ตัวแปรต้องประกาศชนิดก่อนใช้: int / float / double / char (char 1 ไบต์ · int/float 4 · double 8) เก็บได้แบบ signed/unsigned · ตัวดำเนินการ + − * / % และกับดัก int หาร int เศษหาย · = คือกำหนดค่า (เอาค่าขวาไปเก็บซ้าย) ไม่ใช่เท่ากับ · <b>อาร์เรย์</b> = ตัวแปรเดียวหลายกล่อง เข้าถึงด้วย index (เริ่ม 0) มีได้หลายมิติ ประกาศ <code>int box[n];</code> กำหนดค่าด้วย <code>{…}</code> หรือ <code>box[i]=…;</code> (มาตรฐาน C: วงเล็บแรก=นอกสุด, วงเล็บสุดท้าย=คอลัมน์)</p>
         </div>
         <div class="card reveal" data-delay="0.1">
-          <div class="icon">🔮</div>
-          <h3>เชื่อมไปสัปดาห์หน้า</h3>
-          <p>สัปดาห์ที่ 2 เราจะเปิดภาษาซี (C) ตามเอกสารประกอบการสอน แล้วแปลงผังงานที่วาดวันนี้เป็นโปรแกรมที่คอมไพล์และรันได้จริง — ผังงาน BMI ของบทนี้จะกลายเป็นโค้ดสั้น ๆ โปรแกรมเดียว!</p>
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8 4 4-4 4"/></svg></div>
+          <h3>เชื่อมไปคาบหน้า</h3>
+          <p>คาบที่ 4 เข้าสู่การ “ตัดสินใจ”: โครงสร้างควบคุมแบบเลือกทำ if / else if / else และ switch — ให้โปรแกรมเลือกทางเดินตามเงื่อนไข โดยใช้ตัวดำเนินการเปรียบเทียบ (&gt; &lt; ==) ต่อยอดจากตัวดำเนินการคำนวณที่ฝึกวันนี้</p>
         </div>
       </div>
       <div class="assign-box reveal">
-        <h3>📌 งานมอบหมายสัปดาห์ที่ 1 (คาบที่ 3)</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 17v5"/><path d="M9 10.8V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6.8a2 2 0 0 0 .5 1.3l1.5 1.7a1 1 0 0 1-.75 1.66H7.75A1 1 0 0 1 7 12.8l1.5-1.7a2 2 0 0 0 .5-1.3Z"/></svg> งานมอบหมายคาบที่ 3</h3>
         <ol>
-          <li>เขียน Pseudocode และวาดผังงาน "คำนวณค่าไฟฟ้า" : รับจำนวนหน่วย ถ้า ≤ 150 หน่วย คิดหน่วยละ 3.25 บาท เกินจากนั้นหน่วยละ 4.22 บาท</li>
-          <li>วาดผังงานที่มีการวนซ้ำ: แสดงเลขคู่ตั้งแต่ 2 ถึง 20</li>
-          <li>โจทย์สาขา: วาดผังงานกระบวนการทำงานจริง 1 อย่าง (เช่น ขั้นตอนตรวจสอบสินค้าเข้าคลัง, ขั้นตอน QC ชิ้นงาน) ความยาว 8–15 ขั้น</li>
-          <li>ทำแบบทดสอบท้ายบทให้ได้อย่างน้อย 8/10 แล้วแคปหน้าจอส่งใน LMS</li>
+          <li>สมัคร/เปิด onlinegdb.com (เลือกภาษา C) หรือติดตั้ง Code::Blocks แล้วเขียน hello.c ของตัวเอง: แสดงชื่อ รหัสนักศึกษา และสาขา (อย่างน้อย 3 บรรทัด ใช้ \n) แคปหน้าจอผลรันส่งใน LMS</li>
+          <li>เขียนโปรแกรมแนะนำตัวที่ประกาศตัวแปรครบ 3 ชนิด (int, float, char) แล้วแสดงผลด้วย printf ให้ใช้ %d %f %c ครบทุกตัว</li>
+          <li>เขียนโปรแกรมคำนวณที่ใช้ตัวดำเนินการจริง เช่น แปลงวินาทีเป็น ชั่วโมง:นาที:วินาที (ใช้ / และ %) หรือคำนวณราคารวม + VAT 7% แล้วคอมไพล์รันด้วยข้อมูลจริง</li>
+          <li>ทดลอง "ทำให้พัง": ลองลบ ; หนึ่งตัว, เปลี่ยน printf เป็น Printf, ลบ #include — จดข้อความ error ที่คอมไพเลอร์ฟ้องในแต่ละกรณี เพื่อรู้จักหน้าตา error ไว้ก่อน</li>
+          <li>อาร์เรย์: ประกาศ <code>int score[5] = {80, 92, 75, 88, 95};</code> แล้วเขียนโปรแกรมแสดงค่าใน <code>score[0]</code> และ <code>score[4]</code> พร้อมหาผลรวมของทั้ง 5 กล่อง</li>
+          <li>ทำแบบทดสอบท้ายคาบให้ได้อย่างน้อย 8/10 แล้วแคปหน้าจอส่งใน LMS</li>
         </ol>
       </div>
       <div class="btn-row reveal" style="margin-top:46px;justify-content:center">
-        <a href="week02.html" class="btn btn-ghost">← บทที่ 2</a>
-        <a href="exercises.html#w03" class="btn btn-ghost">📚 แบบฝึกหัดบทนี้</a>
-        <a href="week04.html" class="btn btn-primary">สัปดาห์ที่ 2: เริ่มต้นเขียนโปรแกรมแรก →</a>
+        <a href="week02.html" class="btn btn-ghost">← คาบที่ 2</a>
+        <a href="exercises.html#w04" class="btn btn-ghost"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg> แบบฝึกหัดคาบนี้</a>
+        <a href="week04.html" class="btn btn-primary">คาบที่ 4: โครงสร้างควบคุมแบบเลือกทำ →</a>
       </div>
     </div>
   </section>
 
   <footer class="footer">
     <div class="container">
-      <p>บทที่ 3: อัลกอริทึมและผังงาน — รายวิชาการเขียนโปรแกรมคอมพิวเตอร์</p>
-      <p class="credits">จัดทำเพื่อการศึกษา</p>
+      <p>คาบที่ 3: รู้จักการเขียนโปรแกรมภาษาซีและเริ่มต้นโปรแกรมแรก — รายวิชาการเขียนโปรแกรมคอมพิวเตอร์</p>
+      <p class="credits">จัดทำเพื่อการศึกษา · รูปภาพจาก Wikimedia Commons · อิงเอกสารประกอบการสอนคาบที่ 1, 3, 4</p>
     </div>
   </footer>
 
@@ -348,6 +649,7 @@ x = x × 2   <span class="cm">// x = 16</span></pre></p></div>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
   <script src="js/main.js"></script>
   <script src="js/week03.js"></script>
+  <script src="js/runner.js"></script>
   <script src="js/quiz.js"></script>
 </body>
 </html>

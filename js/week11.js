@@ -1,10 +1,9 @@
 /* ============================================================
-   week11.js — บทที่ 11: สตริงและการประมวลผลข้อความ (ภาษาซี)
-   (ปุ่มรันโค้ด, เครื่องส่อง char array + \0, เครื่องตรวจรหัสสินค้า,
-    คำถามแบบทดสอบ)
+   week11.js — คาบที่ 12: ไฟล์และการจัดการข้อมูล
+   (ปุ่มรันโค้ด, โรงงานรายงาน CSV, คำถามแบบทดสอบ)
    ============================================================ */
 
-// ---------- ปุ่ม "▶ คอมไพล์และรัน" : แสดงผลลัพธ์ที่ฝังไว้ใน data-output ----------
+// ---------- ปุ่ม "▶ รันโค้ด" : แสดงผลลัพธ์ที่ฝังไว้ใน data-output ----------
 (function runButtons() {
   document.querySelectorAll('.run-btn[data-output]').forEach((btn) => {
     const out = btn.parentElement.querySelector('.code-output');
@@ -23,174 +22,173 @@
   });
 })();
 
-// ---------- เครื่องส่อง char array: เห็นดัชนี + \0 ปิดท้าย ----------
-(function charArrayInspector() {
-  const textInput = document.getElementById('slText');
-  const boxes = document.getElementById('slBoxes');
-  const result = document.getElementById('slResult');
-  if (!textInput || !boxes) return;
+// ---------- โรงงานรายงาน: อ่าน CSV → สรุปรายงาน (ข้ามบรรทัดเสียอย่างสุภาพ) ----------
+(function csvReportFactory() {
+  const textarea = document.getElementById('csvData');
+  const btnRun = document.getElementById('csvRun');
+  const btnReset = document.getElementById('csvReset');
+  const report = document.getElementById('csvReport');
+  const desc = document.getElementById('csvDesc');
+  if (!textarea || !btnRun) return;
 
-  function render() {
-    const s = [...textInput.value];
-    const n = s.length;
+  const DEFAULT_DATA = 'machine,hours,temp\nPUMP-01,8,72.5\nPUMP-02,6,68.0\nMIXER-01,9,84.2\nCONV-01,7,61.8\nPRESS-01,5,79.4';
 
-    boxes.innerHTML = '';
-    s.forEach((ch, i) => {
-      const box = document.createElement('div');
-      box.className = 'machine-io';
-      box.style.minWidth = '52px';
-      box.style.padding = '10px 12px';
-      box.innerHTML = '<span class="label">[' + i + ']</span>\'' + ch + '\'';
-      boxes.appendChild(box);
-    });
-    // โบกี้ \0 ปิดท้าย — พระเอกของบทนี้
-    const nul = document.createElement('div');
-    nul.className = 'machine-io';
-    nul.style.minWidth = '52px';
-    nul.style.padding = '10px 12px';
-    nul.style.outline = '2px solid var(--amber)';
-    nul.innerHTML = '<span class="label">[' + n + ']</span>\\0';
-    nul.title = 'อักขระ null ที่คอมไพเลอร์เติมให้ — บอกว่าข้อความจบตรงนี้';
-    boxes.appendChild(nul);
+  function fmt(x, d) { return x.toLocaleString('th-TH', { minimumFractionDigits: d, maximumFractionDigits: d }); }
 
-    result.innerHTML = 'strlen(s) = <b style="color:#a7f3d0">' + n + '</b>' +
-      '<span style="color:#94a3b8"> (ไม่นับ \\0)</span> &nbsp;·&nbsp; ' +
-      'ต้องจองอย่างน้อย char s[<b style="color:#fbbf24">' + (n + 1) + '</b>]' +
-      '<span style="color:#94a3b8"> (เผื่อ \\0 หนึ่งช่องเสมอ)</span>';
-  }
+  btnRun.addEventListener('click', () => {
+    const lines = textarea.value.split('\n');
+    let count = 0, hoursSum = 0, tempSum = 0, skipped = 0;
+    let maxTemp = -Infinity, maxName = '-';
+    let minTemp = Infinity, minName = '-';
 
-  textInput.addEventListener('input', render);
-  render();
+    // เริ่มที่ดัชนี 1 เพื่อข้ามหัวตาราง — แบบเดียวกับโค้ดภาษาซีในบทเรียน
+    for (let i = 1; i < lines.length; i++) {
+      const line = lines[i].trim();           // ตัด \n ท้ายบรรทัดแบบที่ต้องทำหลัง fgets
+      if (!line) continue;                    // ข้ามบรรทัดว่าง
+      const parts = line.split(',');          // จำลอง sscanf("%[^,],%d,%f")
+      if (parts.length !== 3) { skipped++; continue; }   // sscanf แกะได้ไม่ครบ 3 = บรรทัดเสีย
+      const name = parts[0].trim();
+      const hours = parseInt(parts[1], 10);
+      const temp = parseFloat(parts[2]);
+      if (!name || isNaN(hours) || isNaN(temp)) { skipped++; continue; }
+
+      count++;
+      hoursSum += hours;
+      tempSum += temp;
+      if (temp > maxTemp) { maxTemp = temp; maxName = name; }
+      if (temp < minTemp) { minTemp = temp; minName = name; }
+    }
+
+    if (!count) {
+      report.textContent = 'ไม่พบข้อมูลที่ใช้ได้เลย — ตรวจรูปแบบ: ชื่อ,ชั่วโมง,อุณหภูมิ';
+      desc.textContent = skipped ? '⚠️ พบบรรทัดเสีย ' + skipped + ' บรรทัด และไม่มีบรรทัดดีเหลือเลย' : 'ใส่ข้อมูลอย่างน้อย 1 แถวใต้หัวตาราง';
+      return;
+    }
+
+    report.innerHTML =
+      '========================================<br>' +
+      '  รายงานสรุปเครื่องจักรประจำวัน<br>' +
+      '========================================<br>' +
+      'จำนวนเครื่องจักร : <b style="color:#22d3ee">' + count + '</b> เครื่อง<br>' +
+      'ชั่วโมงทำงานรวม  : <b style="color:#22d3ee">' + hoursSum + '</b> ชม.<br>' +
+      'อุณหภูมิเฉลี่ย    : <b style="color:#a78bfa">' + fmt(tempSum / count, 2) + '</b> °C<br>' +
+      'ร้อนสุด          : <b style="color:#fca5a5">' + fmt(maxTemp, 1) + '°C (' + maxName + ')</b>' + (maxTemp >= 80 ? ' ⚠️ เกิน 80 ควรตรวจสอบ!' : '') + '<br>' +
+      'เย็นสุด          : <b style="color:#a7f3d0">' + fmt(minTemp, 1) + '°C (' + minName + ')</b><br>' +
+      '========================================';
+    desc.textContent = skipped
+      ? '⚠️ ประมวลผล ' + count + ' บรรทัด และข้ามบรรทัดที่ข้อมูลเสีย ' + skipped + ' บรรทัด — โปรแกรมจริงต้องไม่ล้มเพราะข้อมูลสกปรกแค่บรรทัดเดียว'
+      : '✅ ประมวลผลครบ ' + count + ' บรรทัด ไม่มีบรรทัดเสีย — ลองพิมพ์บรรทัดข้อมูลไม่ครบ 3 คอลัมน์ดูว่าโปรแกรมรับมืออย่างไร';
+    if (typeof gsap !== 'undefined') gsap.from(report, { opacity: 0, y: 10, duration: 0.4 });
+  });
+
+  btnReset.addEventListener('click', () => {
+    textarea.value = DEFAULT_DATA;
+    report.textContent = '— กดประมวลผลเพื่อสร้างรายงาน —';
+    desc.textContent = 'โปรแกรมจะข้ามบรรทัดหัวตาราง และข้ามบรรทัดที่ sscanf แกะได้ไม่ครบ 3 คอลัมน์ (พร้อมรายงานว่าข้ามไปกี่บรรทัด) — นี่คือนิสัยของโปรแกรมระดับใช้งานจริง';
+  });
 })();
 
-// ---------- เครื่องตรวจรหัสสินค้า XX-9999 (strlen + isupper + isdigit) ----------
-(function productCodeValidator() {
-  const input = document.getElementById('pcInput');
-  const verdict = document.getElementById('pcVerdict');
-  if (!input) return;
-
-  const rules = document.querySelectorAll('#pcRules .cond-item');
-
-  // กฎทั้งสี่ ตรวจตามนิยามใน validate_code.c บนหน้า
-  const CHECKS = [
-    (c) => c.length === 7,
-    (c) => c.length >= 2 && /^[A-Z]{2}$/.test(c.slice(0, 2)),
-    (c) => c.length >= 3 && c[2] === '-',
-    (c) => c.length >= 7 && /^[0-9]{4}$/.test(c.slice(3, 7)),
-  ];
-
-  function render() {
-    const code = input.value;
-    let passAll = true;
-    rules.forEach((el, i) => {
-      const ok = CHECKS[i](code);
-      el.classList.remove('checking', 'matched', 'skipped');
-      if (ok) {
-        el.classList.add('matched');
-        el.style.borderColor = '';
-        el.style.color = '';
-      } else {
-        passAll = false;
-        el.style.borderColor = 'rgba(248, 113, 113, 0.5)';
-        el.style.color = '#fca5a5';
-      }
-    });
-    verdict.textContent = code === ''
-      ? '— พิมพ์รหัสเพื่อตรวจ —'
-      : passAll
-        ? '✅ is_valid("' + code + '") → 1 (จริง) — รหัสถูกต้องตามรูปแบบ XX-9999 รับเข้าคลังได้'
-        : '❌ is_valid("' + code + '") → 0 (เท็จ) — แก้ตามกฎข้อที่เป็นสีแดงด้านบน';
-  }
-
-  input.addEventListener('input', render);
-  render();
-})();
-
-// ---------- คำถามแบบทดสอบท้ายบท (quiz.js เป็นผู้วาดหน้าจอ) ----------
+// ---------- คำถามแบบทดสอบท้ายคาบ (quiz.js เป็นผู้วาดหน้าจอ) ----------
 window.QUIZ_QUESTIONS = [
   {
-    q: 'สตริงในภาษาซีคืออะไรกันแน่?',
+    q: 'ทำไมโปรแกรมจึงต้องบันทึกข้อมูลลง "ไฟล์" แทนที่จะเก็บในตัวแปรอย่างเดียว?',
     opts: [
-      'ชนิดข้อมูล string เหมือนภาษาอื่น',
-      'อาร์เรย์ของ char ที่ปิดท้ายด้วยอักขระ \\0',
-      'ตัวแปร char ตัวเดียวที่เก็บได้หลายอักษร',
-      'ลิสต์ของตัวเลขรหัส ASCII ที่ไม่มีจุดจบ'
+      'ไฟล์คำนวณได้เร็วกว่าตัวแปร',
+      'ตัวแปรอยู่ใน RAM ซึ่งหายหมดเมื่อโปรแกรมจบ ไฟล์อยู่ในดิสก์จึงคงอยู่ถาวร',
+      'ตัวแปรเก็บข้อความไม่ได้',
+      'ภาษาซีบังคับให้ใช้ไฟล์เสมอ'
     ],
     ans: 1,
-    explain: 'ภาษาซีไม่มีชนิด string ในตัว — ข้อความคือ char array ธรรมดาที่มีกติกาว่า \\0 ปิดท้ายเพื่อบอกว่าจบตรงไหน ทุกฟังก์ชันสตริงทำงานบนกติกานี้'
+    explain: 'ย้อนไปคาบที่ 2: RAM เป็นหน่วยความจำชั่วคราว (volatile) — ตัวแปรทุกตัวตายตอนโปรแกรมจบ ไฟล์อยู่ในหน่วยเก็บข้อมูลถาวร (SSD/HDD) จึงอยู่รอดข้ามการรันได้'
   },
   {
-    q: 'จะเก็บคำว่า "ENGINE" (6 ตัวอักษร) ต้องประกาศอาร์เรย์อย่างน้อยกี่ช่อง?',
-    opts: ['5', '6', '7', '8'],
+    q: 'เปิดไฟล์รายงานเก่าด้วย fopen("report.txt", "w") จะเกิดอะไรขึ้นกับเนื้อหาเดิม?',
+    opts: [
+      'เนื้อหาเดิมอยู่ครบ เขียนต่อท้ายให้',
+      'เนื้อหาเดิมถูกลบทิ้งทันทีที่เปิด',
+      'ระบบถามยืนยันก่อนลบ',
+      'fopen คืน NULL ห้ามเปิดไฟล์ที่มีอยู่แล้ว'
+    ],
+    ans: 1,
+    explain: 'โหมด "w" ล้างไฟล์เกลี้ยงตั้งแต่วินาทีที่เปิด — ก่อนจะ fprintf อะไรเลยด้วยซ้ำ! ถ้าต้องการเก็บของเดิมแล้วเขียนต่อท้าย ต้องใช้โหมด "a" (append)'
+  },
+  {
+    q: 'ทำไมต้องตรวจ if (fp == NULL) ทุกครั้งหลัง fopen?',
+    opts: [
+      'เพื่อให้โปรแกรมรันเร็วขึ้น',
+      'เพราะถ้าเปิดไฟล์ไม่สำเร็จ fopen คืน NULL — ใช้ fp ต่อโดยไม่ตรวจ โปรแกรมพังทันที',
+      'เพราะคอมไพเลอร์บังคับ ไม่ตรวจแล้วคอมไพล์ไม่ผ่าน',
+      'ไม่จำเป็นต้องตรวจ fopen สำเร็จเสมอ'
+    ],
+    ans: 1,
+    explain: 'ไฟล์ไม่มีอยู่ / ไม่มีสิทธิ์ / ดิสก์เต็ม — fopen คืน NULL ได้หลายสาเหตุ ใช้ตัวจับไฟล์ที่เป็น NULL ต่อคือ crash ทันที จึงต้องตรวจเสมอ เป็นมารยาทพื้นฐานของโปรแกรมไฟล์'
+  },
+  {
+    q: 'โหมดใดเหมาะที่สุดสำหรับโปรแกรม "บันทึก log เหตุการณ์ประจำวัน" ที่รันซ้ำหลายครั้ง?',
+    opts: ['"r"', '"w"', '"a"', 'โหมดไหนก็ได้เหมือนกัน'],
     ans: 2,
-    explain: '6 ตัวอักษร + \\0 อีก 1 = อย่างน้อย char s[7] — ลืมเผื่อช่อง \\0 คือบั๊กสตริงคลาสสิกอันดับหนึ่ง ข้อความจะ "ไม่มีจุดจบ" แล้วลามไปอ่านหน่วยความจำข้างเคียง'
+    explain: 'log ต้องสะสมต่อท้ายเรื่อย ๆ → โหมด "a" (append) — ถ้าใช้ "w" ทุกครั้งที่รัน log เก่าทั้งหมดจะหายเหลือแค่รอบล่าสุด'
   },
   {
-    q: 'strlen("MOTOR-01") มีค่าเท่าใด?',
-    opts: ['7', '8', '9', 'ขึ้นกับขนาดอาร์เรย์ที่ประกาศ'],
-    ans: 1,
-    explain: 'นับตัวอักษรจริง M-O-T-O-R-(-)-0-1 = 8 ตัว — strlen นับถึงก่อน \\0 และไม่สนใจว่าอาร์เรย์จองไว้ใหญ่แค่ไหน (จอง 100 ช่องก็ได้ 8 เท่าเดิม)'
-  },
-  {
-    q: 'char name[20] = "PUMP"; แล้วต้องการเปลี่ยนเป็น "MIXER" — ข้อใดถูกต้อง?',
-    opts: ['name = "MIXER";', 'strcpy(name, "MIXER");', 'name == "MIXER";', 'name[] = "MIXER";'],
-    ans: 1,
-    explain: 'อาร์เรย์กำหนดค่าใหม่ทั้งก้อนด้วย = ไม่ได้ (คอมไพล์ไม่ผ่าน!) ต้องใช้ strcpy คัดลอกเนื้อหาลงไป — = ใช้ได้เฉพาะตอนประกาศครั้งแรกเท่านั้น'
-  },
-  {
-    q: 'การตรวจว่ารหัสผ่านที่ผู้ใช้พิมพ์ (pass) ตรงกับ "eng1234" หรือไม่ ข้อใดถูกต้อง?',
+    q: 'อ่านไฟล์ด้วย fgets แล้วบรรทัดในไฟล์คือ "END" — ทำไม strcmp(line, "END") จึงไม่เท่ากับ 0?',
     opts: [
-      'if (pass == "eng1234")',
-      'if (strcmp(pass, "eng1234") == 0)',
-      'if (strcmp(pass, "eng1234") == 1)',
-      'if (pass.equals("eng1234"))'
+      'เพราะไฟล์เก็บเป็นตัวพิมพ์เล็กเสมอ',
+      'เพราะ fgets เก็บ \\n ท้ายบรรทัดมาด้วย เป็น "END\\n" ต้องตัดทิ้งก่อน',
+      'เพราะ strcmp ใช้กับค่าคงที่ไม่ได้',
+      'เพราะ fgets อ่านทีละตัวอักษร ไม่ใช่ทีละบรรทัด'
     ],
     ans: 1,
-    explain: 'strcmp คืน 0 เมื่อเนื้อหา "เท่ากัน" (สวนความรู้สึกแต่ต้องจำ!) — ส่วน == เทียบตำแหน่งกล่องในหน่วยความจำ ไม่ใช่เนื้อหา ได้ผลผิดแบบเงียบ ๆ'
+    explain: 'fgets เก็บอักขระขึ้นบรรทัดใหม่มาด้วย — "END\\n" ไม่เท่ากับ "END" จึงต้องตัด \\n ทิ้งก่อนเปรียบเทียบ บั๊กล่องหนตัวจริงของคาบนี้'
   },
   {
-    q: 'การรับข้อความด้วย scanf ข้อใดถูกต้อง?',
-    opts: ['scanf("%s", &name);', 'scanf("%s", name);', 'scanf("%c", name);', 'scanf(name);'],
-    ans: 1,
-    explain: 'อาร์เรย์ "เป็นตำแหน่ง" อยู่แล้ว จึงไม่ใส่ & — ข้อยกเว้นของกฎ scanf จากบทที่ 5! (และจำไว้ว่า %s หยุดรับที่ช่องว่างแรก)'
-  },
-  {
-    q: 'char s[10] = "ROBOT"; s[0] = \'L\'; printf("%s", s); — แสดงอะไร?',
-    opts: ['ROBOT', 'LOBOT', 'L', 'คอมไพล์ไม่ผ่าน เพราะสตริงแก้ไม่ได้'],
-    ans: 1,
-    explain: 'สตริงซีคืออาร์เรย์ — แก้ "ทีละช่อง" ได้เสมอ: s[0] = \'L\' ทับตัวแรก ได้ LOBOT (ที่ทำไม่ได้คือกำหนดใหม่ทั้งก้อนด้วย =)'
-  },
-  {
-    q: 'ฟังก์ชัน isdigit(c) และ isupper(c) มาจากคลังใด และคืนค่าแบบไหน?',
+    q: 'CSV ย่อมาจากอะไร และใช้อักขระใดคั่นคอลัมน์?',
     opts: [
-      'string.h — คืนข้อความ',
-      'ctype.h — คืนค่าจริง/เท็จแบบ int (ไม่ใช่ 0 = จริง)',
-      'stdio.h — คืน char',
-      'math.h — คืน float'
+      'Computer System Values — คั่นด้วยช่องว่าง',
+      'Comma-Separated Values — คั่นด้วยจุลภาค (,)',
+      'Central Storage Vault — คั่นด้วย ;',
+      'Code Source Version — คั่นด้วย :'
     ],
     ans: 1,
-    explain: 'ctype.h คือคลังตรวจชนิดอักขระทีละตัว — ใช้คู่กับลูปไล่สตริงเพื่อตรวจรูปแบบ เช่น "สี่ตัวท้ายเป็นเลขหมดไหม" แบบเครื่องตรวจรหัสสินค้าในบทเรียน'
+    explain: 'Comma-Separated Values: ข้อความธรรมดาที่คั่นคอลัมน์ด้วยจุลภาค — เรียบง่ายจนทุกโปรแกรมในโลกอ่านได้ จึงเป็นภาษากลางของการแลกเปลี่ยนข้อมูล'
   },
   {
-    q: 'วนนับว่าในสตริง s มีตัวอักษร \'A\' กี่ตัว — หัวลูปที่ถูกต้องคือข้อใด?',
+    q: 'sscanf ต่างจาก scanf อย่างไร?',
     opts: [
-      'for (int i = 0; i < strlen(s); i++)',
-      'for (int i = 1; i <= strlen(s); i++)',
-      'for (int i = 0; s[i] == \'A\'; i++)',
-      'while (s != \'\\0\')'
-    ],
-    ans: 0,
-    explain: 'ดัชนีสตริงเริ่ม 0 และตัวสุดท้ายอยู่ที่ strlen-1 → i < strlen(s) พอดีเป๊ะ — แบบ i <= strlen จะไปแตะช่อง \\0 เกินมาหนึ่ง'
-  },
-  {
-    q: 'จากเครื่องตรวจรหัสสินค้า XX-9999 ในบทเรียน รหัส "ab-1234" จะผ่านหรือไม่ เพราะอะไร?',
-    opts: [
-      'ผ่าน เพราะครบ 7 ตัวอักษร',
-      'ไม่ผ่าน เพราะ isupper(\'a\') ได้เท็จ — สองตัวแรกต้องพิมพ์ใหญ่',
-      'ไม่ผ่าน เพราะมีเครื่องหมายขีด',
-      'ผ่าน เพราะภาษาซีไม่สนตัวพิมพ์เล็ก-ใหญ่'
+      'sscanf เร็วกว่าเท่านั้น',
+      'sscanf อ่านข้อมูลจาก "สตริง" แทนที่จะอ่านจากคีย์บอร์ด',
+      'sscanf ใช้ตัวกำหนดรูปแบบคนละชุดกับ scanf',
+      'ไม่ต่างกันเลย'
     ],
     ans: 1,
-    explain: 'ความยาว 7 ✓ ขีด ✓ ท้ายเป็นเลข ✓ แต่กฎข้อสอง isupper ไม่ผ่านเพราะ a, b เป็นตัวพิมพ์เล็ก — ภาษาซีจริงจังกับตัวพิมพ์เสมอ (ลองพิมพ์ในเครื่องตรวจดูได้)'
+    explain: 'สามพี่น้อง: scanf อ่านจากคีย์บอร์ด / fscanf อ่านจากไฟล์ / sscanf อ่านจากสตริง — ตัวกำหนดรูปแบบชุดเดียวกันหมด ท่าอ่าน CSV มาตรฐานคือ fgets ทั้งบรรทัด แล้ว sscanf แกะคอลัมน์'
+  },
+  {
+    q: 'ในรูปแบบ sscanf(line, "%29[^,],%d,%f", ...) — ส่วน %[^,] หมายความว่าอะไร?',
+    opts: [
+      'อ่านเฉพาะจุลภาค',
+      'อ่านตัวอักษรไปเรื่อย ๆ จนกว่าจะเจอจุลภาค',
+      'ข้ามจุลภาคทุกตัว',
+      'อ่านตัวเลขฐานสอง'
+    ],
+    ans: 1,
+    explain: '%[^,] = "กินทุกอักขระจนกว่าจะเจอจุลภาค" จึงใช้แกะคอลัมน์ข้อความของ CSV ได้พอดี (เลข 29 คือกันเกินขนาดอาร์เรย์ 30 ช่อง — เผื่อ \\0 หนึ่งช่องเสมอ!)'
+  },
+  {
+    q: 'ไฟล์ CSV มี 6 บรรทัด (บรรทัดแรกเป็นหัวตาราง) — โปรแกรมนับข้อมูลที่ถูกต้องควรได้กี่แถว?',
+    opts: ['6', '5', '7', 'ขึ้นกับจำนวนคอลัมน์'],
+    ans: 1,
+    explain: 'หัวตาราง "machine,hours,temp" ไม่ใช่ข้อมูล! ต้องข้ามบรรทัดแรกเสมอ เหลือข้อมูลจริง 5 แถว — ลืมข้าม header แล้วเอาคำว่า hours ไปแกะเป็นตัวเลข คือบั๊กคลาสสิกของมือใหม่'
+  },
+  {
+    q: 'โปรแกรมอ่าน CSV ระดับใช้งานจริง ควรทำอย่างไรเมื่อ sscanf แกะบรรทัดได้ไม่ครบ 3 คอลัมน์?',
+    opts: [
+      'หยุดโปรแกรมทันที',
+      'ใส่ค่า 0 แทนทุกช่องที่หาย',
+      'ข้ามบรรทัดนั้น นับจำนวนที่ข้าม แล้วรายงานให้ผู้ใช้ทราบ',
+      'ลบบรรทัดนั้นออกจากไฟล์ต้นฉบับเลย'
+    ],
+    ans: 2,
+    explain: 'ข้อมูลจริงสกปรกเสมอ — โปรแกรมที่ดีต้องไม่ล้มเพราะบรรทัดเดียว แต่ก็ต้องไม่เงียบ: ข้าม + นับ + รายงาน ให้มนุษย์ตัดสินใจต่อ (sscanf คืนจำนวนช่องที่แกะสำเร็จ ใช้ตรวจได้พอดี)'
   }
 ];
+

@@ -1,238 +1,189 @@
 /* ============================================================
-   week09.js — บทที่ 9: ฟังก์ชัน (ภาษาซี)
-   (ปุ่มรันโค้ด, ตัวไล่เส้นทางการเรียกฟังก์ชัน, เครื่องจักรฟังก์ชัน,
-    คำถามแบบทดสอบ)
+   week09.js — คาบที่ 3: อัลกอริทึมและผังงาน
+   (ตัวจำลองเดินผังงานหาค่ามากที่สุด, คำถามแบบทดสอบ)
    ============================================================ */
 
-// ---------- ปุ่ม "▶ คอมไพล์และรัน" : แสดงผลลัพธ์ที่ฝังไว้ใน data-output ----------
-(function runButtons() {
-  document.querySelectorAll('.run-btn[data-output]').forEach((btn) => {
-    const out = btn.parentElement.querySelector('.code-output');
-    if (!out) return;
-    btn.addEventListener('click', () => {
-      out.textContent = '';
-      out.classList.add('show');
-      btn.textContent = '✓ รันแล้ว — กดอีกครั้งเพื่อรันซ้ำ';
-      const text = btn.dataset.output;
-      let i = 0;
-      const timer = setInterval(() => {
-        out.textContent = text.slice(0, ++i);
-        if (i >= text.length) clearInterval(timer);
-      }, 14);
-    });
+// ---------- ตัวจำลองเดินผังงาน: หาค่ามากที่สุดของ 2 จำนวน ----------
+(function flowSimulator() {
+  const diagram = document.getElementById('flowDiagram');
+  const inputA = document.getElementById('simA');
+  const inputB = document.getElementById('simB');
+  const btnStep = document.getElementById('simStep');
+  const btnReset = document.getElementById('simReset');
+  const traceBody = document.getElementById('traceBody');
+  const desc = document.getElementById('simDesc');
+  if (!diagram || !btnStep) return;
+
+  const nodes = {};
+  diagram.querySelectorAll('[data-step]').forEach((el) => {
+    nodes[el.dataset.step] = el;
   });
-})();
 
-// ---------- ตัวไล่เส้นทางการเรียกฟังก์ชัน: เห็นโปรแกรม "กระโดด" ----------
-(function callFlowStepper() {
-  const code = document.getElementById('flowCode');
-  const btnStep = document.getElementById('flowStep');
-  const btnReset = document.getElementById('flowReset');
-  if (!code || !btnStep) return;
+  let path = [];   // ลำดับขั้นที่จะเดิน คำนวณใหม่ทุกครั้งที่เริ่ม
+  let pos = -1;    // ตำแหน่งปัจจุบันใน path (-1 = ยังไม่เริ่ม)
+  let a = 0, b = 0, max = null;
 
-  const out = document.getElementById('flowOut');
-  const desc = document.getElementById('flowDesc');
-  const lines = {};
-  code.querySelectorAll('.pyline').forEach((el) => (lines[el.dataset.line] = el));
+  function readInputs() {
+    a = parseInt(inputA.value, 10);
+    b = parseInt(inputB.value, 10);
+    if (isNaN(a)) a = 0;
+    if (isNaN(b)) b = 0;
+  }
 
-  // ลำดับจริง: คอมไพเลอร์จำนิยาม → main เริ่ม → เรียก → กระโดดเข้า → กลับมา → ...
-  const steps = [
-    { line: 1, desc: 'คอมไพเลอร์อ่านนิยาม greet: "จำสูตร" ไว้เฉย ๆ — บรรทัด 2 ยังไม่ทำงาน!' },
-    { line: 3, desc: 'โปรแกรมเริ่มทำงานที่ main() เสมอ — ไม่ใช่บรรทัดแรกของไฟล์' },
-    { line: 4, desc: 'เรียก greet("ฝน"); → กำลังจะกระโดดขึ้นไปทำในฟังก์ชัน โดยพารามิเตอร์ name รับค่า "ฝน"' },
-    { line: 2, out: 'สวัสดีคุณฝน ยินดีต้อนรับ', desc: 'กระโดดเข้าฟังก์ชัน! printf ทำงานด้วย name = "ฝน" — เสร็จแล้วจะ "กลับไปที่จุดเรียก"' },
-    { line: 5, desc: 'กลับมาทำต่อบรรทัดถัดไปใน main: เรียก greet("เมฆ"); → กระโดดขึ้นไปอีกรอบ คราวนี้ name = "เมฆ"' },
-    { line: 2, out: 'สวัสดีคุณเมฆ ยินดีต้อนรับ', desc: 'บรรทัด 2 ทำงานรอบที่สอง ด้วยค่าใหม่ — โค้ดบรรทัดเดียว ใช้ซ้ำได้ไม่จำกัด นี่คือพลังของฟังก์ชัน' },
-    { line: 6, out: 'จบโปรแกรม', desc: 'กลับมาจบที่บรรทัด 6 — สรุปลำดับที่ทำงานจริง: 1 → 3 → 4 → 2 → 5 → 2 → 6 ไม่ใช่บนลงล่างเฉย ๆ!' },
-  ];
+  function stepDesc(step) {
+    switch (step) {
+      case 0: return '🟢 START — เริ่มต้นผังงาน ยังไม่มีค่าตัวแปรใด ๆ';
+      case 1: return '📥 รับค่า a = ' + a + ', b = ' + b + ' เข้าสู่หน่วยความจำ';
+      case 2: return '🔶 ตรวจเงื่อนไข a > b → ' + a + ' > ' + b + ' เป็น' +
+        (a > b ? 'จริง (True) เดินลงทาง "จริง"' : 'เท็จ (False) เดินไปทาง "เท็จ"');
+      case 3: return '⬜ ประมวลผล max = a → max ได้ค่า ' + max;
+      case 4: return '⬜ ประมวลผล max = b → max ได้ค่า ' + max;
+      case 5: return '📤 แสดงผลลัพธ์: ค่ามากที่สุดคือ ' + max;
+      case 6: return '🔴 END — จบผังงาน ลองเปลี่ยนค่า a, b แล้วกด "↺ เริ่มใหม่" ดูเส้นทางอื่น';
+    }
+    return '';
+  }
 
-  let pos = -1;
-  const printed = [];
+  function addTraceRow(step) {
+    if (pos === 0) traceBody.innerHTML = ''; // ล้างแถว "กดก้าวถัดไปเพื่อเริ่ม"
+    traceBody.querySelectorAll('tr').forEach((tr) => tr.classList.remove('current'));
+    const tr = document.createElement('tr');
+    tr.className = 'current';
+    const aShow = step >= 1 ? a : '—';
+    const bShow = step >= 1 ? b : '—';
+    const maxShow = max !== null ? max : '—';
+    tr.innerHTML = '<td>' + step + '</td><td>' + aShow + '</td><td>' + bShow + '</td><td>' + maxShow + '</td>';
+    traceBody.appendChild(tr);
+  }
+
+  function highlight(step) {
+    Object.keys(nodes).forEach((k) => nodes[k].classList.remove('active'));
+    const node = nodes[step];
+    node.classList.add('active');
+    if (typeof gsap !== 'undefined') gsap.fromTo(node, { scale: 0.95 }, { scale: 1, duration: 0.35, ease: 'back.out(2.5)' });
+  }
 
   btnStep.addEventListener('click', () => {
-    if (pos >= steps.length - 1) return;
-    pos++;
-    const s = steps[pos];
-    Object.keys(lines).forEach((k) => lines[k].classList.remove('active'));
-    lines[s.line].classList.add('active');
-    if (typeof gsap !== 'undefined') gsap.fromTo(lines[s.line], { x: -6 }, { x: 0, duration: 0.25, ease: 'power2.out' });
-    if (s.out) {
-      printed.push(s.out);
-      out.textContent = printed.join('\n');
+    if (pos === -1) {
+      // เริ่มเดิน: อ่านค่าแล้ววางเส้นทางตามเงื่อนไข a > b
+      readInputs();
+      max = null;
+      path = [0, 1, 2, a > b ? 3 : 4, 5, 6];
+      pos = 0;
+    } else if (pos >= path.length - 1) {
+      return; // ถึง END แล้ว ต้องกดเริ่มใหม่
+    } else {
+      pos++;
     }
-    desc.textContent = s.desc;
-    if (pos >= steps.length - 1) {
-      btnStep.disabled = true;
-      btnStep.textContent = 'จบโปรแกรม ✓';
-    }
+    const step = path[pos];
+    if (step === 3) max = a;
+    if (step === 4) max = b;
+    highlight(step);
+    addTraceRow(step);
+    desc.textContent = stepDesc(step);
+    if (pos >= path.length - 1) btnStep.disabled = true;
   });
 
   btnReset.addEventListener('click', () => {
     pos = -1;
-    printed.length = 0;
+    max = null;
     btnStep.disabled = false;
-    btnStep.textContent = 'รันทีละขั้น ▶';
-    Object.keys(lines).forEach((k) => lines[k].classList.remove('active'));
-    out.textContent = '— หน้าจอผลลัพธ์ (Console) —';
-    desc.textContent = 'เริ่มกันเลย — เดาก่อนไหมว่าบรรทัดไหนทำงานเป็นลำดับแรก?';
-  });
-})();
-
-// ---------- เครื่องจักรฟังก์ชัน: พารามิเตอร์เข้า → return ออก ----------
-(function functionMachine() {
-  const select = document.getElementById('fnSelect');
-  const input = document.getElementById('fnInput');
-  const btnRun = document.getElementById('fnRun');
-  if (!select || !btnRun) return;
-
-  const inBox = document.getElementById('fnIn');
-  const box = document.getElementById('fnBox');
-  const outBox = document.getElementById('fnOut');
-  const codeEl = document.getElementById('fnCode');
-
-  const MACHINES = {
-    c_to_f: {
-      sig: 'c_to_f(c)',
-      code: 'float c_to_f(float c) {\n    return c * 9 / 5 + 32;\n}',
-      run: (x) => Math.round((x * 9 / 5 + 32) * 100) / 100,
-      hint: 'แปลงอุณหภูมิ คืน float',
-    },
-    square_area: {
-      sig: 'square_area(side)',
-      code: 'int square_area(int side) {\n    return side * side;\n}',
-      run: (x) => Math.trunc(x) * Math.trunc(x),
-      hint: 'คำนวณพื้นที่ คืน int',
-    },
-    is_even: {
-      sig: 'is_even(n)',
-      code: 'int is_even(int n) {\n    return n % 2 == 0;\n}',
-      run: (x) => (Math.trunc(x) % 2 === 0 ? '1 (จริง)' : '0 (เท็จ)'),
-      hint: 'ตรวจเลขคู่ คืน 1/0',
-    },
-  };
-
-  function updateMachine() {
-    const m = MACHINES[select.value];
-    box.innerHTML = m.sig + '<small>' + m.hint + '</small>';
-    codeEl.textContent = m.code;
-    outBox.textContent = '?';
-  }
-
-  btnRun.addEventListener('click', () => {
-    const m = MACHINES[select.value];
-    const x = parseFloat(input.value) || 0;
-    inBox.textContent = x;
-    outBox.textContent = '...';
-    if (typeof gsap !== 'undefined') {
-      const tl = gsap.timeline();
-      tl.fromTo(inBox.parentElement, { scale: 1 }, { scale: 1.1, yoyo: true, repeat: 1, duration: 0.2 })
-        .fromTo(box, { scale: 1 }, { scale: 1.08, yoyo: true, repeat: 1, duration: 0.25 })
-        .call(() => { outBox.textContent = m.run(x); })
-        .fromTo(outBox.parentElement, { scale: 0.8 }, { scale: 1, duration: 0.4, ease: 'back.out(2.5)' });
-    } else {
-      outBox.textContent = m.run(x);
-    }
+    Object.keys(nodes).forEach((k) => nodes[k].classList.remove('active'));
+    traceBody.innerHTML = '<tr><td colspan="4">— กดก้าวถัดไปเพื่อเริ่ม —</td></tr>';
+    desc.textContent = 'พร้อมเริ่มเดินผังงาน — ลองตั้งค่า a ให้มากกว่า b แล้วดูว่าเส้นทางเปลี่ยนไหม';
   });
 
-  select.addEventListener('change', updateMachine);
-  updateMachine();
+  // เปลี่ยนค่า input ระหว่างเดิน = เริ่มรอบใหม่ เพื่อไม่ให้ trace สับสน
+  [inputA, inputB].forEach((inp) => inp.addEventListener('input', () => {
+    if (pos !== -1) btnReset.click();
+  }));
 })();
 
-// ---------- คำถามแบบทดสอบท้ายบท (quiz.js เป็นผู้วาดหน้าจอ) ----------
+// ---------- คำถามแบบทดสอบท้ายคาบ (quiz.js เป็นผู้วาดหน้าจอ) ----------
 window.QUIZ_QUESTIONS = [
   {
-    q: 'รูปแบบการนิยามฟังก์ชันภาษาซีที่ถูกต้องคือข้อใด?',
+    q: 'ข้อใดคือความหมายของ "อัลกอริทึม" ที่ถูกต้องที่สุด?',
     opts: [
-      'function add(a, b) { ... }',
-      'int add(int a, int b) { ... }',
-      'def add(a, b):',
-      'add(int a, int b) returns int'
+      'โปรแกรมคอมพิวเตอร์ที่เขียนด้วยภาษาระดับสูง',
+      'ลำดับขั้นตอนการแก้ปัญหาที่ชัดเจน มีจุดเริ่มต้นและจุดสิ้นสุด',
+      'แผนภาพที่ใช้สัญลักษณ์รูปทรงต่าง ๆ',
+      'ภาษาที่คอมพิวเตอร์เข้าใจได้โดยตรง'
     ],
     ans: 1,
-    explain: 'ภาษาซีต้องระบุ "ชนิดค่าที่คืน" นำหน้า ตามด้วยชื่อและพารามิเตอร์ที่ระบุชนิดทุกตัว: int add(int a, int b) — ไม่มีคำว่า function หรือ def'
+    explain: 'อัลกอริทึมคือ "แนวคิด" ลำดับขั้นแก้ปัญหา — ยังไม่ใช่โค้ดหรือแผนภาพ ส่วนผังงานเป็นเพียงเครื่องมือหนึ่งที่ใช้ถ่ายทอดอัลกอริทึม'
   },
   {
-    q: 'คำว่า void หน้าชื่อฟังก์ชัน เช่น void show_menu() หมายความว่าอะไร?',
+    q: 'คุณสมบัติข้อใด "ไม่ใช่" คุณสมบัติที่ดีของอัลกอริทึม?',
     opts: [
-      'ฟังก์ชันนี้ว่างเปล่า ไม่มีโค้ด',
-      'ฟังก์ชันนี้ทำงานแต่ "ไม่คืนค่า" กลับมา',
-      'ฟังก์ชันนี้รับพารามิเตอร์ไม่ได้',
-      'ฟังก์ชันนี้เรียกได้ครั้งเดียว'
-    ],
-    ans: 1,
-    explain: 'void = ไม่คืนค่า — เหมาะกับฟังก์ชันที่ "ทำงาน" อย่างเดียว เช่น แสดงเมนู พิมพ์หัวรายงาน — เอาผลไปเก็บใส่ตัวแปรไม่ได้เพราะไม่มีอะไรส่งกลับมา'
-  },
-  {
-    q: 'จาก float shipping_fee(float weight) การเรียก shipping_fee(3.5) — ข้อใดถูกต้อง?',
-    opts: [
-      'weight คืออาร์กิวเมนต์, 3.5 คือพารามิเตอร์',
-      'weight คือพารามิเตอร์, 3.5 คืออาร์กิวเมนต์',
-      'ทั้งคู่เรียกว่าพารามิเตอร์',
-      'ทั้งคู่เรียกว่าอาร์กิวเมนต์'
-    ],
-    ans: 1,
-    explain: 'พารามิเตอร์คือ "ช่องรับ" ในนิยาม (weight) ส่วนอาร์กิวเมนต์คือ "ค่าจริง" ที่ส่งตอนเรียก (3.5) — จำ: Parameter อยู่กับนิยาม, Argument อยู่กับการเรียก'
-  },
-  {
-    q: 'ความแตกต่างสำคัญที่สุดระหว่าง return กับ printf ในฟังก์ชันคือข้อใด?',
-    opts: [
-      'return แสดงผลสวยกว่า printf',
-      'printf เร็วกว่า return',
-      'return ส่งค่ากลับให้โค้ดที่เรียกเอาไปใช้ต่อได้ ส่วน printf แค่แสดงขึ้นจอ',
-      'ใช้แทนกันได้ทุกกรณี'
+      'ทุกขั้นตอนชัดเจนไม่กำกวม',
+      'ต้องทำงานจบได้ในเวลาจำกัด',
+      'ต้องเขียนด้วยภาษาซีเท่านั้น',
+      'มีลำดับขั้นตอนที่แน่นอน'
     ],
     ans: 2,
-    explain: 'return คือการส่งมอบผลลัพธ์ให้โปรแกรม (เก็บใส่ตัวแปร คำนวณต่อได้) ส่วน printf ส่งให้ "ตาคน" เท่านั้น — ฟังก์ชันคำนวณที่ดีควร return แล้วให้ผู้เรียกตัดสินใจเองว่าจะแสดงหรือไม่'
+    explain: 'อัลกอริทึมไม่ผูกกับภาษาใดภาษาหนึ่ง — เขียนเป็นภาษาไทย, Pseudocode หรือผังงานก็ได้ แล้วค่อยแปลงเป็นภาษาโปรแกรมใดก็ได้ทีหลัง'
   },
   {
-    q: 'ทำไมธรรมเนียมเริ่มต้นจึงเขียนนิยามฟังก์ชันไว้ "เหนือ" main()?',
-    opts: [
-      'เพื่อความสวยงามเท่านั้น',
-      'เพราะคอมไพเลอร์อ่านบนลงล่าง ต้องรู้จักฟังก์ชันก่อนถึงจุดที่ถูกเรียก',
-      'เพราะ main ต้องอยู่บรรทัดสุดท้ายของไฟล์เสมอ',
-      'เพราะฟังก์ชันที่อยู่ใต้ main จะรันก่อน'
-    ],
-    ans: 1,
-    explain: 'คอมไพเลอร์อ่านไฟล์จากบนลงล่าง — เจอการเรียกฟังก์ชันที่ยังไม่รู้จักจะฟ้องหรือเตือนทันที จึงนิยามไว้ก่อน main (ภายหลังจะได้เรียนการประกาศโครงหรือ prototype เพื่อแก้ข้อจำกัดนี้)'
-  },
-  {
-    q: 'ไล่โค้ด: int twice(int x) { return x * 2; } แล้วรัน printf("%d", twice(3) + 1); จะแสดงค่าใด?',
-    opts: ['6', '7', '61', 'คอมไพล์ไม่ผ่าน'],
-    ans: 1,
-    explain: 'twice(3) คืนค่า 6 กลับมา แล้วบวก 1 ได้ 7 — เห็นพลังของ return ไหม? ค่าที่คืนมาเอาไปคำนวณต่อในนิพจน์ได้เลย ถ้าข้างในเป็น printf จะทำแบบนี้ไม่ได้'
-  },
-  {
-    q: 'ตัวแปรที่ประกาศ "ภายในฟังก์ชัน" มีคุณสมบัติอย่างไร?',
-    opts: [
-      'ใช้ได้ทุกที่ในโปรแกรม',
-      'เป็น local — ใช้ได้เฉพาะในฟังก์ชันนั้น และหายไปเมื่อฟังก์ชันจบ',
-      'ถูกเก็บถาวรจนปิดเครื่อง',
-      'ใช้ได้ในฟังก์ชันอื่นที่นิยามไฟล์เดียวกัน'
-    ],
-    ans: 1,
-    explain: 'ตัวแปร local เกิดเมื่อฟังก์ชันถูกเรียกและตายเมื่อฟังก์ชันจบ — อ้างถึงจากข้างนอกจะคอมไพล์ไม่ผ่าน (undeclared) อยากได้ค่าต้องส่งออกทาง return เท่านั้น'
-  },
-  {
-    q: 'จาก greet.c ในบทเรียน (นิยาม greet บรรทัด 1–2, main บรรทัด 3, เรียก 2 ครั้งบรรทัด 4–5) ลำดับบรรทัดที่ "ทำงานจริง" คือข้อใด?',
-    opts: ['1 → 2 → 3 → 4 → 5 → 6', '1 → 3 → 4 → 2 → 5 → 2 → 6', '3 → 4 → 5 → 6 → 1 → 2', '2 → 2 → 4 → 5 → 6'],
-    ans: 1,
-    explain: 'นิยามแค่ถูกจำ (บรรทัด 2 ยังไม่ทำ) → main เริ่ม → เรียกครั้งแรกกระโดดเข้าบรรทัด 2 → กลับมาเรียกครั้งสอง → บรรทัด 2 อีกรอบ → จบ — ลองกดตัวไล่เส้นทางในบทเรียนดูอีกครั้งได้'
-  },
-  {
-    q: 'เหตุผลข้อใด "ไม่ใช่" ประโยชน์ของการแบ่งโปรแกรมเป็นฟังก์ชัน?',
-    opts: [
-      'ลดการเขียนโค้ดซ้ำ แก้ที่เดียวมีผลทุกจุด',
-      'อ่านและแบ่งงานในทีมง่ายขึ้น',
-      'ทดสอบแยกทีละชิ้นได้',
-      'ทำให้โปรแกรมรันเร็วขึ้นเสมอ'
-    ],
+    q: 'สัญลักษณ์ "สี่เหลี่ยมข้าวหลามตัด" ในผังงานใช้แทนอะไร?',
+    opts: ['การเริ่มต้น/สิ้นสุด', 'การรับข้อมูล/แสดงผล', 'การประมวลผลหรือคำนวณ', 'การตัดสินใจหรือตรวจสอบเงื่อนไข'],
     ans: 3,
-    explain: 'ฟังก์ชันไม่ได้ทำให้โปรแกรมเร็วขึ้น (จริง ๆ มีต้นทุนการเรียกนิดหน่อยด้วยซ้ำ) — ประโยชน์ของมันคือเรื่อง "คน": ลดซ้ำ อ่านง่าย แบ่งงานได้ ทดสอบเป็นชิ้น'
+    explain: 'ข้าวหลามตัด (Decision) ใช้ตรวจเงื่อนไข มีทางออก 2 ทางคือ จริง/เท็จ — ส่วนวงรีคือเริ่ม/จบ, ด้านขนานคือรับ/แสดงผล, สี่เหลี่ยมผืนผ้าคือประมวลผล'
   },
   {
-    q: 'ไล่โค้ด: int add(int a, int b) { return a + b; } แล้ว int x = add(2, 3); int y = add(x, 4); สุดท้าย y มีค่าใด?',
-    opts: ['5', '7', '9', '24'],
+    q: 'ขั้นตอน "รับค่าน้ำหนักจากผู้ใช้" ควรใช้สัญลักษณ์รูปใด?',
+    opts: ['สี่เหลี่ยมด้านขนาน', 'วงรี', 'สี่เหลี่ยมผืนผ้า', 'วงกลม'],
+    ans: 0,
+    explain: 'สี่เหลี่ยมด้านขนาน (Input/Output) ใช้ทั้งการรับข้อมูลเข้าและแสดงผลออก — จำง่าย ๆ ว่าข้อมูล "ไหลเข้า-ไหลออก" ใช้รูปเดียวกัน'
+  },
+  {
+    q: 'โครงสร้างควบคุมพื้นฐานของอัลกอริทึมมี 3 แบบ ได้แก่ข้อใด?',
+    opts: [
+      'รับค่า, คำนวณ, แสดงผล',
+      'ลำดับ (Sequence), เงื่อนไข (Selection), วนซ้ำ (Iteration)',
+      'เริ่มต้น, ประมวลผล, สิ้นสุด',
+      'Input, Process, Output'
+    ],
+    ans: 1,
+    explain: 'ทุกโปรแกรมในโลกประกอบขึ้นจาก 3 โครงสร้างนี้: ทำตามลำดับ, เลือกทางตามเงื่อนไข และวนซ้ำจนกว่าเงื่อนไขจะเปลี่ยน'
+  },
+  {
+    q: 'จากตัวจำลองในบทเรียน ถ้า a = 7, b = 12 ผังงานจะเดินผ่านกล่องใด?',
+    opts: ['max = a เพราะ a มาก่อน b', 'max = b เพราะเงื่อนไข a > b เป็นเท็จ', 'ทั้ง max = a และ max = b', 'ไม่ผ่านกล่องใดเลยเพราะค่าเท่ากัน'],
+    ans: 1,
+    explain: 'ตรวจเงื่อนไข 7 > 12 ได้ "เท็จ" จึงเดินไปทางเท็จ → max = b = 12 — เงื่อนไขเดียวเลือกได้ทางเดียวเสมอ'
+  },
+  {
+    q: 'Trace ตามลำดับนี้: x = 5 → x = x + 3 → x = x × 2 สุดท้าย x มีค่าเท่าใด?',
+    opts: ['10', '13', '16', '11'],
     ans: 2,
-    explain: 'add(2, 3) คืน 5 เก็บใน x → add(x, 4) = add(5, 4) คืน 9 — การส่ง "ผลของฟังก์ชัน" ต่อเป็นอาร์กิวเมนต์ของรอบถัดไป คือท่าประกอบร่างที่ใช้ทุกวันในงานจริง'
+    explain: 'ไล่ทีละขั้นเหมือนในตาราง Trace: เริ่ม x = 5 → บวก 3 ได้ 8 → คูณ 2 ได้ 16 — ค่าตัวแปร "ทับ" ค่าเดิมทุกครั้งที่กำหนดใหม่'
+  },
+  {
+    q: 'Pseudocode ต่างจากภาษาโปรแกรมจริงอย่างไร?',
+    opts: [
+      'Pseudocode รันบนคอมพิวเตอร์ได้เร็วกว่า',
+      'Pseudocode เขียนเป็นภาษากึ่งธรรมชาติ ไม่ต้องถูกไวยากรณ์ของภาษาใด',
+      'Pseudocode ใช้ได้เฉพาะกับงานคำนวณตัวเลข',
+      'ไม่ต่างกัน เพราะคอมไพเลอร์อ่าน Pseudocode ได้'
+    ],
+    ans: 1,
+    explain: 'Pseudocode เป็น "รหัสเทียม" สำหรับคนอ่าน ไม่ใช่เครื่อง — เน้นสื่อสารลำดับความคิด จึงไม่ต้องกังวลเรื่องไวยากรณ์ของภาษาจริง'
+  },
+  {
+    q: 'ผังงานคำนวณค่าไฟ "ถ้าหน่วย ≤ 150 คิดหน่วยละ 3.25 ไม่เช่นนั้นคิดหน่วยละ 4.22" ต้องมีสัญลักษณ์ข้าวหลามตัดอย่างน้อยกี่จุด?',
+    opts: ['ไม่ต้องมีเลย', '1 จุด', '2 จุด', '3 จุด'],
+    ans: 1,
+    explain: 'มีการตัดสินใจเพียงครั้งเดียวคือ "หน่วย ≤ 150 ?" แตกเป็น 2 ทาง (คิดอัตราถูก/อัตราแพง) จึงใช้ข้าวหลามตัด 1 จุดพอ'
+  },
+  {
+    q: 'ขั้นตอนแรกที่ควรทำก่อนเขียนอัลกอริทึมคือข้อใด?',
+    opts: [
+      'เปิดโปรแกรมเขียนโค้ดทันที',
+      'วิเคราะห์ปัญหา: ระบุ Input, Process, Output ให้ชัด',
+      'วาดผังงานให้สวยที่สุด',
+      'เลือกภาษาโปรแกรมที่จะใช้'
+    ],
+    ans: 1,
+    explain: 'ตามตัวอย่าง BMI ในบทเรียน — ต้องรู้ก่อนว่ารับอะไรเข้า (Input) ทำอะไร (Process) ได้อะไรออก (Output) แล้วจึงเขียน Pseudocode และวาดผังงาน'
   }
 ];

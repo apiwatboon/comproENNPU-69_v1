@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>บทที่ 5: ตัวดำเนินการและการรับค่า | Computer Programming</title>
+  <title>คาบที่ 5: โครงสร้างควบคุมแบบวนซ้ำ | Computer Programming</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2322d3ee'/%3E%3Ctext x='50' y='68' font-size='48' text-anchor='middle' fill='%23071018' font-family='monospace'%3E%26lt;/%26gt;%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,10 +17,10 @@
       <a href="index.html" class="nav-logo"><span class="logo-dot">&lt;/&gt;</span> Computer Programming</a>
       <ul class="nav-links">
         <li><a href="#objectives">วัตถุประสงค์</a></li>
-        <li><a href="#arith">คณิตศาสตร์</a></li>
-        <li><a href="#precedence">ลำดับคำนวณ</a></li>
-        <li><a href="#input">รับค่า scanf</a></li>
-        <li><a href="#logic">เปรียบเทียบ–ตรรกะ</a></li>
+        <li><a href="#for">for</a></li>
+        <li><a href="#accum">เดินลูป</a></li>
+        <li><a href="#while">while / do-while</a></li>
+        <li><a href="#nested">ลูปซ้อน</a></li>
         <li><a href="#applied">ใช้งานจริง</a></li>
         <li><a href="#quiz">แบบทดสอบ</a></li>
       </ul>
@@ -30,21 +30,21 @@
   <header class="hero">
     <canvas id="binary-canvas"></canvas>
     <div class="container">
-      <div class="hero-kicker reveal">สัปดาห์ที่ 3</div>
-      <h1 class="reveal" data-delay="0.1">บทที่ 5<br><span class="grad-text">ตัวดำเนินการและการรับค่า</span></h1>
+      <div class="hero-kicker reveal">คาบที่ 5</div>
+      <h1 class="reveal" data-delay="0.1"><span class="grad-text">โครงสร้างควบคุมแบบวนซ้ำ</span></h1>
       <p class="hero-desc reveal" data-delay="0.2">
-        สัปดาห์ที่แล้วเราเก็บข้อมูลลงตัวแปรและแสดงผลได้แล้ว วันนี้ครบวงจร:
-        รับข้อมูลจากผู้ใช้ด้วย scanf แล้วคำนวณด้วยตัวดำเนินการครบชุด —
-        พร้อมรู้ทันกับดักที่ดังที่สุดของภาษาซี: จำนวนเต็มหารจำนวนเต็ม ได้จำนวนเต็ม!
+        โครงสร้างสุดท้ายจากสามโครงสร้างพื้นฐาน — และทรงพลังที่สุด
+        คอมพิวเตอร์ไม่เก่งเพราะฉลาด แต่เก่งเพราะ "ทำซ้ำได้ล้านรอบโดยไม่เบื่อไม่พลาด"
+        วันนี้เราจะสั่งมันด้วย for, while และ do-while แล้วปิดคอร์สครึ่งแรกอย่างสมบูรณ์ก่อนสอบกลางภาค
       </p>
       <div class="hero-badges reveal" data-delay="0.3">
         <span class="badge">⏱️ <b>ใช้เวลาเรียน ~2.5 ชั่วโมง</b></span>
-        <span class="badge">🧮 <b>ตัวคำนวณนิพจน์ทีละขั้น</b></span>
+        <span class="badge">🔁 <b>ตัวเดินลูป + เครื่องวาดลวดลายดาว</b></span>
         <span class="badge">📝 <b>แบบทดสอบ 10 ข้อ</b></span>
       </div>
       <div class="btn-row reveal" data-delay="0.4">
         <a href="#objectives" class="btn btn-primary">เริ่มบทเรียน ↓</a>
-        <a href="week04.html" class="btn btn-ghost">← บทที่ 4</a>
+        <a href="week04.html" class="btn btn-ghost">← คาบที่ 4</a>
       </div>
     </div>
     <div class="scroll-hint">เลื่อนลงเพื่อเริ่มเรียน<br>⌄</div>
@@ -55,249 +55,259 @@
       <span class="section-tag reveal">Learning Objectives</span>
       <h2 class="section-title reveal">วัตถุประสงค์การเรียนรู้</h2>
       <div class="obj-list">
-        <div class="obj-item reveal">ใช้ตัวดำเนินการคณิตศาสตร์ + − * / % ได้ถูกความหมาย รวมถึงพฤติกรรมการหารของ int</div>
-        <div class="obj-item reveal" data-delay="0.05">เรียงลำดับความสำคัญของตัวดำเนินการ และคำนวณนิพจน์ซับซ้อนได้ถูกต้อง</div>
-        <div class="obj-item reveal" data-delay="0.1">รับข้อมูลจากผู้ใช้ด้วย scanf พร้อมใช้เครื่องหมาย &amp; ได้ถูกต้อง</div>
-        <div class="obj-item reveal" data-delay="0.15">เขียนนิพจน์เปรียบเทียบและเชื่อมเงื่อนไขด้วย &amp;&amp;, ||, ! ได้</div>
-        <div class="obj-item reveal" data-delay="0.2">ประยุกต์ / และ % กับจำนวนเต็ม แก้ปัญหาจริง เช่น การแปลงหน่วยเวลาและการแยกหลักเลข</div>
+        <div class="obj-item reveal">อธิบายสามส่วนของลูป for (เริ่มต้น; เงื่อนไข; ปรับค่า) และบอกได้ว่าลูปวนกี่รอบ</div>
+        <div class="obj-item reveal" data-delay="0.05">ใช้รูปแบบ "ตัวสะสม" (accumulator) หาผลรวมและนับจำนวนด้วยลูปได้</div>
+        <div class="obj-item reveal" data-delay="0.1">เขียน while และ do-while เลือกใช้ให้เหมาะกับงาน และหลีกเลี่ยงลูปไม่รู้จบ</div>
+        <div class="obj-item reveal" data-delay="0.15">เขียนลูปซ้อน (nested loop) และอธิบายจำนวนรอบรวมของมันได้</div>
+        <div class="obj-item reveal" data-delay="0.2">ประยุกต์ลูปกับงานวิศวกรรม เช่น สแกนหาค่าสูงสุดจากข้อมูลเซ็นเซอร์</div>
       </div>
     </div>
   </section>
 
-  <section class="section alt" id="arith">
+  <section class="section alt" id="for">
     <div class="container">
-      <span class="section-tag reveal">Arithmetic Operators</span>
-      <h2 class="section-title reveal">➗ ตัวดำเนินการคณิตศาสตร์ของภาษาซี</h2>
+      <span class="section-tag reveal">The for Loop</span>
+      <h2 class="section-title reveal">🔁 for — วนซ้ำเมื่อรู้จำนวนรอบ</h2>
       <p class="section-sub reveal">
-        หน้าตาคุ้นเคยทั้งห้าตัว แต่มีพฤติกรรมลับที่ต้องรู้:
-        <b style="color:var(--amber)">เครื่องหมาย / ระหว่าง int กับ int จะ "ตัดเศษทิ้ง" อัตโนมัติ</b>
-        ส่วน <b style="color:var(--cyan)">%</b> เก็บเศษไว้ให้ — สองตัวนี้จึงเป็นคู่หูกันโดยกำเนิด
-      </p>
-      <div style="overflow-x:auto" class="reveal">
-        <table class="data-table op-table">
-          <thead><tr><th>เครื่องหมาย</th><th>ชื่อ</th><th>ตัวอย่าง (int)</th><th>ผลลัพธ์</th><th>ข้อสังเกต</th></tr></thead>
-          <tbody>
-            <tr><td>+</td><td>บวก</td><td>17 + 5</td><td>22</td><td>—</td></tr>
-            <tr><td>-</td><td>ลบ</td><td>17 - 5</td><td>12</td><td>—</td></tr>
-            <tr><td>*</td><td>คูณ</td><td>17 * 5</td><td>85</td><td>ใช้ดอกจัน ไม่ใช่ ×</td></tr>
-            <tr><td>/</td><td>หาร</td><td>17 / 5</td><td>3</td><td>⚠️ int หาร int = int ตัดเศษทิ้ง! (17.0 / 5 จึงจะได้ 3.4)</td></tr>
-            <tr><td>%</td><td>มอดุลัส (เศษ)</td><td>17 % 5</td><td>2</td><td>ใช้กับจำนวนเต็มเท่านั้น — คู่หูของ /</td></tr>
-            <tr><td>++ / --</td><td>เพิ่ม/ลดทีละ 1</td><td>i++</td><td>i เพิ่มขึ้น 1</td><td>เอกลักษณ์ภาษาซี — ย่อมาจาก i = i + 1 จะเจอบ่อยมากในลูป</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="section-sub reveal" style="margin-top:14px">
-        💡 ภาษาซีไม่มีเครื่องหมายยกกำลัง — ใช้คูณซ้ำ (x * x) หรือฟังก์ชัน <code style="color:var(--green)">pow(x, 2)</code> จากคลัง <code style="color:var(--green)">&lt;math.h&gt;</code>
+        หัวลูป for ของภาษาซีมี 3 ช่องคั่นด้วย ; :
+        <b style="color:var(--cyan)">for (เริ่มต้น; เงื่อนไขวนต่อ; ปรับค่า)</b>
+        — เช่น <b style="color:var(--amber)">for (i = 1; i &lt;= 5; i++)</b> อ่านว่า "เริ่มที่ 1, วนตราบใดที่ i ≤ 5, จบรอบแล้วเพิ่ม i ทีละ 1"
       </p>
 
-      <div class="code-card reveal" style="margin-top:30px">
-        <div class="code-head"><span>ตัวอย่างที่ 5.1 — arith.c</span><div class="dots"><span></span><span></span><span></span></div></div>
-        <pre><code><span style="color:#a78bfa">int</span> a = <span style="color:#a78bfa">17</span>, b = <span style="color:#a78bfa">5</span>;
-<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"หาร (int):  %d\n"</span>, a / b);
-<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"เศษ:        %d\n"</span>, a % b);
-<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"หารทศนิยม: %.2f\n"</span>, <span style="color:#a78bfa">17.0</span> / b);
-<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"กำลังสอง:  %d\n"</span>, b * b);</code></pre>
-        <button class="run-btn" data-output="หาร (int):  3&#10;เศษ:        2&#10;หารทศนิยม: 3.40&#10;กำลังสอง:  25">▶ คอมไพล์และรัน</button>
-        <div class="code-output"></div>
-      </div>
-
-      <div class="grid grid-2" style="margin-top:36px">
+      <div class="grid grid-3">
         <div class="card reveal">
-          <div class="icon">🤔</div>
-          <h3>% มีไว้ทำไม?</h3>
-          <p>เศษจากการหารคือพระเอกลับของโปรแกรมมิง: <code style="color:var(--green)">n % 2 == 0</code> ตรวจเลขคู่ ·
-          <code style="color:var(--green)">นาที % 60</code> หาเศษนาทีที่ไม่ครบชั่วโมง ·
-          <code style="color:var(--green)">ลำดับ % 7</code> หาว่าตรงกับวันอะไรของสัปดาห์</p>
+          <div class="icon">1️⃣</div>
+          <h3>เริ่มต้น (ทำครั้งเดียว)</h3>
+          <p><code style="color:var(--green)">i = 1</code> — ตั้งค่าตัวนับก่อนเข้าลูป ทำแค่ครั้งแรกครั้งเดียวเท่านั้น</p>
+        </div>
+        <div class="card reveal" data-delay="0.05">
+          <div class="icon">2️⃣</div>
+          <h3>เงื่อนไข (ตรวจทุกรอบ)</h3>
+          <p><code style="color:var(--green)">i &lt;= 5</code> — ตรวจ "ก่อนทำ" ทุกรอบ จริงค่อยทำบล็อก เท็จเมื่อไรออกจากลูปทันที</p>
         </div>
         <div class="card reveal" data-delay="0.1">
-          <div class="icon">👫</div>
-          <h3>/ กับ % เป็นคู่หูกัน (ฉบับ int)</h3>
-          <p>แบ่งของ 17 ชิ้นให้คน 5 คน: แต่ละคนได้ <code style="color:var(--green)">17 / 5 = 3</code> ชิ้น (int ตัดเศษให้เอง)
-          เหลือเศษ <code style="color:var(--green)">17 % 5 = 2</code> ชิ้น — ใช้คู่กันเมื่อไรที่ต้อง "แบ่งกลุ่มแล้วดูเศษ"</p>
+          <div class="icon">3️⃣</div>
+          <h3>ปรับค่า (ท้ายทุกรอบ)</h3>
+          <p><code style="color:var(--green)">i++</code> — ทำหลังจบบล็อกแต่ละรอบ (i++ คือ i = i + 1 — เอกลักษณ์ภาษาซีจากคาบที่ 5!)</p>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="precedence">
-    <div class="container">
-      <span class="section-tag reveal">Order of Operations</span>
-      <h2 class="section-title reveal">🥇 ลำดับการคำนวณ — ใครมาก่อนมาหลัง?</h2>
-      <p class="section-sub reveal">
-        ภาษาซีไม่ได้คำนวณซ้ายไปขวาเสมอไป! ลำดับคือ
-        <b style="color:var(--text)">( ) → * / % → + −</b> (ระดับเดียวกันทำซ้ายไปขวา และตัวเปรียบเทียบมาก่อน &amp;&amp; ||)
-        — เลือกนิพจน์แล้วกด <b style="color:var(--cyan)">"คำนวณทีละขั้น ▶"</b> ดูคอมไพเลอร์ย่อยทีละก้อน
-      </p>
-
-      <div class="widget reveal">
-        <div class="widget-controls">
-          <label>เลือกนิพจน์:
-            <select id="exprSelect">
-              <option value="0">2 + 3 * 4</option>
-              <option value="1">(8 + 4) / 5</option>
-              <option value="2">17 % 5 + 17 / 5 * 2</option>
-              <option value="3">10 &gt; 3 &amp;&amp; 2 &gt; 5</option>
-            </select>
-          </label>
-          <button class="btn btn-primary" id="exprStep">คำนวณทีละขั้น ▶</button>
-          <button class="btn btn-ghost" id="exprReset">↺ เริ่มใหม่</button>
-        </div>
-        <div id="exprSteps" style="min-height:120px"></div>
-        <div class="expr-note" id="exprNote">ส่วนที่ <b style="color:var(--amber)">สีเหลือง</b> คือก้อนที่จะถูกคำนวณในขั้นถัดไป (ตัวแปรทุกตัวเป็น int)</div>
-      </div>
-
-      <div class="card reveal" style="margin-top:30px">
-        <div class="icon">💣</div>
-        <h3>กับดักระดับตำนานของภาษาซี: 5 / 9 = 0</h3>
-        <p>สูตรแปลงอุณหภูมิ <code style="color:#fca5a5">c = 5 / 9 * (f - 32);</code> ให้คำตอบ <b style="color:#fca5a5">0 เสมอ</b> —
-        เพราะ 5 / 9 เป็น int หาร int ได้ 0 ก่อนจะคูณอะไรทั้งนั้น!
-        ต้องเขียน <code style="color:var(--green)">c = 5.0 / 9.0 * (f - 32);</code> ให้เป็นทศนิยมตั้งแต่ต้น
-        — บั๊กตัวนี้อยู่ในข้อสอบและชีวิตจริงมาห้าสิบปีแล้ว อย่าเป็นเหยื่อรายต่อไป</p>
       </div>
 
       <div class="code-card reveal" style="margin-top:30px">
-        <div class="code-head"><span>ตัวอย่างที่ 5.2 — cast.c (วิธีปราบการหารแบบ int)</span><div class="dots"><span></span><span></span><span></span></div></div>
-        <pre><code><span style="color:#a78bfa">int</span> sum = <span style="color:#a78bfa">17</span>, n = <span style="color:#a78bfa">4</span>;
-<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"เฉลี่ยแบบ int:    %d\n"</span>, sum / n);
-<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"เฉลี่ยที่ถูกต้อง: %.2f\n"</span>, (<span style="color:#a78bfa">float</span>) sum / n);   <span style="color:#6b7280">// (float) = แปลงชนิดชั่วคราว</span></code></pre>
-        <button class="run-btn" data-output="เฉลี่ยแบบ int:    4&#10;เฉลี่ยที่ถูกต้อง: 4.25">▶ คอมไพล์และรัน</button>
+        <div class="code-head"><span>ตัวอย่างที่ 7.1 — multiplication.c แม่สูตรคูณใน 3 บรรทัด</span><div class="dots"><span></span><span></span><span></span></div></div>
+        <pre><code><span style="color:#a78bfa">for</span> (<span style="color:#a78bfa">int</span> i = <span style="color:#a78bfa">1</span>; i &lt;= <span style="color:#a78bfa">5</span>; i++) {
+    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"3 x %d = %d\n"</span>, i, <span style="color:#a78bfa">3</span> * i);
+}</code></pre>
+        <button class="run-btn" data-output="3 x 1 = 3&#10;3 x 2 = 6&#10;3 x 3 = 9&#10;3 x 4 = 12&#10;3 x 5 = 15">▶ คอมไพล์และรัน</button>
+        <div class="code-output"></div>
+      </div>
+      <p class="section-sub reveal" style="margin-top:10px">
+        3 บรรทัดได้ผลลัพธ์ 5 บรรทัด — เปลี่ยนเป็น i &lt;= 1000000 ก็ได้ผลลัพธ์ล้านบรรทัด
+        โดยโค้ดยาวเท่าเดิม นี่แหละพลังของลูป (ก้าวทีละ 2 ก็ได้: <code style="color:var(--amber)">i += 2</code>)
+      </p>
+    </div>
+  </section>
+
+  <section class="section" id="accum">
+    <div class="container">
+      <span class="section-tag reveal">The Accumulator Pattern</span>
+      <h2 class="section-title reveal">🥤 ท่าไม้ตายที่ต้องจำ: ตัวสะสม (Accumulator)</h2>
+      <p class="section-sub reveal">
+        "หาผลรวม 1 ถึง 5" คือโจทย์คลาสสิกของรูปแบบที่ใช้บ่อยที่สุดในโลกของลูป:
+        <b style="color:var(--cyan)">ตั้งตัวสะสมเป็น 0 → วนเติมค่าทีละรอบ → ได้ผลรวมตอนจบ</b>
+        กด "รันทีละขั้น ▶" แล้วจับตาดูหัวลูปบรรทัด 2 ที่ถูกแวะซ้ำทุกรอบ
+      </p>
+
+      <div class="flow-wrap reveal">
+        <div class="code-card" style="margin:0">
+          <div class="code-head"><span>sum_loop.c</span><div class="dots"><span></span><span></span><span></span></div></div>
+          <div class="pycode" id="sumCode">
+            <div class="pyline" data-line="1"><span class="ln">1</span>int total = 0;</div>
+            <div class="pyline" data-line="2"><span class="ln">2</span>for (int i = 1; i &lt;= 5; i++) {</div>
+            <div class="pyline" data-line="3"><span class="ln">3</span>    total = total + i;</div>
+            <div class="pyline" data-line="4"><span class="ln">4</span>}</div>
+            <div class="pyline" data-line="5"><span class="ln">5</span>printf("%d", total);</div>
+          </div>
+        </div>
+
+        <div class="flow-panel">
+          <h3>🎛️ แผงควบคุม</h3>
+          <div class="btn-row" style="margin-bottom:18px">
+            <button class="btn btn-primary" id="sumStep">รันทีละขั้น ▶</button>
+            <button class="btn btn-ghost" id="sumReset">↺ เริ่มใหม่</button>
+          </div>
+          <table class="trace-table">
+            <thead><tr><th>ขั้นที่</th><th>บรรทัด</th><th>i</th><th>total</th></tr></thead>
+            <tbody id="sumTrace"><tr><td colspan="4">— กดรันทีละขั้นเพื่อเริ่ม —</td></tr></tbody>
+          </table>
+          <div class="widget-result" id="sumOut" style="margin-top:14px;min-height:52px">— หน้าจอผลลัพธ์ (Console) —</div>
+          <div class="flow-desc" id="sumDesc">สังเกตว่าบรรทัด 2 จะถูกแวะซ้ำทุกรอบ — มันคือ "ด่านเช็ค" เงื่อนไข i &lt;= 5 และจุดปรับค่า i++</div>
+        </div>
+      </div>
+
+      <div class="code-card reveal" style="margin-top:36px">
+        <div class="code-head"><span>ตัวอย่างที่ 7.2 — even_sum.c (ปิดตำนานงานคาบที่ 3 ในสี่บรรทัด)</span><div class="dots"><span></span><span></span><span></span></div></div>
+        <pre><code><span style="color:#a78bfa">int</span> sum = <span style="color:#a78bfa">0</span>;
+<span style="color:#a78bfa">for</span> (<span style="color:#a78bfa">int</span> i = <span style="color:#a78bfa">2</span>; i &lt;= <span style="color:#a78bfa">20</span>; i += <span style="color:#a78bfa">2</span>) {
+    sum = sum + i;            <span style="color:#6b7280">// ตัวสะสม + ก้าวทีละ 2</span>
+}
+<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"ผลรวมเลขคู่ 2-20 = %d\n"</span>, sum);</code></pre>
+        <button class="run-btn" data-output="ผลรวมเลขคู่ 2-20 = 110">▶ คอมไพล์และรัน</button>
         <div class="code-output"></div>
       </div>
     </div>
   </section>
 
-  <section class="section alt" id="input">
+  <section class="section alt" id="while">
     <div class="container">
-      <span class="section-tag reveal">User Input with scanf</span>
-      <h2 class="section-title reveal">⌨️ scanf — รับข้อมูลจากผู้ใช้ และเครื่องหมาย &amp; ที่ห้ามลืม</h2>
+      <span class="section-tag reveal">while & do-while</span>
+      <h2 class="section-title reveal">⏳ while และ do-while — วนซ้ำเมื่อรู้แค่ "เงื่อนไข"</h2>
       <p class="section-sub reveal">
-        คู่แฝดของ printf: <b style="color:var(--cyan)">scanf("ตัวกำหนดรูปแบบ", &amp;ตัวแปร);</b> หยุดรอให้ผู้ใช้พิมพ์แล้วกด Enter
-        — ใช้ %d %f %c ชุดเดียวกับ printf แต่มีของเพิ่มหนึ่งชิ้น:
-        <b style="color:#fca5a5">เครื่องหมาย &amp; หน้าชื่อตัวแปร</b> (บอก "ตำแหน่งกล่อง" ให้ scanf เอาค่าไปวาง)
+        บางงานไม่รู้ล่วงหน้าว่ากี่รอบ: ถามรหัสจนกว่าจะถูก รอจนเซ็นเซอร์ตอบกลับ —
+        <b style="color:var(--cyan)">while (เงื่อนไข) { }</b> ตรวจก่อนทำ ส่วนน้องของมัน
+        <b style="color:var(--violet)">do { } while (เงื่อนไข);</b> ทำก่อนหนึ่งรอบแล้วค่อยตรวจ
       </p>
 
       <div class="grid grid-2" style="align-items:start">
         <div class="code-card reveal" style="margin:0">
-          <div class="code-head"><span>ตัวอย่างที่ 5.3 — input_age.c (สมมุติผู้ใช้พิมพ์ 19)</span><div class="dots"><span></span><span></span><span></span></div></div>
-          <pre><code><span style="color:#a78bfa">int</span> age;
-<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"อายุของคุณ: "</span>);
-<span style="color:#22d3ee">scanf</span>(<span style="color:#fbbf24">"%d"</span>, &amp;age);   <span style="color:#6b7280">// อย่าลืม & !</span>
-<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"ปีหน้าคุณจะอายุ %d ปี\n"</span>, age + <span style="color:#a78bfa">1</span>);</code></pre>
-          <button class="run-btn" data-stdin="19" data-output="อายุของคุณ: 19&#10;ปีหน้าคุณจะอายุ 20 ปี">▶ คอมไพล์และรัน</button>
+          <div class="code-head"><span>ตัวอย่างที่ 7.3 — countdown.c</span><div class="dots"><span></span><span></span><span></span></div></div>
+          <pre><code><span style="color:#a78bfa">int</span> count = <span style="color:#a78bfa">3</span>;
+<span style="color:#a78bfa">while</span> (count &gt; <span style="color:#a78bfa">0</span>) {
+    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"%d\n"</span>, count);
+    count--;          <span style="color:#6b7280">// สำคัญมาก!</span>
+}
+<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"ปล่อยจรวด!\n"</span>);</code></pre>
+          <button class="run-btn" data-output="3&#10;2&#10;1&#10;ปล่อยจรวด!">▶ คอมไพล์และรัน</button>
           <div class="code-output"></div>
         </div>
         <div class="code-card reveal" data-delay="0.1" style="margin:0">
-          <div class="code-head"><span>ตัวอย่างที่ 5.4 — รับหลายค่า + ทศนิยม</span><div class="dots"><span></span><span></span><span></span></div></div>
-          <pre><code><span style="color:#a78bfa">int</span> w, h;
-<span style="color:#a78bfa">float</span> price;
-<span style="color:#22d3ee">scanf</span>(<span style="color:#fbbf24">"%d %d"</span>, &amp;w, &amp;h);   <span style="color:#6b7280">// รับ 2 ค่าในบรรทัดเดียว</span>
-<span style="color:#22d3ee">scanf</span>(<span style="color:#fbbf24">"%f"</span>, &amp;price);      <span style="color:#6b7280">// float ใช้ %f (double ใช้ %lf)</span>
-<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"พื้นที่ %d ตร.ม. ราคา %.2f บาท\n"</span>, w * h, price);</code></pre>
-          <button class="run-btn" data-stdin="4 5&#10;99.5" data-output="(ผู้ใช้พิมพ์: 4 5 แล้ว 99.5)&#10;พื้นที่ 20 ตร.ม. ราคา 99.50 บาท">▶ คอมไพล์และรัน</button>
+          <div class="code-head"><span>ตัวอย่างที่ 7.4 — pin.c (do-while: ถามจนกว่าจะถูก)</span><div class="dots"><span></span><span></span><span></span></div></div>
+          <pre><code><span style="color:#a78bfa">int</span> pin;
+<span style="color:#a78bfa">do</span> {
+    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"ใส่รหัส PIN: "</span>);
+    <span style="color:#22d3ee">scanf</span>(<span style="color:#fbbf24">"%d"</span>, &amp;pin);
+} <span style="color:#a78bfa">while</span> (pin != <span style="color:#a78bfa">1234</span>);   <span style="color:#6b7280">// ผิดก็วนถามใหม่</span>
+<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"ยินดีต้อนรับ!\n"</span>);</code></pre>
+          <button class="run-btn" data-stdin="1111&#10;9999&#10;1234" data-output="ใส่รหัส PIN: 1111&#10;ใส่รหัส PIN: 9999&#10;ใส่รหัส PIN: 1234&#10;ยินดีต้อนรับ!">▶ คอมไพล์และรัน</button>
           <div class="code-output"></div>
         </div>
       </div>
-      <div class="card reveal" style="margin-top:26px">
-        <div class="icon">☠️</div>
-        <h3>ลืม &amp; แล้วเป็นอะไร?</h3>
-        <p><code style="color:#fca5a5">scanf("%d", age);</code> (ไม่มี &amp;) — คอมไพล์ "ผ่าน" แต่ตอนรันโปรแกรมพังหรือค่าหายเงียบ ๆ
-        เพราะ scanf ไม่รู้ตำแหน่งกล่องจริงของตัวแปร — นี่คือบั๊กยอดฮิตอันดับหนึ่งของบทนี้
-        จำท่าให้ขึ้นใจ: <b style="color:var(--text)">printf ไม่ใส่ &amp; · scanf ใส่ &amp; เสมอ</b> (ยกเว้นสตริง ซึ่งจะเจอบทที่ 11)</p>
+
+      <div class="grid grid-3" style="margin-top:36px">
+        <div class="card reveal">
+          <div class="icon">🧭</div>
+          <h3>เลือกอะไรดี?</h3>
+          <p><b style="color:var(--cyan)">รู้จำนวนรอบ → for</b> (สูตรคูณ 12 แม่)<br>
+          <b style="color:var(--violet)">รู้แค่เงื่อนไขหยุด → while</b> (วนจนค่าคลาดเคลื่อน &lt; 0.001)<br>
+          <b style="color:var(--green)">ต้องทำอย่างน้อย 1 รอบ → do-while</b> (เมนู, ถามรหัส — ต้องถามก่อนถึงรู้ว่าผิด)</p>
+        </div>
+        <div class="card reveal" data-delay="0.05">
+          <div class="icon">☠️</div>
+          <h3>ลูปไม่รู้จบ (Infinite Loop)</h3>
+          <p>ลบบรรทัด <code style="color:var(--amber)">count--;</code> ออก — count ค้างที่ 3 ตลอดกาล เงื่อนไขจริงชั่วนิรันดร์ โปรแกรมค้าง!
+          จำคาบที่ 3: อัลกอริทึมต้องมี <b style="color:var(--text)">Finiteness</b> ทุกลูปต้องมีบรรทัดขยับเข้าจุดจบ
+          (ค้างแล้วกด <b style="color:var(--cyan)">Ctrl + C</b> บังคับหยุด)</p>
+        </div>
+        <div class="card reveal" data-delay="0.1">
+          <div class="icon">🛑</div>
+          <h3>break — ประตูฉุกเฉิน</h3>
+          <p>คำสั่ง <code style="color:var(--green)">break;</code> ออกจากลูปทันทีไม่ว่าเงื่อนไขจะยังจริงอยู่ —
+          ตัวเดียวกับที่ใช้ใน switch! ใช้คู่กับ if ในลูป เช่น เจอสินค้าที่ค้นหาแล้วก็เลิกหาต่อ</p>
+        </div>
+      </div>
+
+      <div class="code-card reveal" style="margin-top:36px">
+        <div class="code-head"><span>ตัวอย่างที่ 7.5 — find_break.c (เจอแล้วหยุดทันที ไม่หาต่อให้เสียเวลา)</span><div class="dots"><span></span><span></span><span></span></div></div>
+        <pre><code><span style="color:#6b7280">// หาเลขตัวแรกในช่วง 50-60 ที่หาร 7 ลงตัว</span>
+<span style="color:#a78bfa">for</span> (<span style="color:#a78bfa">int</span> i = <span style="color:#a78bfa">50</span>; i &lt;= <span style="color:#a78bfa">60</span>; i++) {
+    <span style="color:#a78bfa">if</span> (i % <span style="color:#a78bfa">7</span> == <span style="color:#a78bfa">0</span>) {
+        <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"เจอแล้ว! %d หาร 7 ลงตัว\n"</span>, i);
+        <span style="color:#a78bfa">break</span>;                <span style="color:#6b7280">// ออกจากลูปทันที</span>
+    }
+    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"%d ไม่ใช่...\n"</span>, i);
+}</code></pre>
+        <button class="run-btn" data-output="50 ไม่ใช่...&#10;51 ไม่ใช่...&#10;52 ไม่ใช่...&#10;53 ไม่ใช่...&#10;54 ไม่ใช่...&#10;55 ไม่ใช่...&#10;เจอแล้ว! 56 หาร 7 ลงตัว">▶ คอมไพล์และรัน</button>
+        <div class="code-output"></div>
       </div>
     </div>
   </section>
 
-  <section class="section" id="logic">
+  <section class="section" id="nested">
     <div class="container">
-      <span class="section-tag reveal">Comparison & Logical Operators</span>
-      <h2 class="section-title reveal">⚖️ เปรียบเทียบและตรรกะ — ภาษาของการตัดสินใจ</h2>
+      <span class="section-tag reveal">Nested Loops</span>
+      <h2 class="section-title reveal">🪜 ลูปซ้อนลูป: เครื่องวาดลวดลายดาว</h2>
       <p class="section-sub reveal">
-        ผลของการเปรียบเทียบในภาษาซีคือ int: <b style="color:var(--cyan)">1 = จริง, 0 = เท็จ</b>
-        (ไม่มี True/False!) — และนี่คือสิ่งที่จะอยู่ใน "ข้าวหลามตัด" ของ if สัปดาห์หน้า
-        ระวัง: เท่ากับใช้ <b style="color:var(--cyan)">==</b> สองตัว เพราะ = ตัวเดียวคือกำหนดค่า
+        ลูปนอกคุม "แถว" ลูปในคุม "คอลัมน์" — ลูปนอก 1 รอบ ลูปในวนจนจบชุด
+        รอบรวม = นอก × ใน — เลือกลวดลาย ปรับจำนวนแถว แล้วกดวาด ดูว่าลูปซ้อน 4 บรรทัดเสกอะไรได้บ้าง
       </p>
 
       <div class="grid grid-2" style="align-items:start">
-        <div style="overflow-x:auto" class="reveal">
-          <table class="data-table op-table">
-            <thead><tr><th>เครื่องหมาย</th><th>ความหมาย</th><th>ตัวอย่าง (a=7, b=3)</th><th>ผล</th></tr></thead>
-            <tbody>
-              <tr><td>==</td><td>เท่ากับ</td><td>a == b</td><td>0 (เท็จ)</td></tr>
-              <tr><td>!=</td><td>ไม่เท่ากับ</td><td>a != b</td><td>1 (จริง)</td></tr>
-              <tr><td>&gt;</td><td>มากกว่า</td><td>a &gt; b</td><td>1 (จริง)</td></tr>
-              <tr><td>&lt;=</td><td>น้อยกว่าหรือเท่ากับ</td><td>a &lt;= b</td><td>0 (เท็จ)</td></tr>
-              <tr><td>&amp;&amp;</td><td>และ — จริงทั้งคู่จึงจริง</td><td>a &gt; 0 &amp;&amp; b &gt; 9</td><td>0 (เท็จ)</td></tr>
-              <tr><td>||</td><td>หรือ — จริงสักตัวก็จริง</td><td>a &gt; 0 || b &gt; 9</td><td>1 (จริง)</td></tr>
-              <tr><td>!</td><td>นิเสธ — กลับค่า</td><td>!(a &gt; b)</td><td>0 (เท็จ)</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="card reveal" data-delay="0.1" style="margin:0">
-          <h3 style="margin-bottom:14px">🧪 สนามทดลองตรรกะ</h3>
-          <p style="margin-bottom:14px">เปลี่ยนค่า a, b แล้วดูผลทุกนิพจน์เปลี่ยนตามทันที (1 = จริง, 0 = เท็จ):</p>
-          <div class="widget" style="padding:20px;margin-top:0">
-            <div class="widget-controls" style="margin-bottom:14px">
-              <label>a = <input type="number" id="logicA" value="7" style="width:80px"></label>
-              <label>b = <input type="number" id="logicB" value="3" style="width:80px"></label>
+        <div class="reveal">
+          <div class="widget" style="margin-top:0">
+            <div class="widget-controls">
+              <label>ลวดลาย:
+                <select id="patSelect">
+                  <option value="triangle">สามเหลี่ยม</option>
+                  <option value="square">สี่เหลี่ยม</option>
+                  <option value="pyramid">ปิรามิด</option>
+                </select>
+              </label>
+              <label>แถว = <input type="number" id="patRows" value="5" min="1" max="10" style="width:70px"></label>
+              <button class="btn btn-primary" id="patDraw">วาด ▶</button>
             </div>
-            <div class="widget-result" id="logicResult" style="line-height:2.1">— กำลังคำนวณ —</div>
+            <div class="pattern-out" id="patOut">— เลือกลวดลายแล้วกดวาด —</div>
           </div>
         </div>
+        <div class="code-card reveal" data-delay="0.1" style="margin:0">
+          <div class="code-head"><span>pattern.c</span><div class="dots"><span></span><span></span><span></span></div></div>
+          <pre><code id="patCode">int n = 5;
+for (int i = 1; i <= n; i++) {
+    for (int j = 1; j <= i; j++)
+        printf("*");
+    printf("\n");
+}</code></pre>
+        </div>
       </div>
+      <p class="section-sub reveal" style="margin-top:24px">
+        เคล็ดลับอ่านลูปซ้อน: <code style="color:var(--amber)">printf("*")</code> ในลูปในพิมพ์ "ต่อบรรทัดเดิม"
+        ส่วน <code style="color:var(--amber)">printf("\n")</code> หลังจบลูปในคือการ "ขึ้นแถวใหม่" — i คุมว่าแถวนี้พิมพ์กี่ดวง j เป็นคนนับ
+      </p>
     </div>
   </section>
 
   <section class="section alt" id="applied">
     <div class="container">
       <span class="section-tag reveal">Putting It Together</span>
-      <h2 class="section-title reveal">🛠️ ใช้งานจริง: เครื่องแปลงวินาที → ชั่วโมง/นาที/วินาที</h2>
+      <h2 class="section-title reveal">🌡️ ใช้งานจริง: สแกนหาอุณหภูมิสูงสุดของเครื่องจักร</h2>
       <p class="section-sub reveal">
-        โจทย์คลาสสิกที่ / กับ % ของจำนวนเต็มเปล่งประกาย: เซ็นเซอร์จับเวลาเครื่องจักรรายงานมาเป็น "วินาทีรวม"
-        แต่หัวหน้าต้องการ ชม./นาที/วิ — การหารแบบตัดเศษของ int ทำหน้าที่ได้พอดีเป๊ะ
+        เซ็นเซอร์วัดอุณหภูมิเครื่องจักรทุกชั่วโมง 7 ค่า — หาค่าสูงสุดโดย "จำแชมป์ปัจจุบันไว้
+        แล้ววนเทียบทีละตัว ใครชนะก็ขึ้นเป็นแชมป์แทน" กด "เทียบตัวถัดไป ▶" ดูลูปสแกนทีละแท่ง
       </p>
 
-      <div class="grid grid-2" style="align-items:start">
-        <div class="code-card reveal" style="margin:0">
-          <div class="code-head"><span>ตัวอย่างที่ 5.5 — time_convert.c</span><div class="dots"><span></span><span></span><span></span></div></div>
-          <pre><code><span style="color:#a78bfa">int</span> total, hours, remain, minutes, seconds;
-<span style="color:#22d3ee">scanf</span>(<span style="color:#fbbf24">"%d"</span>, &amp;total);
-hours   = total / <span style="color:#a78bfa">3600</span>;   <span style="color:#6b7280">// int หาร int ตัดเศษให้เอง</span>
-remain  = total % <span style="color:#a78bfa">3600</span>;
-minutes = remain / <span style="color:#a78bfa">60</span>;
-seconds = remain % <span style="color:#a78bfa">60</span>;
-<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"%d ชม. %d นาที %d วิ\n"</span>, hours, minutes, seconds);</code></pre>
-          <button class="run-btn" data-stdin="7385" data-output="2 ชม. 3 นาที 5 วิ">▶ คอมไพล์และรัน</button>
-          <div class="code-output"></div>
+      <div class="widget reveal">
+        <div class="bars" id="tempBars"></div>
+        <div class="widget-controls">
+          <button class="btn btn-primary" id="maxStep">เทียบตัวถัดไป ▶</button>
+          <button class="btn btn-ghost" id="maxReset">↺ เริ่มใหม่</button>
         </div>
-        <div class="card reveal" data-delay="0.1" style="margin:0">
-          <h3 style="margin-bottom:14px">⏱️ ลองเครื่องจริง</h3>
-          <div class="widget" style="padding:20px;margin-top:0">
-            <div class="widget-controls" style="margin-bottom:14px">
-              <label>วินาทีรวม = <input type="number" id="timeInput" value="7385" min="0" style="width:120px"></label>
-            </div>
-            <div class="widget-result" id="timeResult" style="line-height:2">— กำลังคำนวณ —</div>
-          </div>
-        </div>
+        <div class="widget-result" id="maxVars" style="text-align:center;margin-bottom:14px">max_t = — &nbsp;|&nbsp; กำลังเทียบชั่วโมงที่ —</div>
+        <div class="flow-desc" id="maxDesc">โค้ดเบื้องหลัง: max_t = temps[0]; แล้ววน for เทียบ — if (temps[i] &gt; max_t) ก็อัปเดตแชมป์ (สีชมพู = แชมป์ปัจจุบัน, สีเหลือง = ตัวที่กำลังเทียบ)</div>
       </div>
 
       <div class="grid grid-3" style="margin-top:36px">
         <div class="card reveal">
           <div class="icon">🚚</div>
           <h3>โลจิสติกส์</h3>
-          <p>พัสดุ 1,250 ชิ้น บรรจุลังละ 48: ต้องใช้ <code style="color:var(--green)">1250 / 48 = 26</code> ลัง
-          เหลือเศษ <code style="color:var(--green)">1250 % 48 = 2</code> ชิ้นรอลังถัดไป</p>
+          <p>วนอ่านพัสดุ 10,000 ชิ้น สะสมน้ำหนักรวมต่อคันรถ เกินพิกัดเมื่อไรก็ break ขึ้นคันใหม่ — accumulator + break ในงานเดียว</p>
         </div>
         <div class="card reveal" data-delay="0.05">
           <div class="icon">🏭</div>
           <h3>อุตสาหการ</h3>
-          <p>ตรวจ QC ทุกชิ้นที่ 25: ชิ้นงานลำดับ n เข้าตรวจเมื่อ <code style="color:var(--green)">n % 25 == 0</code>
-          — เงื่อนไขเดียวคุมทั้งสายการผลิต</p>
+          <p>ลูปซ้อนตรวจแผ่นเหล็ก: แถว × คอลัมน์ สแกนหาตำหนิทุกตารางนิ้ว — หลักเดียวกับลวดลายดาวเป๊ะ แค่เปลี่ยน printf เป็นเซ็นเซอร์</p>
         </div>
         <div class="card reveal" data-delay="0.1">
-          <div class="icon">🔢</div>
-          <h3>แยกหลักเลข</h3>
-          <p>รหัส 4 หลัก n = 4725: หลักพัน <code style="color:var(--green)">n / 1000</code> = 4,
-          เลขท้ายสองตัว <code style="color:var(--green)">n % 100</code> = 25 — / กับ % คือมีดผ่าตัดตัวเลข</p>
+          <div class="icon">💻</div>
+          <h3>คอมพิวเตอร์</h3>
+          <p>เกมทั้งเกมคือ while ยักษ์หนึ่งตัว: while (ยังไม่ game over) → อ่านปุ่ม คำนวณ วาดภาพ — วนวินาทีละ 60 รอบ</p>
         </div>
       </div>
     </div>
@@ -306,40 +316,44 @@ seconds = remain % <span style="color:#a78bfa">60</span>;
   <section class="section" id="quiz">
     <div class="container">
       <span class="section-tag reveal">Check Your Understanding</span>
-      <h2 class="section-title reveal">📝 แบบทดสอบท้ายบท (10 ข้อ)</h2>
-      <p class="section-sub reveal">สามจุดตาย: int หาร int ตัดเศษ · scanf ต้องมี &amp; · ผลเปรียบเทียบคือ 1/0</p>
+      <h2 class="section-title reveal">📝 แบบทดสอบท้ายคาบ (10 ข้อ)</h2>
+      <p class="section-sub reveal">อ่านหัวลูปให้ครบสามช่องก่อนตอบเสมอ: เริ่มที่ไหน วนถึงเมื่อไร ก้าวทีละเท่าไร</p>
       <div class="prequiz reveal">
         <div class="prequiz-head">📘 อ่านก่อนสอบ · สรุปประเด็นสำคัญ</div>
-        <p class="prequiz-intro">หัวใจของบทนี้คือ "กับดักการหารจำนวนเต็ม" และการใช้ scanf ให้ถูก — เข้าใจ 5 ข้อนี้แล้วทำแบบทดสอบได้สบาย</p>
+        <p class="prequiz-intro">ฝึก "นับรอบลูป" และ "ไล่ค่าตัวสะสม" ให้คล่อง พร้อมแยกแยะ for / while / do-while และระวังลูปไม่รู้จบ</p>
         <div class="pq-item">
           <span class="pq-num">1</span>
-          <div class="pq-text"><h4>กับดัก: int / int = int</h4><p>จำนวนเต็มหารจำนวนเต็ม ผลลัพธ์ถูก <b>ตัดทศนิยมทิ้ง</b> เสมอ</p><p><pre class="pq-code">int a = 7, b = 2;
-printf("%d", a / b);   <span class="cm">// 3 ไม่ใช่ 3.5</span>
+          <div class="pq-text"><h4>ลูป for: นับรอบ</h4><p>โครงสร้าง <code>for(เริ่ม; เงื่อนไข; เปลี่ยนค่า)</code> เหมาะเมื่อ "รู้จำนวนรอบ"</p><p><pre class="pq-code">for (int i = 0; i &lt; 5; i++)
+<span class="cm">// ทำ 5 รอบ: i = 0,1,2,3,4</span>
 
-float c = 5.0 / 9;     <span class="cm">// ต้องมี .0 อย่างน้อยตัวหนึ่ง</span></pre></p></div>
+for (int i = 2; i &lt;= 8; i += 2)
+<span class="cm">// พิมพ์ 2 4 6 8</span></pre></p></div>
         </div>
         <div class="pq-item">
           <span class="pq-num">2</span>
-          <div class="pq-text"><h4>ตัวดำเนินการมอดูลัส %</h4><p><code>%</code> = เศษจากการหาร ใช้เช็คเลขคู่/คี่ และแยกหลัก</p><p><pre class="pq-code">17 / 5 = 3      17 % 5 = 2
-if (n % 2 == 0)   <span class="cm">// n เป็นเลขคู่</span></pre></p></div>
+          <div class="pq-text"><h4>ตัวสะสม (accumulator)</h4><p>ตั้งค่าเริ่มต้นก่อนลูป แล้วบวกเพิ่มในลูป</p><p><pre class="pq-code">int total = 0;
+for (int i = 1; i &lt;= 3; i++)
+    total = total + i;  <span class="cm">// 1+2+3 = 6</span></pre></p></div>
         </div>
         <div class="pq-item">
           <span class="pq-num">3</span>
-          <div class="pq-text"><h4>ลำดับความสำคัญ</h4><p><code>*</code> <code>/</code> <code>%</code> ทำก่อน <code>+</code> <code>-</code> เสมอ</p><p><pre class="pq-code">2 + 3 * 4 = 2 + 12 = <b>14</b>   <span class="cm">(ไม่ใช่ 20)</span></pre></p></div>
+          <div class="pq-text"><h4>while vs do-while</h4><p><b>while</b> เช็คเงื่อนไขก่อน (อาจไม่ทำเลย) เหมาะเมื่อไม่รู้จำนวนรอบ · <b>do-while</b> ทำก่อน 1 รอบแล้วค่อยเช็ค (รับประกันทำอย่างน้อย 1 ครั้ง เช่นเมนู)</p></div>
         </div>
         <div class="pq-item">
           <span class="pq-num">4</span>
-          <div class="pq-text"><h4>scanf ต้องมีเครื่องหมาย &</h4><p>รับค่าเข้าตัวแปรต้องใส่ <code>&amp;</code> หน้าชื่อตัวแปร (ต่างจาก printf ที่ใส่ชื่อตรง ๆ) — ลืม <code>&amp;</code> โปรแกรมพังตอนรัน</p><p><pre class="pq-code">int age;
-scanf("%d", &amp;age);   <span class="cm">// อย่าลืม &amp;</span></pre></p></div>
+          <div class="pq-text"><h4>กับดักลูปไม่รู้จบ</h4><p>ถ้าไม่มีบรรทัด "แก้ค่า" ตัวแปรเงื่อนไข ลูปจะวน<b>ไม่มีวันจบ</b></p><p><pre class="pq-code">int x = 3;
+while (x &gt; 0) { printf("%d", x); }
+<span class="cm">// ลืม x-- → วนตลอด</span></pre></p></div>
         </div>
         <div class="pq-item">
           <span class="pq-num">5</span>
-          <div class="pq-text"><h4>ตัวดำเนินการเปรียบเทียบ/ตรรกะ</h4><p>นิพจน์เปรียบเทียบให้ค่า <b>1 (จริง)</b> หรือ <b>0 (เท็จ)</b> · <code>&amp;&amp;</code> = และ (ต้องจริงทั้งคู่)</p><p><pre class="pq-code">8 &gt; 3            <span class="cm">// มีค่าเป็น 1</span>
-score&gt;=50 &amp;&amp; score&gt;=80   <span class="cm">// 65 → เท็จ (0)</span></pre></p></div>
+          <div class="pq-text"><h4>ลูปซ้อน (nested loop)</h4><p>จำนวนครั้งทั้งหมด = รอบนอก × รอบใน</p><p><pre class="pq-code">for(i=0;i&lt;3;i++)
+  for(j=0;j&lt;4;j++) printf("ตรวจ");
+<span class="cm">// 3 × 4 = 12 ครั้ง</span></pre></p></div>
         </div>
         <div class="pq-item tip">
           <span class="pq-num">💡</span>
-          <div class="pq-text"><h4>จุดที่ข้อสอบชอบถาม</h4><p>โจทย์คำนวณที่ผลออกมา <code>0.000000</code> เกือบทุกครั้งคือกับดัก int division — มองหาว่ามีตัวเลขทศนิยม (.0) หรือยัง</p></div>
+          <div class="pq-text"><h4>จุดที่ข้อสอบชอบถาม</h4><p>โจทย์ไล่โค้ดหาค่าตัวสะสม/นับรอบ และ "หาค่าสูงสุด" ที่ต้องตั้ง <code>max = arr[0]</code> ก่อนลูป (กันค่าเริ่มต้นผิด) — ฝึก trace ทีละรอบ</p></div>
         </div>
       </div>
       <div id="quizWrap"></div>
@@ -350,41 +364,41 @@ score&gt;=50 &amp;&amp; score&gt;=80   <span class="cm">// 65 → เท็จ (
   <section class="section alt">
     <div class="container">
       <span class="section-tag reveal">Summary & Assignment</span>
-      <h2 class="section-title reveal">🎯 สรุปบทเรียน</h2>
+      <h2 class="section-title reveal">🎯 สรุปบทเรียน — ครบสามโครงสร้างแล้ว!</h2>
       <div class="grid grid-2" style="margin-bottom:50px">
         <div class="card reveal">
-          <div class="icon">🧮</div>
+          <div class="icon">🔁</div>
           <h3>สิ่งที่ได้เรียน</h3>
-          <p>ตัวดำเนินการ + − * / % และ ++ -- · กับดักใหญ่: int / int ตัดเศษทิ้ง (5/9 = 0!) แก้ด้วย 5.0/9.0 · scanf รับค่า ต้องมี &amp; หน้าตัวแปรเสมอ · เปรียบเทียบให้ผล 1/0 และเชื่อมด้วย &amp;&amp; || ! · ลำดับ ( ) → * / % → + − → เปรียบเทียบ → &amp;&amp; ||</p>
+          <p>for (เริ่มต้น; เงื่อนไข; ปรับค่า) สำหรับงานรู้จำนวนรอบ · ท่าตัวสะสม total += i · while ตรวจก่อนทำ / do-while ทำก่อนตรวจ (อย่างน้อย 1 รอบเสมอ) · ลูปต้องมีบรรทัดขยับเข้าจุดจบ ไม่งั้นวนไม่รู้จบ · break ออกกลางคัน · ลูปซ้อน: นอกคุมแถว ในคุมคอลัมน์ รอบรวม = นอก × ใน</p>
         </div>
         <div class="card reveal" data-delay="0.1">
-          <div class="icon">🔮</div>
-          <h3>เชื่อมไปสัปดาห์หน้า</h3>
-          <p>นิพจน์ตรรกะที่ฝึกวันนี้คือ "หัวใจ" ของสัปดาห์ที่ 4: โครงสร้างควบคุมแบบเลือกทำ if–else if–else และ switch — ข้าวหลามตัดในผังงานบทที่ 3 กำลังจะกลายเป็นโค้ดเต็มรูปแบบ</p>
+          <div class="icon">📚</div>
+          <h3>คาบหน้า: สอบกลางภาค!</h3>
+          <p>ลำดับ ✓ เงื่อนไข ✓ วนซ้ำ ✓ — สามโครงสร้างที่ประกอบเป็นทุกโปรแกรมในโลกอยู่ในมือครบแล้ว คาบที่ 8 วัดผลเนื้อหาคาบที่ 1–7: ทบทวนแบบทดสอบท้ายคาบทุกบท แล้วฝึกไล่โค้ด (trace) ด้วยมือให้คล่อง — ข้อสอบชอบถามตรงนี้ที่สุด</p>
         </div>
       </div>
       <div class="assign-box reveal">
-        <h3>📌 งานมอบหมายสัปดาห์ที่ 3</h3>
+        <h3>📌 งานมอบหมายคาบที่ 5</h3>
         <ol>
-          <li>เขียนโปรแกรมรับจำนวนเต็ม 2 ตัวด้วย scanf แล้วแสดงผล + − * / % ครบทั้งห้าพร้อมป้ายกำกับ — สังเกตผลการหารดี ๆ</li>
-          <li>เขียนโปรแกรมแปลงอุณหภูมิ: รับองศาฟาเรนไฮต์ แล้วคำนวณ C = 5.0/9.0 × (F − 32) — ลองเขียนแบบ 5/9 ดูก่อนว่าได้อะไร แล้วค่อยแก้ พร้อมอธิบายว่าทำไม (ทดสอบ 212°F ต้องได้ 100.00)</li>
-          <li>คำนวณด้วยมือก่อนแล้วค่อยรันตรวจ: 3 + 2 * 2, (7 + 2) % 4, 20 / 3 / 2, 9 / 2 * 2.0 — ข้อไหนหลอกคุณได้บ้าง?</li>
-          <li>โจทย์สาขา: เขียนโปรแกรมแบ่งบรรจุสินค้า รับจำนวนชิ้นและความจุต่อลัง แสดงจำนวนลังเต็ม เศษชิ้นที่เหลือ และผลตรวจว่าจำนวนชิ้นเป็นเลขคู่หรือไม่ (แสดง 1 หรือ 0)</li>
-          <li>ทำแบบทดสอบท้ายบทให้ได้อย่างน้อย 8/10 แล้วแคปหน้าจอส่งใน LMS</li>
+          <li>เขียนโปรแกรมรับเลขแม่สูตรคูณด้วย scanf แล้วพิมพ์สูตรคูณแม่นั้นตั้งแต่ ×1 ถึง ×12 ด้วย for</li>
+          <li>ปิดตำนานงานคาบที่ 3: เขียนโปรแกรม "แสดงเลขคู่ 2 ถึง 20" ที่เคยวาดผังงานไว้ — เขียน 2 วิธี: for (i = 2; i &lt;= 20; i += 2) และ for + if ตรวจ i % 2 == 0 แล้วเทียบกัน</li>
+          <li>เขียนโปรแกรมหาผลรวมและค่าเฉลี่ยของคะแนนที่ผู้ใช้ป้อนทีละค่า ป้อน -1 เมื่อจบ (ใช้ while + ตัวสะสม 2 ตัว — ระวังการหารแบบ int ตอนคิดค่าเฉลี่ย!)</li>
+          <li>เขียนเมนูโปรแกรมด้วย do-while: แสดงเมนู 1-2-3 และ 0 เพื่อออก วนกลับมาถามใหม่จนกว่าจะกด 0 (โครงเดียวกับโปรเจกต์คาบที่ 13!)</li>
+          <li>ทำแบบทดสอบท้ายคาบให้ได้อย่างน้อย 8/10 และทบทวนแบบทดสอบคาบที่ 1–6 เตรียมสอบกลางภาค</li>
         </ol>
       </div>
       <div class="btn-row reveal" style="margin-top:46px;justify-content:center">
-        <a href="week04.html" class="btn btn-ghost">← บทที่ 4</a>
-        <a href="exercises.html#w05" class="btn btn-ghost">📚 แบบฝึกหัดบทนี้</a>
-        <a href="week06.html" class="btn btn-primary">สัปดาห์ที่ 4: โครงสร้างควบคุมแบบเลือกทำ →</a>
+        <a href="week04.html" class="btn btn-ghost">← คาบที่ 4</a>
+        <a href="exercises.html#w07" class="btn btn-ghost">📚 แบบฝึกหัดคาบนี้</a>
+        <a href="week06.html" class="btn btn-primary">คาบที่ 6: สอบกลางภาค →</a>
       </div>
     </div>
   </section>
 
   <footer class="footer">
     <div class="container">
-      <p>บทที่ 5: ตัวดำเนินการและการรับค่า — รายวิชาการเขียนโปรแกรมคอมพิวเตอร์</p>
-      <p class="credits">จัดทำเพื่อการศึกษา · อิงเอกสารประกอบการสอนบทที่ 2, 5</p>
+      <p>คาบที่ 5: โครงสร้างควบคุมแบบวนซ้ำ — รายวิชาการเขียนโปรแกรมคอมพิวเตอร์</p>
+      <p class="credits">จัดทำเพื่อการศึกษา · อิงเอกสารประกอบการสอนคาบที่ 6</p>
     </div>
   </footer>
 

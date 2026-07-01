@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>บทที่ 9: ฟังก์ชัน | Computer Programming</title>
+  <title>คาบที่ 9: อัลกอริทึมและผังงาน | Computer Programming</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2322d3ee'/%3E%3Ctext x='50' y='68' font-size='48' text-anchor='middle' fill='%23071018' font-family='monospace'%3E%26lt;/%26gt;%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,10 +17,10 @@
       <a href="index.html" class="nav-logo"><span class="logo-dot">&lt;/&gt;</span> Computer Programming</a>
       <ul class="nav-links">
         <li><a href="#objectives">วัตถุประสงค์</a></li>
-        <li><a href="#def">นิยามฟังก์ชัน</a></li>
-        <li><a href="#flow">เส้นทางการเรียก</a></li>
-        <li><a href="#machine">เครื่องจักรฟังก์ชัน</a></li>
-        <li><a href="#scope">ขอบเขตตัวแปร</a></li>
+        <li><a href="#algo">อัลกอริทึม</a></li>
+        <li><a href="#pseudo">Pseudocode</a></li>
+        <li><a href="#flowchart">ผังงาน</a></li>
+        <li><a href="#simulator">ทดลองเดินผังงาน</a></li>
         <li><a href="#quiz">แบบทดสอบ</a></li>
       </ul>
     </div>
@@ -29,21 +29,21 @@
   <header class="hero">
     <canvas id="binary-canvas"></canvas>
     <div class="container">
-      <div class="hero-kicker reveal">สัปดาห์ที่ 7 — เปิดครึ่งหลังของคอร์ส</div>
-      <h1 class="reveal" data-delay="0.1">บทที่ 9<br><span class="grad-text">ฟังก์ชัน</span></h1>
+      <div class="hero-kicker reveal">คาบที่ 9</div>
+      <h1 class="reveal" data-delay="0.1"><span class="grad-text">อัลกอริทึมและผังงาน</span></h1>
       <p class="hero-desc reveal" data-delay="0.2">
-        ครึ่งแรกคุณเขียนโปรแกรมเป็นแล้ว — ครึ่งหลังจะเขียนให้ "เป็นระเบียบ" ขึ้น
-        เริ่มจากเครื่องมือจัดระเบียบที่สำคัญที่สุด: ฟังก์ชัน คือการห่อโค้ดเป็นกล่อง
-        ตั้งชื่อ ระบุชนิดค่าที่คืน แล้วเรียกใช้ซ้ำกี่ครั้งก็ได้ — เขียนครั้งเดียว ใช้ทั้งโปรเจกต์
+        ก่อนสั่งให้เครื่องทำงาน เราต้องคิดให้ออกก่อนว่า "ขั้นตอน" คืออะไร —
+        คาบนี้คือทักษะคิดอย่างเป็นระบบที่สำคัญกว่าตัวภาษาโปรแกรมใด ๆ
+        และเป็นทักษะที่ใช้ได้ตลอดชีวิตวิศวกร
       </p>
       <div class="hero-badges reveal" data-delay="0.3">
-        <span class="badge">⏱️ <b>ใช้เวลาเรียน ~2.5 ชั่วโมง</b></span>
-        <span class="badge">🏭 <b>เครื่องจักรฟังก์ชัน + ตัวไล่เส้นทางการเรียก</b></span>
+        <span class="badge">⏱️ <b>ใช้เวลาเรียน ~2 ชั่วโมง</b></span>
+        <span class="badge">🧭 <b>ตัวจำลองผังงานแบบกดเดินทีละขั้น</b></span>
         <span class="badge">📝 <b>แบบทดสอบ 10 ข้อ</b></span>
       </div>
       <div class="btn-row reveal" data-delay="0.4">
         <a href="#objectives" class="btn btn-primary">เริ่มบทเรียน ↓</a>
-        <a href="week08.html" class="btn btn-ghost">← สัปดาห์ที่ 6</a>
+        <a href="week08.html" class="btn btn-ghost">← คาบที่ 8</a>
       </div>
     </div>
     <div class="scroll-hint">เลื่อนลงเพื่อเริ่มเรียน<br>⌄</div>
@@ -54,294 +54,247 @@
       <span class="section-tag reveal">Learning Objectives</span>
       <h2 class="section-title reveal">วัตถุประสงค์การเรียนรู้</h2>
       <div class="obj-list">
-        <div class="obj-item reveal">นิยามฟังก์ชันภาษาซีพร้อมระบุชนิดค่าที่คืน (int, float, void) ได้ถูกต้อง</div>
-        <div class="obj-item reveal" data-delay="0.05">ส่งข้อมูลเข้าฟังก์ชันผ่านพารามิเตอร์ และรับผลลัพธ์กลับด้วย return ได้</div>
-        <div class="obj-item reveal" data-delay="0.1">อธิบายความแตกต่างระหว่าง return กับ printf ได้อย่างถูกต้อง</div>
-        <div class="obj-item reveal" data-delay="0.15">อธิบายขอบเขตตัวแปร (local / global) และผลของมันต่อการเขียนโปรแกรมได้</div>
-        <div class="obj-item reveal" data-delay="0.2">แยกโปรแกรมที่เคยเขียนในบทก่อน ๆ ออกเป็นฟังก์ชันย่อยที่ใช้ซ้ำได้</div>
+        <div class="obj-item reveal">อธิบายความหมายและคุณสมบัติ 5 ประการของอัลกอริทึมที่ดีได้</div>
+        <div class="obj-item reveal" data-delay="0.05">เขียนรหัสเทียม (Pseudocode) อธิบายขั้นตอนการแก้ปัญหาได้</div>
+        <div class="obj-item reveal" data-delay="0.1">จดจำสัญลักษณ์ผังงานมาตรฐานทั้ง 6 แบบ และใช้ได้ถูกความหมาย</div>
+        <div class="obj-item reveal" data-delay="0.15">เขียนผังงานของปัญหาที่มีทั้งลำดับ เงื่อนไข และการวนซ้ำได้</div>
+        <div class="obj-item reveal" data-delay="0.2">ไล่ค่าตัวแปร (Trace) ตามผังงานเพื่อพยากรณ์ผลลัพธ์ของโปรแกรมได้</div>
       </div>
     </div>
   </section>
 
-  <section class="section alt" id="def">
+  <section class="section alt" id="algo">
     <div class="container">
-      <span class="section-tag reveal">Defining Functions</span>
-      <h2 class="section-title reveal">📦 นิยามฟังก์ชัน — ห่อโค้ดใส่กล่อง ตั้งชื่อ แล้วเรียกใช้</h2>
+      <span class="section-tag reveal">Algorithm</span>
+      <h2 class="section-title reveal">🧠 อัลกอริทึมคืออะไร?</h2>
       <p class="section-sub reveal">
-        โครงสร้าง: <b style="color:var(--cyan)">ชนิดค่าที่คืน ชื่อฟังก์ชัน(พารามิเตอร์) { ... }</b>
-        — ถ้าไม่คืนค่าใช้ <b style="color:var(--violet)">void</b> — กฎเหล็กข้อแรก:
-        <b style="color:var(--amber)">โค้ดในฟังก์ชันยังไม่ทำงาน จนกว่าจะถูก "เรียก" ด้วยชื่อ + ( )</b>
+        <b style="color:var(--text)">อัลกอริทึม (Algorithm)</b> คือ ลำดับขั้นตอนการแก้ปัญหาที่ชัดเจน ทำตามได้ และจบในเวลาจำกัด
+        — ชื่อนี้มาจาก <i>al-Khwarizmi</i> นักคณิตศาสตร์ชาวเปอร์เซียในศตวรรษที่ 9
+        จริง ๆ แล้วคุณใช้อัลกอริทึมทุกวัน: สูตรทำอาหาร เส้นทางไปมหาวิทยาลัย วิธีซักผ้า ล้วนเป็นอัลกอริทึมทั้งสิ้น
       </p>
-
-      <div class="code-card reveal">
-        <div class="code-head"><span>ตัวอย่างที่ 9.1 — welcome.c (ฟังก์ชัน void: ทำงานแต่ไม่คืนค่า)</span><div class="dots"><span></span><span></span><span></span></div></div>
-        <pre><code><span style="color:#a78bfa">#include</span> <span style="color:#fbbf24">&lt;stdio.h&gt;</span>
-
-<span style="color:#a78bfa">void</span> <span style="color:#22d3ee">show_header</span>() {        <span style="color:#6b7280">// void = ไม่คืนค่า แค่ทำงาน</span>
-    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"================================\n"</span>);
-    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">" ระบบคลังสินค้า v1.0\n"</span>);
-    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"================================\n"</span>);
-}
-
-<span style="color:#a78bfa">int</span> <span style="color:#22d3ee">main</span>() {
-    show_header();          <span style="color:#6b7280">// เรียกครั้งที่ 1</span>
-    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"...ทำงานบางอย่าง...\n"</span>);
-    show_header();          <span style="color:#6b7280">// เรียกซ้ำ ไม่ต้องเขียน 3 บรรทัดนั้นใหม่</span>
-    <span style="color:#a78bfa">return</span> <span style="color:#a78bfa">0</span>;
-}</code></pre>
-        <button class="run-btn" data-output="================================&#10; ระบบคลังสินค้า v1.0&#10;================================&#10;...ทำงานบางอย่าง...&#10;================================&#10; ระบบคลังสินค้า v1.0&#10;================================">▶ คอมไพล์และรัน</button>
-        <div class="code-output"></div>
-      </div>
-
-      <div class="grid grid-3" style="margin-top:36px">
+      <div class="grid grid-3">
         <div class="card reveal">
-          <div class="icon">♻️</div>
-          <h3>เขียนครั้งเดียว ใช้ร้อยครั้ง</h3>
-          <p>โค้ด 3 บรรทัดถูกเรียกใช้ 2 ครั้งโดยพิมพ์แค่ชื่อ — ถ้าวันหนึ่งอยากเปลี่ยนหัวรายงาน ก็แก้ "ที่เดียว" มีผลทุกจุดที่เรียก</p>
+          <div class="icon">🎯</div>
+          <h3>1. ชัดเจนไม่กำกวม</h3>
+          <p>"ใส่น้ำพอประมาณ" ❌ — "ใส่น้ำ 300 มล." ✅ คอมพิวเตอร์เดาใจไม่เป็น ทุกขั้นต้องระบุได้แน่นอน (Definiteness)</p>
         </div>
         <div class="card reveal" data-delay="0.05">
-          <div class="icon">🏷️</div>
-          <h3>ต้องบอกชนิดค่าที่คืนเสมอ</h3>
-          <p>คืนจำนวนเต็ม → <code style="color:var(--green)">int</code> · คืนทศนิยม → <code style="color:var(--green)">float</code> ·
-          ไม่คืนอะไรเลย → <code style="color:var(--green)">void</code> — main เองก็คือฟังก์ชันที่คืน int (return 0 = จบเรียบร้อย)</p>
+          <div class="icon">📥</div>
+          <h3>2. มีข้อมูลเข้า–ออกชัดเจน</h3>
+          <p>ระบุได้ว่ารับอะไรเข้า (Input ≥ 0 ตัว) และให้ผลลัพธ์อะไรออกมา (Output ≥ 1 ตัว)</p>
         </div>
         <div class="card reveal" data-delay="0.1">
-          <div class="icon">📛</div>
-          <h3>นิยามไว้ "ก่อน" main</h3>
-          <p>คอมไพเลอร์อ่านจากบนลงล่าง — ฟังก์ชันต้องถูกนิยาม (หรือประกาศโครง) ก่อนจุดที่เรียกใช้
-          ธรรมเนียมเริ่มต้น: เขียนฟังก์ชันไว้เหนือ main และตั้งชื่อเป็นคำกริยา เช่น <code style="color:var(--green)">calc_bmi, show_report</code></p>
+          <div class="icon">🏁</div>
+          <h3>3. ต้องจบ (Finiteness)</h3>
+          <p>ทำงานเสร็จในจำนวนขั้นที่จำกัด — อัลกอริทึมที่วนไม่รู้จบคืออัลกอริทึมที่ผิด</p>
         </div>
-      </div>
-
-      <div class="code-card reveal" style="margin-top:36px">
-        <div class="code-head"><span>ตัวอย่างที่ 9.2 — add.c (ฟังก์ชันคืนค่าตัวแรกในชีวิต)</span><div class="dots"><span></span><span></span><span></span></div></div>
-        <pre><code><span style="color:#a78bfa">#include</span> <span style="color:#fbbf24">&lt;stdio.h&gt;</span>
-
-<span style="color:#a78bfa">int</span> <span style="color:#22d3ee">add</span>(<span style="color:#a78bfa">int</span> a, <span style="color:#a78bfa">int</span> b) {     <span style="color:#6b7280">// รับ int สองตัว คืน int หนึ่งตัว</span>
-    <span style="color:#a78bfa">return</span> a + b;
-}
-
-<span style="color:#a78bfa">int</span> <span style="color:#22d3ee">main</span>() {
-    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"%d\n"</span>, add(<span style="color:#a78bfa">2</span>, <span style="color:#a78bfa">3</span>));      <span style="color:#6b7280">// ใช้ผลลัพธ์ตรง ๆ</span>
-    <span style="color:#a78bfa">int</span> x = add(<span style="color:#a78bfa">10</span>, <span style="color:#a78bfa">30</span>);            <span style="color:#6b7280">// หรือเก็บไว้ใช้ต่อ</span>
-    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"%d\n"</span>, x + <span style="color:#a78bfa">2</span>);
-    <span style="color:#a78bfa">return</span> <span style="color:#a78bfa">0</span>;
-}</code></pre>
-        <button class="run-btn" data-output="5&#10;42">▶ คอมไพล์และรัน</button>
-        <div class="code-output"></div>
+        <div class="card reveal" data-delay="0.15">
+          <div class="icon">🪜</div>
+          <h3>4. เป็นลำดับขั้นตอน</h3>
+          <p>ขั้นตอนเรียงต่อกันชัดเจน รู้เสมอว่าทำขั้นไหนก่อน–หลัง และขั้นถัดไปคืออะไร</p>
+        </div>
+        <div class="card reveal" data-delay="0.2">
+          <div class="icon">⚙️</div>
+          <h3>5. ปฏิบัติได้จริง</h3>
+          <p>แต่ละขั้นต้องทำได้ด้วยทรัพยากรที่มี (Effectiveness) ไม่ใช่ "ขั้นที่ 3: เดาเลขที่ถูกต้อง"</p>
+        </div>
+        <div class="card reveal" data-delay="0.25">
+          <div class="icon">🛣️</div>
+          <h3>ปัญหาเดียว หลายอัลกอริทึม</h3>
+          <p>ไปเชียงใหม่ได้ทั้งเครื่องบิน รถทัวร์ รถไฟ — ถูกทุกทางแต่ "ประสิทธิภาพ" ต่างกัน นี่คือหัวใจของวิทยาการคอมพิวเตอร์</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="section" id="flow">
+  <section class="section" id="pseudo">
     <div class="container">
-      <span class="section-tag reveal">Call Flow</span>
-      <h2 class="section-title reveal">🧵 เส้นทางการทำงาน — โปรแกรม "กระโดด" อย่างไรเมื่อเรียกฟังก์ชัน</h2>
+      <span class="section-tag reveal">Pseudocode</span>
+      <h2 class="section-title reveal">📝 รหัสเทียม (Pseudocode) — เขียนความคิดก่อนเขียนโค้ด</h2>
       <p class="section-sub reveal">
-        นี่คือจุดที่มือใหม่งงที่สุด: โปรแกรมไม่ได้ไหลบนลงล่างเฉย ๆ อีกแล้ว
-        กด "รันทีละขั้น ▶" ดูการกระโดด ขึ้น–ลง ระหว่าง main กับตัวฟังก์ชัน
+        Pseudocode คือการเขียนอัลกอริทึมด้วยภาษาคนผสมโครงสร้างแบบโปรแกรม —
+        ไม่มีไวยากรณ์ตายตัว ขอแค่อ่านแล้วเข้าใจตรงกัน ลองดูตัวอย่าง "คำนวณเกรดเฉลี่ย":
+      </p>
+      <div class="grid grid-2">
+        <div class="card reveal">
+          <h3 style="margin-bottom:14px">🗣️ แบบบรรยาย (ไม่ดี)</h3>
+          <p>"ก็เอาคะแนนทุกวิชามารวมกันแล้วก็หารด้วยจำนวนวิชา ถ้าได้เยอะก็เกรดดี อะไรประมาณนั้น..."</p>
+          <p style="margin-top:12px;color:#fca5a5">⚠️ กำกวม: "เยอะ" คือเท่าไร? คะแนนมาจากไหน? แสดงผลยังไง?</p>
+        </div>
+        <div class="card reveal" data-delay="0.1">
+          <h3 style="margin-bottom:14px">✅ แบบ Pseudocode (ดี)</h3>
+          <div style="font-family:'Kanit',sans-serif;font-size:0.92rem;color:var(--text-dim);line-height:2">
+            <span style="color:var(--cyan)">START</span><br>
+            &nbsp;&nbsp;READ จำนวนวิชา n<br>
+            &nbsp;&nbsp;SET sum = 0<br>
+            &nbsp;&nbsp;<span style="color:var(--amber)">FOR</span> i = 1 <span style="color:var(--amber)">TO</span> n<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;READ คะแนนวิชาที่ i<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;sum = sum + คะแนน<br>
+            &nbsp;&nbsp;<span style="color:var(--amber)">END FOR</span><br>
+            &nbsp;&nbsp;SET average = sum / n<br>
+            &nbsp;&nbsp;PRINT average<br>
+            <span style="color:var(--cyan)">END</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" id="flowchart">
+    <div class="container">
+      <span class="section-tag reveal">Flowchart Symbols</span>
+      <h2 class="section-title reveal">🔷 สัญลักษณ์ผังงานมาตรฐาน 6 แบบ</h2>
+      <p class="section-sub reveal">ผังงาน (Flowchart) คืออัลกอริทึมฉบับ "วาดเป็นภาพ" — ใช้สัญลักษณ์สากล (ANSI/ISO) ที่วิศวกรทั่วโลกอ่านเข้าใจตรงกัน</p>
+      <div class="shape-grid">
+        <div class="shape-card reveal">
+          <div class="shape-demo"><div class="sh terminator">Start / End</div></div>
+          <h3>Terminator — เริ่ม/จบ</h3>
+          <p>วงรีหรือทรงแคปซูล ทุกผังงานมีจุดเริ่ม 1 จุดและจุดจบอย่างน้อย 1 จุด</p>
+        </div>
+        <div class="shape-card reveal" data-delay="0.05">
+          <div class="shape-demo"><div class="sh io"><span>Input / Output</span></div></div>
+          <h3>ข้อมูลเข้า/ออก</h3>
+          <p>สี่เหลี่ยมด้านขนาน — รับข้อมูล (READ) หรือแสดงผล (PRINT)</p>
+        </div>
+        <div class="shape-card reveal" data-delay="0.1">
+          <div class="shape-demo"><div class="sh process">Process</div></div>
+          <h3>การประมวลผล</h3>
+          <p>สี่เหลี่ยมผืนผ้า — การคำนวณหรือกำหนดค่า เช่น sum = a + b</p>
+        </div>
+        <div class="shape-card reveal" data-delay="0.15">
+          <div class="shape-demo"><div class="sh decision">?</div></div>
+          <h3>การตัดสินใจ</h3>
+          <p>สี่เหลี่ยมข้าวหลามตัด — ตรวจเงื่อนไข แตกทางออกเป็น "จริง / เท็จ"</p>
+        </div>
+        <div class="shape-card reveal" data-delay="0.2">
+          <div class="shape-demo"><div class="sh process" style="padding:12px 14px">→ ↓</div></div>
+          <h3>ลูกศรทิศทาง</h3>
+          <p>Flow line — บอกลำดับการไหลของงาน ปกติไหลจากบนลงล่าง ซ้ายไปขวา</p>
+        </div>
+        <div class="shape-card reveal" data-delay="0.25">
+          <div class="shape-demo"><div class="sh connector">A</div></div>
+          <h3>จุดเชื่อมต่อ</h3>
+          <p>วงกลม — เชื่อมผังงานที่ยาวเกินหน้ากระดาษ ให้ตามไปต่อที่จุดอักษรเดียวกัน</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="simulator">
+    <div class="container">
+      <span class="section-tag reveal">Interactive Simulator</span>
+      <h2 class="section-title reveal">🧭 ทดลองเดินผังงานทีละขั้น: หาค่ามากที่สุดของ 2 จำนวน</h2>
+      <p class="section-sub reveal">
+        นี่คือทักษะ "Trace" — ไล่ตามผังงานทีละขั้นพร้อมจดค่าตัวแปร ลองเปลี่ยนค่า a, b แล้วกด
+        <b style="color:var(--cyan)">"ก้าวถัดไป ▶"</b> ดูเส้นทางของข้อมูล สังเกตว่าเมื่อ a, b เปลี่ยน เส้นทางก็เปลี่ยน!
       </p>
 
       <div class="flow-wrap reveal">
-        <div class="code-card" style="margin:0">
-          <div class="code-head"><span>greet.c</span><div class="dots"><span></span><span></span><span></span></div></div>
-          <div class="pycode" id="flowCode">
-            <div class="pyline" data-line="1"><span class="ln">1</span>void greet(char name[]) {</div>
-            <div class="pyline" data-line="2"><span class="ln">2</span>    printf("สวัสดีคุณ%s ยินดีต้อนรับ\n", name); }</div>
-            <div class="pyline" data-line="3"><span class="ln">3</span>int main() {</div>
-            <div class="pyline" data-line="4"><span class="ln">4</span>    greet("ฝน");</div>
-            <div class="pyline" data-line="5"><span class="ln">5</span>    greet("เมฆ");</div>
-            <div class="pyline" data-line="6"><span class="ln">6</span>    printf("จบโปรแกรม"); }</div>
-          </div>
+        <div class="flow" id="flowDiagram">
+          <div class="flow-node terminator" data-step="0">START</div>
+          <div class="flow-link"></div>
+          <div class="flow-node io" data-step="1"><span>รับค่า a, b</span></div>
+          <div class="flow-link"></div>
+          <div class="flow-node decision" data-step="2">a &gt; b ?</div>
+          <div class="flow-label">จริง ↓ &nbsp;&nbsp;|&nbsp;&nbsp; เท็จ ↘</div>
+          <div class="flow-node process" data-step="3">max = a</div>
+          <div class="flow-node process" data-step="4" style="margin-top:10px">max = b</div>
+          <div class="flow-link"></div>
+          <div class="flow-node io" data-step="5"><span>แสดงค่า max</span></div>
+          <div class="flow-link"></div>
+          <div class="flow-node terminator" data-step="6">END</div>
         </div>
 
         <div class="flow-panel">
           <h3>🎛️ แผงควบคุม</h3>
-          <div class="btn-row" style="margin-bottom:18px">
-            <button class="btn btn-primary" id="flowStep">รันทีละขั้น ▶</button>
-            <button class="btn btn-ghost" id="flowReset">↺ เริ่มใหม่</button>
+          <div class="widget-controls" style="justify-content:flex-start">
+            <label>a = <input type="number" id="simA" value="7" style="width:80px"></label>
+            <label>b = <input type="number" id="simB" value="12" style="width:80px"></label>
           </div>
-          <div class="widget-result" id="flowOut" style="min-height:90px">— หน้าจอผลลัพธ์ (Console) —</div>
-          <div class="flow-desc" id="flowDesc">เริ่มกันเลย — เดาก่อนไหมว่าบรรทัดไหนทำงานเป็นลำดับแรก?</div>
+          <div class="btn-row" style="margin-bottom:18px">
+            <button class="btn btn-primary" id="simStep">ก้าวถัดไป ▶</button>
+            <button class="btn btn-ghost" id="simReset">↺ เริ่มใหม่</button>
+          </div>
+          <table class="trace-table">
+            <thead><tr><th>ขั้นที่</th><th>a</th><th>b</th><th>max</th></tr></thead>
+            <tbody id="traceBody"><tr><td colspan="4">— กดก้าวถัดไปเพื่อเริ่ม —</td></tr></tbody>
+          </table>
+          <div class="flow-desc" id="simDesc">พร้อมเริ่มเดินผังงาน — ลองตั้งค่า a ให้มากกว่า b แล้วดูว่าเส้นทางเปลี่ยนไหม</div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="section alt" id="machine">
+  <section class="section alt">
     <div class="container">
-      <span class="section-tag reveal">Parameters & Return</span>
-      <h2 class="section-title reveal">🏭 เครื่องจักรฟังก์ชัน: ใส่วัตถุดิบ → ได้ผลผลิต</h2>
-      <p class="section-sub reveal">
-        ฟังก์ชันที่ดีเหมือนเครื่องจักร: รับวัตถุดิบทาง <b style="color:var(--cyan)">พารามิเตอร์</b>
-        แปรรูปข้างใน แล้วส่งผลผลิตกลับด้วย <b style="color:var(--violet)">return</b>
-        — เลือกเครื่องจักร ใส่ค่า แล้วกดเดินเครื่อง
-      </p>
-
-      <div class="widget reveal">
-        <div class="widget-controls">
-          <label>เลือกเครื่องจักร:
-            <select id="fnSelect">
-              <option value="c_to_f">c_to_f — องศา C เป็น F</option>
-              <option value="square_area">square_area — พื้นที่สี่เหลี่ยมจัตุรัส</option>
-              <option value="is_even">is_even — ตรวจเลขคู่ (คืน 1/0)</option>
-            </select>
-          </label>
-          <label>ค่าที่ส่งเข้า = <input type="number" id="fnInput" value="25" style="width:90px"></label>
-          <button class="btn btn-primary" id="fnRun">เดินเครื่อง ▶</button>
-        </div>
-        <div class="machine">
-          <div class="machine-io"><span class="label">อาร์กิวเมนต์ (ขาเข้า)</span><span id="fnIn">25</span></div>
-          <div style="font-size:1.6rem;color:var(--text-dim)">→</div>
-          <div class="machine-box" id="fnBox">c_to_f(c)<small>กำลังรอวัตถุดิบ</small></div>
-          <div style="font-size:1.6rem;color:var(--text-dim)">→</div>
-          <div class="machine-io"><span class="label">ค่าที่ return (ขาออก)</span><span id="fnOut">?</span></div>
-        </div>
-        <div class="code-card" style="margin-top:26px;margin-bottom:0">
-          <div class="code-head"><span>นิยามของเครื่องจักรตัวนี้</span><div class="dots"><span></span><span></span><span></span></div></div>
-          <pre><code id="fnCode">float c_to_f(float c) {
-    return c * 9 / 5 + 32;
-}</code></pre>
-        </div>
-      </div>
-
-      <div class="grid grid-2" style="margin-top:36px">
+      <span class="section-tag reveal">Worked Example</span>
+      <h2 class="section-title reveal">📐 ตัวอย่างครบวงจร: จากโจทย์ → อัลกอริทึม → ผังงาน</h2>
+      <p class="section-sub reveal"><b style="color:var(--text)">โจทย์:</b> คำนวณดัชนีมวลกาย (BMI) แล้วแจ้งว่า "น้ำหนักเกิน" หรือ "ปกติ" (เกณฑ์ BMI ≥ 25 คือเกิน)</p>
+      <div class="grid grid-3">
         <div class="card reveal">
-          <h3 style="margin-bottom:14px">🆚 return ไม่ใช่ printf!</h3>
-          <p style="line-height:1.9"><b style="color:var(--violet)">return</b> = ส่งค่ากลับให้ "โค้ดที่เรียก" เอาไปใช้ต่อได้ (เก็บใส่ตัวแปร, คำนวณต่อ)<br>
-          <b style="color:var(--cyan)">printf</b> = แค่โชว์ขึ้นจอให้ "คน" ดู โปรแกรมเอาไปใช้ต่อไม่ได้<br><br>
-          <code style="color:var(--green)">float f = c_to_f(25);</code> ✅ f เก็บ 77.0 ไว้คำนวณต่อ<br>
-          ฟังก์ชันที่ printf แต่ "ไม่ return" ควรประกาศเป็น <code style="color:#fca5a5">void</code> — เอาผลไปเก็บใส่ตัวแปรไม่ได้!</p>
+          <div class="icon">1️⃣</div>
+          <h3>วิเคราะห์ปัญหา</h3>
+          <p><b style="color:var(--cyan)">Input:</b> น้ำหนัก (กก.), ส่วนสูง (ม.)<br>
+             <b style="color:var(--violet)">Process:</b> BMI = น้ำหนัก ÷ ส่วนสูง²  แล้วเทียบกับ 25<br>
+             <b style="color:var(--green)">Output:</b> ค่า BMI + ข้อความแจ้งผล</p>
         </div>
         <div class="card reveal" data-delay="0.1">
-          <h3 style="margin-bottom:14px">📚 ศัพท์ที่ข้อสอบชอบถาม</h3>
-          <p style="line-height:1.9"><b style="color:var(--cyan)">พารามิเตอร์ (Parameter)</b> = ตัวแปรรับค่าใน "นิยาม": float c_to_f(<b style="color:var(--amber)">float c</b>)<br>
-          <b style="color:var(--cyan)">อาร์กิวเมนต์ (Argument)</b> = ค่าจริงตอน "เรียก": c_to_f(<b style="color:var(--amber)">25</b>)<br><br>
-          จำง่าย ๆ: พารามิเตอร์คือ "ช่องรับ" อาร์กิวเมนต์คือ "ของที่หย่อนลงช่อง" — ส่งได้หลายตัวคั่นด้วยจุลภาค ตามลำดับซ้ายไปขวา และทุกตัวต้องระบุชนิด</p>
+          <div class="icon">2️⃣</div>
+          <h3>เขียน Pseudocode</h3>
+          <p style="font-family:'Kanit',sans-serif;font-size:0.85rem;line-height:1.9">
+            START<br>
+            &nbsp;READ weight, height<br>
+            &nbsp;bmi = weight / height²<br>
+            &nbsp;IF bmi ≥ 25 THEN<br>
+            &nbsp;&nbsp;PRINT "น้ำหนักเกิน"<br>
+            &nbsp;ELSE<br>
+            &nbsp;&nbsp;PRINT "ปกติ"<br>
+            &nbsp;END IF<br>
+            END</p>
         </div>
-      </div>
-
-      <div class="grid grid-2" style="margin-top:36px;align-items:start">
-        <div class="code-card reveal" style="margin:0">
-          <div class="code-head"><span>ตัวอย่างที่ 9.3 — grade_fn.c (ห่อตรรกะบทที่ 6 เป็นฟังก์ชัน)</span><div class="dots"><span></span><span></span><span></span></div></div>
-          <pre><code><span style="color:#a78bfa">char</span> <span style="color:#22d3ee">grade</span>(<span style="color:#a78bfa">int</span> score) {
-    <span style="color:#a78bfa">if</span> (score &gt;= <span style="color:#a78bfa">80</span>) <span style="color:#a78bfa">return</span> <span style="color:#fbbf24">'A'</span>;
-    <span style="color:#a78bfa">else</span> <span style="color:#a78bfa">if</span> (score &gt;= <span style="color:#a78bfa">70</span>) <span style="color:#a78bfa">return</span> <span style="color:#fbbf24">'B'</span>;
-    <span style="color:#a78bfa">else</span> <span style="color:#a78bfa">if</span> (score &gt;= <span style="color:#a78bfa">60</span>) <span style="color:#a78bfa">return</span> <span style="color:#fbbf24">'C'</span>;
-    <span style="color:#a78bfa">else</span> <span style="color:#a78bfa">if</span> (score &gt;= <span style="color:#a78bfa">50</span>) <span style="color:#a78bfa">return</span> <span style="color:#fbbf24">'D'</span>;
-    <span style="color:#a78bfa">else</span> <span style="color:#a78bfa">return</span> <span style="color:#fbbf24">'F'</span>;
-}
-
-<span style="color:#a78bfa">int</span> <span style="color:#22d3ee">main</span>() {
-    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"%c %c %c\n"</span>, grade(<span style="color:#a78bfa">85</span>), grade(<span style="color:#a78bfa">72</span>), grade(<span style="color:#a78bfa">40</span>));
-    <span style="color:#a78bfa">return</span> <span style="color:#a78bfa">0</span>;
-}</code></pre>
-          <button class="run-btn" data-output="A B F">▶ คอมไพล์และรัน</button>
-          <div class="code-output"></div>
-        </div>
-        <div class="code-card reveal" data-delay="0.1" style="margin:0">
-          <div class="code-head"><span>ตัวอย่างที่ 9.4 — max3.c (หาค่ามากสุดของ 3 จำนวน)</span><div class="dots"><span></span><span></span><span></span></div></div>
-          <pre><code><span style="color:#a78bfa">int</span> <span style="color:#22d3ee">max3</span>(<span style="color:#a78bfa">int</span> a, <span style="color:#a78bfa">int</span> b, <span style="color:#a78bfa">int</span> c) {
-    <span style="color:#a78bfa">int</span> m = a;              <span style="color:#6b7280">// ให้ตัวแรกเป็นแชมป์ก่อน</span>
-    <span style="color:#a78bfa">if</span> (b &gt; m) m = b;
-    <span style="color:#a78bfa">if</span> (c &gt; m) m = c;
-    <span style="color:#a78bfa">return</span> m;
-}
-
-<span style="color:#a78bfa">int</span> <span style="color:#22d3ee">main</span>() {
-    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"%d\n"</span>, max3(<span style="color:#a78bfa">7</span>, <span style="color:#a78bfa">9</span>, <span style="color:#a78bfa">3</span>));
-    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"%d\n"</span>, max3(<span style="color:#a78bfa">42</span>, <span style="color:#a78bfa">10</span>, <span style="color:#a78bfa">17</span>));
-    <span style="color:#a78bfa">return</span> <span style="color:#a78bfa">0</span>;
-}</code></pre>
-          <button class="run-btn" data-output="9&#10;42">▶ คอมไพล์และรัน</button>
-          <div class="code-output"></div>
+        <div class="card reveal" data-delay="0.2">
+          <div class="icon">3️⃣</div>
+          <h3>วาดผังงาน</h3>
+          <p>วงรี START → ด้านขนาน "รับ weight, height" → สี่เหลี่ยม "bmi = w/h²" → ข้าวหลามตัด "bmi ≥ 25?"
+            แตกสองทางไปด้านขนานแสดงข้อความ → วงรี END — ลองวาดเองในสมุดตอนนี้เลย!</p>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="section" id="scope">
-    <div class="container">
-      <span class="section-tag reveal">Variable Scope</span>
-      <h2 class="section-title reveal">🚪 ขอบเขตตัวแปร — ของในห้องใคร ห้องมัน</h2>
-      <p class="section-sub reveal">
-        ตัวแปรที่ประกาศ "ในฟังก์ชัน" เป็นของฟังก์ชันนั้น (local) — หายไปทันทีที่ฟังก์ชันจบ
-        โลกภายนอกมองไม่เห็น นี่ไม่ใช่ข้อจำกัด แต่คือระบบป้องกันตัวแปรตีกันในโปรแกรมใหญ่
-      </p>
-
-      <div class="grid grid-2" style="align-items:start">
-        <div class="code-card reveal" style="margin:0">
-          <div class="code-head"><span>ตัวอย่างที่ 9.5 — scope.c (ตัวอย่างที่ "ตั้งใจให้พัง")</span><div class="dots"><span></span><span></span><span></span></div></div>
-          <pre><code><span style="color:#a78bfa">float</span> <span style="color:#22d3ee">calc_vat</span>(<span style="color:#a78bfa">float</span> price) {
-    <span style="color:#a78bfa">float</span> vat = price * <span style="color:#a78bfa">0.07</span>;   <span style="color:#6b7280">// vat เป็น local</span>
-    <span style="color:#a78bfa">return</span> price + vat;
-}
-
-<span style="color:#a78bfa">int</span> <span style="color:#22d3ee">main</span>() {
-    <span style="color:#a78bfa">float</span> total = calc_vat(<span style="color:#a78bfa">100</span>);
-    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"%.2f\n"</span>, total);
-    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"%.2f\n"</span>, vat);   <span style="color:#6b7280">// บรรทัดนี้พัง!</span>
-    <span style="color:#a78bfa">return</span> <span style="color:#a78bfa">0</span>;
-}</code></pre>
-          <button class="run-btn" data-output="error: 'vat' undeclared — คอมไพล์ไม่ผ่าน&#10;(ลบบรรทัดสุดท้ายออกจึงจะได้ 107.00)">▶ คอมไพล์และรัน</button>
-          <div class="code-output"></div>
-        </div>
-        <div class="card reveal" data-delay="0.1" style="margin:0">
-          <h3 style="margin-bottom:14px">🔑 สามกฎของขอบเขต</h3>
-          <p style="line-height:2">
-          1️⃣ ตัวแปรที่ประกาศในฟังก์ชัน (รวมพารามิเตอร์) ใช้ได้เฉพาะในฟังก์ชันนั้น<br>
-          2️⃣ อยากได้ค่าออกมา → ส่งผ่าน <b style="color:var(--violet)">return</b> เท่านั้น อย่าหวังพึ่งตัวแปรข้างใน<br>
-          3️⃣ ตัวแปร global (ประกาศนอกทุกฟังก์ชัน) มีจริงแต่ควรเลี่ยง — รับทุกอย่างผ่านพารามิเตอร์ ชีวิตจะไม่งง<br><br>
-          💡 เรียกซ้ำ = เกิดใหม่: ตัวแปร local ถูกสร้างใหม่ทุกครั้งที่ฟังก์ชันถูกเรียก ไม่จำค่าจากรอบก่อน</p>
-        </div>
-      </div>
-
-      <div class="card reveal" style="margin-top:30px">
-        <div class="icon">🛠️</div>
-        <h3>ย้อนปรับปรุงของเก่า: bmi.c ฉบับมีฟังก์ชัน</h3>
-        <p>โปรแกรม BMI บทที่ 4 เขียนใหม่ให้เป็นระเบียบ: <code style="color:var(--green)">float calc_bmi(float w, float h) { return w / (h * h); }</code>
-        แล้ว main เหลือแค่ รับค่า → เรียกฟังก์ชัน → แสดงผล — โปรแกรมโลจิสติกส์คำนวณค่าส่ง 50 จุดทั่วประเทศ ก็คือฟังก์ชันค่าส่งหนึ่งตัวถูกเรียก 50 ครั้งนั่นเอง</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="section alt" id="quiz">
+  <section class="section" id="quiz">
     <div class="container">
       <span class="section-tag reveal">Check Your Understanding</span>
-      <h2 class="section-title reveal">📝 แบบทดสอบท้ายบท (10 ข้อ)</h2>
-      <p class="section-sub reveal">แยกให้ออก: นิยาม vs เรียกใช้ · พารามิเตอร์ vs อาร์กิวเมนต์ · return vs printf · void คืออะไร</p>
+      <h2 class="section-title reveal">📝 แบบทดสอบท้ายคาบ (10 ข้อ)</h2>
+      <p class="section-sub reveal">ข้อ Trace ลองใช้กระดาษทดไล่ค่าตัวแปรตามที่ฝึกในตัวจำลอง</p>
       <div class="prequiz reveal">
         <div class="prequiz-head">📘 อ่านก่อนสอบ · สรุปประเด็นสำคัญ</div>
-        <p class="prequiz-intro">เข้าใจ "การนิยาม–เรียกใช้ฟังก์ชัน", ความต่าง return vs printf, และ scope ของตัวแปร แล้วฝึก trace ค่าที่คืนกลับ</p>
+        <p class="prequiz-intro">คาบนี้เน้น "สัญลักษณ์ผังงาน" และการ "ไล่ค่า (trace)" — จำรูปสัญลักษณ์และฝึกเดินตามขั้นตอนทีละบรรทัด</p>
         <div class="pq-item">
           <span class="pq-num">1</span>
-          <div class="pq-text"><h4>รูปแบบการนิยามฟังก์ชัน</h4><p><code>ชนิดที่คืนค่า ชื่อ(พารามิเตอร์) { ... }</code></p><p><pre class="pq-code">float shipping_fee(float weight) {
-    return weight * 20;
-}</pre></p></div>
+          <div class="pq-text"><h4>อัลกอริทึมคืออะไร + คุณสมบัติที่ดี</h4><p>อัลกอริทึม = ลำดับขั้นตอนแก้ปัญหาที่ชัดเจนและมี <b>จุดสิ้นสุด</b> · คุณสมบัติที่ดี: ขั้นตอนชัดเจนไม่กำกวม, ทำได้จริง, และ<b>ต้องจบ</b> (โปรแกรมวนไม่จบ = ผิดคุณสมบัติข้อนี้)</p></div>
         </div>
         <div class="pq-item">
           <span class="pq-num">2</span>
-          <div class="pq-text"><h4>void = ไม่คืนค่า</h4><p><code>void show_menu()</code> หมายถึงฟังก์ชันนี้ทำงาน (เช่นพิมพ์เมนู) แต่<b>ไม่ส่งค่ากลับ</b></p></div>
+          <div class="pq-text"><h4>สัญลักษณ์ผังงานที่ต้องจำ</h4><p><b>ข้าวหลามตัด ◇</b> = ตัดสินใจ/เงื่อนไข · <b>สี่เหลี่ยมผืนผ้า ▭</b> = ประมวลผล/คำนวณ · <b>สี่เหลี่ยมด้านขนาน ▱</b> = รับเข้า/แสดงผล · <b>วงรี ⬭</b> = เริ่ม/จบ</p></div>
         </div>
         <div class="pq-item">
           <span class="pq-num">3</span>
-          <div class="pq-text"><h4>return ต่างจาก printf</h4><p><b>return</b> = ส่งค่ากลับให้ผู้เรียกเอาไปใช้ต่อ/คำนวณต่อ · <b>printf</b> = แค่แสดงผลบนจอ ไม่ได้ส่งค่าให้ใคร</p></div>
+          <div class="pq-text"><h4>โครงสร้างควบคุม 3 แบบ</h4><p>ทุกอัลกอริทึมประกอบจาก 3 โครงสร้าง: <b>ลำดับ</b> (Sequence), <b>การเลือก</b> (Selection/เงื่อนไข), <b>การวนซ้ำ</b> (Repetition/ลูป)</p></div>
         </div>
         <div class="pq-item">
           <span class="pq-num">4</span>
-          <div class="pq-text"><h4>การเรียกและไล่ค่า</h4><p>แทนค่าอาร์กิวเมนต์เข้าพารามิเตอร์ แล้วเอาค่าที่ return ไปคำนวณต่อ</p><p><pre class="pq-code">int twice(int x){ return x*2; }
-printf("%d", twice(3) + 1);  <span class="cm">// 6+1 = 7</span>
-
-int x = add(2,3);   <span class="cm">// 5</span>
-int y = add(x,4);   <span class="cm">// 9</span></pre></p></div>
+          <div class="pq-text"><h4>การไล่ค่า (Trace)</h4><p>เดินทีละบรรทัด อัปเดตค่าตัวแปรตามลำดับ เช่น:</p><p><pre class="pq-code">x = 5
+x = x + 3   <span class="cm">// x = 8</span>
+x = x × 2   <span class="cm">// x = 16</span></pre></p></div>
         </div>
         <div class="pq-item">
           <span class="pq-num">5</span>
-          <div class="pq-text"><h4>ตัวแปรเฉพาะที่ (local) + ทำไมนิยามเหนือ main</h4><p>ตัวแปรที่ประกาศในฟังก์ชันใช้ได้<b>เฉพาะในฟังก์ชันนั้น</b> · นิยามฟังก์ชันไว้เหนือ main เพื่อให้คอมไพเลอร์ "รู้จัก" ก่อนถูกเรียก</p></div>
+          <div class="pq-text"><h4>Pseudocode ต่างจากภาษาจริง</h4><p>Pseudocode เขียนด้วยภาษาคนเพื่อสื่อความคิด <b>ไม่ต้องสนใจไวยากรณ์</b>และคอมไพล์ไม่ได้ ส่วนภาษาโปรแกรมจริงต้องตรงไวยากรณ์เป๊ะ</p></div>
         </div>
         <div class="pq-item tip">
           <span class="pq-num">💡</span>
-          <div class="pq-text"><h4>จุดที่ข้อสอบชอบถาม</h4><p>โจทย์ไล่ค่าที่ return ซ้อนกัน เช่น <code>add(add(2,3),4)</code> และเรื่อง scope — ตัวแปรในฟังก์ชันหนึ่งใช้ข้ามไปอีกฟังก์ชันไม่ได้</p></div>
+          <div class="pq-text"><h4>จุดที่ข้อสอบชอบถาม</h4><p>โจทย์ "นับจำนวนข้าวหลามตัด" = นับจำนวนการตัดสินใจ (เงื่อนไข if แต่ละจุด) และโจทย์ trace ค่า — คิดทีละบรรทัดอย่าข้าม</p></div>
         </div>
       </div>
       <div id="quizWrap"></div>
@@ -349,44 +302,43 @@ int y = add(x,4);   <span class="cm">// 9</span></pre></p></div>
     </div>
   </section>
 
-  <section class="section">
+  <section class="section alt">
     <div class="container">
       <span class="section-tag reveal">Summary & Assignment</span>
       <h2 class="section-title reveal">🎯 สรุปบทเรียน</h2>
       <div class="grid grid-2" style="margin-bottom:50px">
         <div class="card reveal">
-          <div class="icon">📦</div>
+          <div class="icon">🧭</div>
           <h3>สิ่งที่ได้เรียน</h3>
-          <p>นิยาม: ชนิดค่าที่คืน ชื่อ(พารามิเตอร์) { } — โค้ดข้างในรอจนถูกเรียก · void = ไม่คืนค่า · พารามิเตอร์รับของเข้า อาร์กิวเมนต์คือของจริงที่ส่ง · return ส่งค่ากลับไปใช้ต่อ (ต่างจาก printf ที่แค่โชว์) · ตัวแปร local เกิดและตายในฟังก์ชัน · นิยามฟังก์ชันไว้ก่อน main</p>
+          <p>อัลกอริทึม = ลำดับขั้นแก้ปัญหาที่ชัดเจนและจบได้ · เครื่องมือถ่ายทอดความคิด 2 แบบ: Pseudocode (เขียน) และ Flowchart (วาด) · โครงสร้างพื้นฐาน 3 แบบที่ประกอบกันเป็นทุกโปรแกรม: ลำดับ (Sequence), เงื่อนไข (Selection), วนซ้ำ (Iteration)</p>
         </div>
         <div class="card reveal" data-delay="0.1">
           <div class="icon">🔮</div>
-          <h3>เชื่อมไปสัปดาห์หน้า</h3>
-          <p>สัปดาห์ที่ 8 พบ "อาร์เรย์" — เก็บข้อมูลเป็นร้อยค่าในตัวแปรเดียว แล้วฟังก์ชันบทนี้จะได้คู่หูตัวจริง: ฟังก์ชันรับอาร์เรย์เข้าไปประมวลผล คือหน้าตาของโปรแกรมระดับใช้งานจริงทุกตัว</p>
+          <h3>เชื่อมไปคาบหน้า</h3>
+          <p>คาบหน้าเข้าสู่ “สตริง” — การประมวลผลข้อความในภาษาซี นำวิธีคิดเชิงลำดับขั้นและผังงานที่ฝึกวันนี้ ไปออกแบบวิธีจัดการข้อความอย่างเป็นระบบ</p>
         </div>
       </div>
       <div class="assign-box reveal">
-        <h3>📌 งานมอบหมายสัปดาห์ที่ 7</h3>
+        <h3>📌 งานมอบหมายคาบที่ 9</h3>
         <ol>
-          <li>เขียนฟังก์ชัน float calc_bmi(float weight, float height) ที่ return ค่า BMI แล้วให้ main เรียกใช้กับข้อมูล 3 คน — เทียบกับเวอร์ชันบทที่ 4 ว่าเป็นระเบียบขึ้นแค่ไหน</li>
-          <li>เขียนฟังก์ชัน char grade(int score) ที่ return เกรด 'A'–'F' (ยกตรรกะจากบทที่ 6 มาห่อ) แล้ววนเรียกกับคะแนน 5 ค่าด้วยลูป for</li>
-          <li>เขียนฟังก์ชัน int is_leap(int year) คืน 1/0 ว่าเป็นปีอธิกสุรทินไหม (ยกโจทย์บทที่ 6 มาทำเป็นฟังก์ชัน) พร้อมทดสอบกับ ค.ศ. 2000, 1900, 2024</li>
-          <li>โจทย์สาขา: เขียนฟังก์ชันคำนวณของสาขาตัวเอง 2 ตัวที่ทำงานร่วมกัน เช่น float shipping_fee(float weight) กับ float total_cost(float price, float weight) ที่เรียกใช้ตัวแรก</li>
-          <li>ทำแบบทดสอบท้ายบทให้ได้อย่างน้อย 8/10 แล้วแคปหน้าจอส่งใน LMS</li>
+          <li>เขียน Pseudocode และวาดผังงาน "คำนวณค่าไฟฟ้า" : รับจำนวนหน่วย ถ้า ≤ 150 หน่วย คิดหน่วยละ 3.25 บาท เกินจากนั้นหน่วยละ 4.22 บาท</li>
+          <li>วาดผังงานที่มีการวนซ้ำ: แสดงเลขคู่ตั้งแต่ 2 ถึง 20</li>
+          <li>โจทย์สาขา: วาดผังงานกระบวนการทำงานจริง 1 อย่าง (เช่น ขั้นตอนตรวจสอบสินค้าเข้าคลัง, ขั้นตอน QC ชิ้นงาน) ความยาว 8–15 ขั้น</li>
+          <li>ทำแบบทดสอบท้ายคาบให้ได้อย่างน้อย 8/10 แล้วแคปหน้าจอส่งใน LMS</li>
         </ol>
       </div>
       <div class="btn-row reveal" style="margin-top:46px;justify-content:center">
-        <a href="week08.html" class="btn btn-ghost">← สัปดาห์ที่ 6</a>
-        <a href="exercises.html#w09" class="btn btn-ghost">📚 แบบฝึกหัดบทนี้</a>
-        <a href="week10.html" class="btn btn-primary">สัปดาห์ที่ 8: อาร์เรย์และลิสต์ →</a>
+        <a href="week08.html" class="btn btn-ghost">← คาบที่ 8</a>
+        <a href="exercises.html#w03" class="btn btn-ghost">📚 แบบฝึกหัดคาบนี้</a>
+        <a href="week10.html" class="btn btn-primary">คาบที่ 10: สตริงและการประมวลผลข้อความ →</a>
       </div>
     </div>
   </section>
 
   <footer class="footer">
     <div class="container">
-      <p>บทที่ 9: ฟังก์ชัน — รายวิชาการเขียนโปรแกรมคอมพิวเตอร์</p>
-      <p class="credits">จัดทำเพื่อการศึกษา · อิงเอกสารประกอบการสอนบทที่ 7</p>
+      <p>คาบที่ 9: อัลกอริทึมและผังงาน — รายวิชาการเขียนโปรแกรมคอมพิวเตอร์</p>
+      <p class="credits">จัดทำเพื่อการศึกษา</p>
     </div>
   </footer>
 
@@ -396,7 +348,6 @@ int y = add(x,4);   <span class="cm">// 9</span></pre></p></div>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
   <script src="js/main.js"></script>
   <script src="js/week09.js"></script>
-  <script src="js/runner.js"></script>
   <script src="js/quiz.js"></script>
 </body>
 </html>

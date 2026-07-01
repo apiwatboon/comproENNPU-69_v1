@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>บทที่ 4: เริ่มต้นเขียนโปรแกรมแรก (ภาษาซี) | Computer Programming</title>
+  <title>คาบที่ 4: โครงสร้างควบคุมแบบเลือกทำ | Computer Programming</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2322d3ee'/%3E%3Ctext x='50' y='68' font-size='48' text-anchor='middle' fill='%23071018' font-family='monospace'%3E%26lt;/%26gt;%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,11 +17,13 @@
       <a href="index.html" class="nav-logo"><span class="logo-dot">&lt;/&gt;</span> Computer Programming</a>
       <ul class="nav-links">
         <li><a href="#objectives">วัตถุประสงค์</a></li>
-        <li><a href="#clang">รู้จักภาษาซี</a></li>
         <li><a href="#structure">โครงสร้างโปรแกรม</a></li>
-        <li><a href="#variables">ตัวแปร</a></li>
-        <li><a href="#printf">การแสดงผล</a></li>
-        <li><a href="#bmi">โปรแกรม BMI</a></li>
+        <li><a href="#if">if</a></li>
+        <li><a href="#ifelse">if–else</a></li>
+        <li><a href="#elif">else if</a></li>
+        <li><a href="#switch">switch</a></li>
+        <li><a href="#nested">เงื่อนไขซ้อน</a></li>
+        <li><a href="#applied">ใช้งานจริง</a></li>
         <li><a href="#quiz">แบบทดสอบ</a></li>
       </ul>
     </div>
@@ -30,21 +32,21 @@
   <header class="hero">
     <canvas id="binary-canvas"></canvas>
     <div class="container">
-      <div class="hero-kicker reveal">สัปดาห์ที่ 2</div>
-      <h1 class="reveal" data-delay="0.1">บทที่ 4<br><span class="grad-text">เริ่มต้นเขียนโปรแกรมแรกด้วยภาษาซี</span></h1>
+      <div class="hero-kicker reveal">คาบที่ 4</div>
+      <h1 class="reveal" data-delay="0.1"><span class="grad-text">โครงสร้างควบคุมแบบเลือกทำ</span></h1>
       <p class="hero-desc reveal" data-delay="0.2">
-        ถึงเวลาแล้ว! สัปดาห์แรกที่ผ่านมาเราเตรียมความคิด วันนี้เราจะเขียนโปรแกรมภาษาซี
-        โปรแกรมแรกในชีวิต — รู้จักโครงสร้างโปรแกรม การประกาศตัวแปร และคำสั่ง printf
-        แล้วผังงาน BMI ที่วาดไว้สัปดาห์ที่แล้ว จะกลายเป็นโปรแกรมที่รันได้จริงในหน้านี้
+        ข้าวหลามตัดที่วาดในคาบที่ 3 และนิพจน์ตรรกะ 1/0 ที่ฝึกในคาบที่ 5 มารวมร่างกันวันนี้ —
+        if, else if, else และ switch คือเครื่องมือที่ทำให้โปรแกรม "ตัดสินใจเองได้"
+        และเป็นโครงสร้างที่สองจากสามโครงสร้างพื้นฐานของทุกโปรแกรมในโลก
       </p>
       <div class="hero-badges reveal" data-delay="0.3">
         <span class="badge">⏱️ <b>ใช้เวลาเรียน ~2.5 ชั่วโมง</b></span>
-        <span class="badge">💻 <b>โค้ดทุกกล่องกดรันดูผลได้</b></span>
+        <span class="badge">🎓 <b>เครื่องตัดเกรดแบบไล่เงื่อนไขสด ๆ</b></span>
         <span class="badge">📝 <b>แบบทดสอบ 10 ข้อ</b></span>
       </div>
       <div class="btn-row reveal" data-delay="0.4">
         <a href="#objectives" class="btn btn-primary">เริ่มบทเรียน ↓</a>
-        <a href="week03.html" class="btn btn-ghost">← บทที่ 3</a>
+        <a href="week03.html" class="btn btn-ghost">← คาบที่ 3</a>
       </div>
     </div>
     <div class="scroll-hint">เลื่อนลงเพื่อเริ่มเรียน<br>⌄</div>
@@ -55,70 +57,19 @@
       <span class="section-tag reveal">Learning Objectives</span>
       <h2 class="section-title reveal">วัตถุประสงค์การเรียนรู้</h2>
       <div class="obj-list">
-        <div class="obj-item reveal">อธิบายที่มาของภาษาซี และกระบวนการคอมไพล์โปรแกรมเป็นภาษาเครื่องได้</div>
-        <div class="obj-item reveal" data-delay="0.05">เขียนโครงสร้างโปรแกรมภาษาซี (#include, main, { }, ;) ได้ถูกต้องครบถ้วน</div>
-        <div class="obj-item reveal" data-delay="0.1">ประกาศตัวแปรพร้อมระบุชนิดข้อมูล int, float, double, char ได้เหมาะกับข้อมูล</div>
-        <div class="obj-item reveal" data-delay="0.15">ใช้ printf แสดงผลพร้อมตัวกำหนดรูปแบบข้อมูล %d %f %c %s ได้ถูกต้อง</div>
-        <div class="obj-item reveal" data-delay="0.2">แปลงผังงาน BMI จากบทที่ 3 เป็นโปรแกรมภาษาซีที่ทำงานได้จริง</div>
+        <div class="obj-item reveal">เขียนคำสั่ง if พร้อมเงื่อนไขใน ( ) และบล็อกใน { } ได้ถูกต้อง</div>
+        <div class="obj-item reveal" data-delay="0.05">เขียนโปรแกรมสองทางเลือกด้วย if–else ได้</div>
+        <div class="obj-item reveal" data-delay="0.1">เขียนโปรแกรมหลายทางเลือกด้วย if–else if–else และอธิบายว่าทำไมลำดับเงื่อนไขจึงสำคัญ</div>
+        <div class="obj-item reveal" data-delay="0.15">ใช้ switch–case กับทางเลือกแบบค่าตายตัว และอธิบายหน้าที่ของ break ได้</div>
+        <div class="obj-item reveal" data-delay="0.2">เขียนเงื่อนไขซ้อน (nested if) และประยุกต์กับโจทย์จริง เช่น การตัดเกรดและค่าไฟฟ้าแบบขั้นบันได</div>
       </div>
     </div>
   </section>
 
-  <section class="section alt" id="clang">
-    <div class="container">
-      <span class="section-tag reveal">Meet the C Language</span>
-      <h2 class="section-title reveal">🔧 ทำไมต้องภาษาซี?</h2>
-      <p class="section-sub reveal">
-        ภาษาซีถูกสร้างโดย <b style="color:var(--text)">Dennis Ritchie</b> ที่ Bell Labs ปี ค.ศ. 1972
-        เพื่อใช้เขียนระบบปฏิบัติการ UNIX — ผ่านมาห้าทศวรรษ มันยังคงเป็นรากฐานของแทบทุกอย่าง:
-        ระบบปฏิบัติการ ไมโครคอนโทรลเลอร์ เครื่องจักรในโรงงาน และเป็น "ภาษาแม่" ที่ทำให้เรียนภาษาอื่นต่อได้ง่ายทั้งหมด
-      </p>
-      <div class="grid grid-2" style="align-items:center">
-        <div class="gen-figure reveal">
-          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Dennis_Ritchie_2011.jpg?width=900"
-               alt="Dennis Ritchie ผู้สร้างภาษาซี" height="320" style="width:100%;height:320px"
-               data-fallback="1">
-        </div>
-        <div class="reveal" data-delay="0.1" style="text-align:center">
-          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/The_C_Programming_Language_logo.svg?width=400"
-               alt="สัญลักษณ์ภาษาซี" height="180" style="height:180px;margin:0 auto" data-fallback="1">
-          <div class="stats-grid" style="margin-top:26px">
-            <div class="stat-card"><div class="stat-value grad-text" data-count="1972">0</div><div class="stat-label">ปีที่ถือกำเนิด (ค.ศ.)</div></div>
-            <div class="stat-card"><div class="stat-value grad-text" data-count="50">0</div><div class="stat-label">ปีที่ยังครองโลกระบบฝังตัว</div></div>
-          </div>
-        </div>
-      </div>
-      <div class="grid grid-3" style="margin-top:40px">
-        <div class="card reveal">
-          <div class="icon">🏗️</div>
-          <h3>ภาษาแม่ของทุกภาษา</h3>
-          <p>C++, Java, JavaScript, C# ล้วนสืบไวยากรณ์จากซี — เรียนซีแน่นหนึ่งภาษา เปิดประตูสู่ภาษาอื่นได้แทบทั้งหมด นี่คือเหตุผลที่หลักสูตรวิศวกรรมทั่วโลกเริ่มที่ซี</p>
-        </div>
-        <div class="card reveal" data-delay="0.05">
-          <div class="icon">🏭</div>
-          <h3>หัวใจของงานวิศวกรรม</h3>
-          <p>PLC และไมโครคอนโทรลเลอร์ในสายการผลิต · ระบบควบคุมแขนกล · เฟิร์มแวร์เครื่องสแกนพัสดุ — โลกฮาร์ดแวร์และโรงงานพูดภาษาซีเป็นหลัก</p>
-        </div>
-        <div class="card reveal" data-delay="0.1">
-          <div class="icon">⚙️</div>
-          <h3>ทำงานแบบคอมไพล์</h3>
-          <p>ซีใช้ <b style="color:var(--cyan)">คอมไพเลอร์</b> แปลโค้ด "ทั้งโปรแกรม" เป็นภาษาเครื่องก่อน แล้วจึงรัน —
-          ถ้ามีจุดผิดแม้แต่เครื่องหมายเดียว คอมไพล์ไม่ผ่านทั้งไฟล์ โปรแกรมจึงเข้มงวดแต่เร็วมาก</p>
-        </div>
-      </div>
-      <div class="card reveal" style="margin-top:26px">
-        <div class="icon">🛠️</div>
-        <h3>ใช้เครื่องมืออะไรเขียน?</h3>
-        <p>เริ่มง่ายสุด: เว็บ <b style="color:var(--green)">onlinegdb.com</b> (เลือกภาษา C) เขียน–คอมไพล์–รันได้ทันทีไม่ต้องติดตั้ง ·
-        บนเครื่องตัวเอง: ติดตั้ง <b style="color:var(--green)">Code::Blocks</b> หรือ <b style="color:var(--green)">Dev-C++</b> ซึ่งมีคอมไพเลอร์ GCC มาให้พร้อม — ในห้องแล็บใช้ตามที่อาจารย์กำหนด</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="structure">
+  <section class="section alt" id="structure">
     <div class="container">
       <span class="section-tag reveal">Program Structure</span>
-      <h2 class="section-title reveal">🧱 โครงสร้างโปรแกรมภาษาซี — บ้านที่ต้องมีครบทุกเสา</h2>
+      <h2 class="section-title reveal"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 12.5-9.17 4.16a2 2 0 0 1-1.66 0L2 12.5"/><path d="m22 17.5-9.17 4.16a2 2 0 0 1-1.66 0L2 17.5"/></svg> โครงสร้างโปรแกรมภาษาซี — บ้านที่ต้องมีครบทุกเสา</h2>
       <p class="section-sub reveal">
         โปรแกรมซีทุกโปรแกรมในโลกมีโครงเดียวกัน: <b style="color:var(--cyan)">#include</b> เรียกคลังคำสั่ง →
         <b style="color:var(--cyan)">int main()</b> จุดเริ่มทำงาน → คำสั่งใน <b style="color:var(--amber)">{ }</b>
@@ -140,19 +91,19 @@
 
       <div class="grid grid-3" style="margin-top:36px">
         <div class="card reveal">
-          <div class="icon">⛔</div>
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.86 2h8.28L22 7.86v8.28L16.14 22H7.86L2 16.14V7.86Z"/><line x1="12" y1="8" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
           <h3>เซมิโคลอน ; คือจุดจบประโยค</h3>
           <p>ทุกคำสั่งต้องปิดด้วย <code style="color:var(--amber)">;</code> — ลืมตัวเดียว
           คอมไพเลอร์ฟ้อง <b style="color:#fca5a5">error</b> ทั้งโปรแกรมไม่ยอมรันเลย เป็นบั๊กอันดับหนึ่งของมือใหม่ภาษาซีทุกยุคทุกสมัย</p>
         </div>
         <div class="card reveal" data-delay="0.05">
-          <div class="icon">🔤</div>
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17V8l3 6 3-6v9"/><path d="M14 17v-7a3 3 0 0 1 6 0v7"/><path d="M14 13h6"/></svg></div>
           <h3>ตัวเล็ก-ใหญ่ ไม่เหมือนกัน</h3>
           <p>ต้องพิมพ์ <code style="color:var(--green)">printf</code> และ <code style="color:var(--green)">main</code> ตัวเล็กเท่านั้น —
           พิมพ์ <code style="color:#fca5a5">Printf</code> หรือ <code style="color:#fca5a5">Main</code> คอมไพเลอร์ไม่รู้จักทันที</p>
         </div>
         <div class="card reveal" data-delay="0.1">
-          <div class="icon">💬</div>
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z"/></svg></div>
           <h3>คอมเมนต์ // และ /* */</h3>
           <p>ข้อความหลัง <code style="color:var(--cyan)">//</code> คือโน้ตสำหรับมนุษย์ คอมไพเลอร์ข้ามให้
           (หลายบรรทัดใช้ <code style="color:var(--cyan)">/* ... */</code>) — เขียนอธิบายโค้ดให้เป็นนิสัยตั้งแต่วันแรก</p>
@@ -161,223 +112,317 @@
     </div>
   </section>
 
-  <section class="section alt" id="variables">
+  <section class="section" id="if">
     <div class="container">
-      <span class="section-tag reveal">Variables & Data Types</span>
-      <h2 class="section-title reveal">📦 ตัวแปรและชนิดข้อมูล — กล่องที่ต้อง "เลือกขนาด" ก่อนใช้</h2>
+      <span class="section-tag reveal">The if Statement</span>
+      <h2 class="section-title reveal">🔶 if — ข้าวหลามตัดฉบับโค้ดจริง</h2>
       <p class="section-sub reveal">
-        ตัวแปรคือกล่องเก็บข้อมูลในหน่วยความจำ (RAM จากบทที่ 2!) — จุดสำคัญของภาษาซี:
-        <b style="color:var(--amber)">ต้องประกาศชนิดก่อนใช้เสมอ</b> ตามรูปแบบ
-        <b style="color:var(--cyan)">ชนิดข้อมูล ชื่อตัวแปร = ค่า;</b> เพื่อให้คอมไพเลอร์จองหน่วยความจำได้ถูกขนาด
-      </p>
-
-      <div style="overflow-x:auto" class="reveal">
-        <table class="data-table op-table">
-          <thead><tr><th>ชนิด</th><th>เก็บอะไร</th><th>ตัวอย่างประกาศ</th><th>ตัวกำหนดรูปแบบ</th></tr></thead>
-          <tbody>
-            <tr><td>int</td><td>จำนวนเต็ม (นิยมมากที่สุด)</td><td>int age = 20;</td><td>%d</td></tr>
-            <tr><td>float</td><td>จำนวนจริงมีทศนิยม</td><td>float height = 175.5;</td><td>%f</td></tr>
-            <tr><td>double</td><td>ทศนิยมความละเอียดสูง</td><td>double pi = 3.14159265359;</td><td>%lf</td></tr>
-            <tr><td>char</td><td>ตัวอักษร 1 ตัว (ใน ' ')</td><td>char grade = 'A';</td><td>%c</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="section-sub reveal" style="margin-top:14px">
-        ⭐ สังเกต: char ใช้ <b style="color:var(--amber)">เครื่องหมายคำพูดเดี่ยว 'A'</b> เก็บได้ทีละตัวอักษรเท่านั้น
-        ส่วนข้อความยาว ๆ ใน " " จะได้พบในบทสตริง — และภาษาซี <b style="color:#fca5a5">ไม่มีชนิด bool ในตัว</b> ใช้ int แทน (0 = เท็จ, อื่น ๆ = จริง)
-      </p>
-
-      <div class="code-card reveal" style="margin-top:26px">
-        <div class="code-head"><span>ตัวอย่างที่ 4.2 — about_me.c</span><div class="dots"><span></span><span></span><span></span></div></div>
-        <pre><code><span style="color:#a78bfa">#include</span> <span style="color:#fbbf24">&lt;stdio.h&gt;</span>
-
-<span style="color:#a78bfa">int</span> <span style="color:#22d3ee">main</span>() {
-    <span style="color:#a78bfa">int</span> age = <span style="color:#a78bfa">19</span>;          <span style="color:#6b7280">// จำนวนเต็ม</span>
-    <span style="color:#a78bfa">float</span> gpa = <span style="color:#a78bfa">3.45</span>;      <span style="color:#6b7280">// ทศนิยม</span>
-    <span style="color:#a78bfa">char</span> grade = <span style="color:#fbbf24">'B'</span>;      <span style="color:#6b7280">// ตัวอักษรเดี่ยวใน ' '</span>
-    age = age + <span style="color:#a78bfa">1</span>;         <span style="color:#6b7280">// วันเกิด! ค่าใหม่ทับค่าเดิม</span>
-    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"อายุ %d ปี เกรด %.2f ระดับ %c\n"</span>, age, gpa, grade);
-    <span style="color:#a78bfa">return</span> <span style="color:#a78bfa">0</span>;
-}</code></pre>
-        <button class="run-btn" data-output="อายุ 20 ปี เกรด 3.45 ระดับ B">▶ คอมไพล์และรัน</button>
-        <div class="code-output"></div>
-      </div>
-      <p class="section-sub reveal" style="margin-top:10px">
-        สังเกตบรรทัด <code style="color:var(--amber)">age = age + 1;</code> — เครื่องหมาย = คือ "กำหนดค่าให้"
-        ไม่ใช่เท่ากับทางคณิตศาสตร์: คำนวณฝั่งขวาก่อน (19 + 1 = 20) แล้วเก็บกลับเข้ากล่อง
+        โครงสร้าง: <b style="color:var(--cyan)">if (เงื่อนไข) { คำสั่ง }</b>
+        — เงื่อนไขอยู่ใน <b style="color:var(--amber)">( )</b> เสมอ ถ้าค่าเป็นจริง (ไม่ใช่ 0)
+        ทำบล็อกใน <b style="color:var(--amber)">{ }</b> ถ้าเป็น 0 ข้ามไปเลย
       </p>
 
       <div class="code-card reveal">
-        <div class="code-head"><span>ตัวอย่างที่ 4.3 — circle.c (double กับงานคำนวณละเอียด)</span><div class="dots"><span></span><span></span><span></span></div></div>
-        <pre><code><span style="color:#a78bfa">double</span> r = <span style="color:#a78bfa">2.5</span>;
-<span style="color:#a78bfa">double</span> area = <span style="color:#a78bfa">3.14159</span> * r * r;
-<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"รัศมี %.1f เมตร\n"</span>, r);
-<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"พื้นที่วงกลม = %.2f ตร.ม.\n"</span>, area);</code></pre>
-        <button class="run-btn" data-output="รัศมี 2.5 เมตร&#10;พื้นที่วงกลม = 19.63 ตร.ม.">▶ คอมไพล์และรัน</button>
+        <div class="code-head"><span>ตัวอย่างที่ 6.1 — speed.c (สมมุติผู้ใช้พิมพ์ 120)</span><div class="dots"><span></span><span></span><span></span></div></div>
+        <pre><code><span style="color:#a78bfa">int</span> speed;
+<span style="color:#22d3ee">scanf</span>(<span style="color:#fbbf24">"%d"</span>, &amp;speed);
+<span style="color:#a78bfa">if</span> (speed &gt; <span style="color:#a78bfa">90</span>) {
+    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"เกินกำหนด! โดนใบสั่ง\n"</span>);   <span style="color:#6b7280">// อยู่ใน { } = อยู่ใน if</span>
+    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"ค่าปรับ 1,000 บาท\n"</span>);
+}
+<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"ขับขี่ปลอดภัยนะครับ\n"</span>);        <span style="color:#6b7280">// นอก { } = ทำเสมอ</span></code></pre>
+        <button class="run-btn" data-stdin="120" data-output="(ผู้ใช้พิมพ์: 120)&#10;เกินกำหนด! โดนใบสั่ง&#10;ค่าปรับ 1,000 บาท&#10;ขับขี่ปลอดภัยนะครับ">▶ คอมไพล์และรัน</button>
         <div class="code-output"></div>
       </div>
 
-      <div class="grid grid-2" style="margin-top:36px">
+      <div class="grid grid-3" style="margin-top:36px">
         <div class="card reveal">
-          <h3 style="margin-bottom:14px">📏 กฎการตั้งชื่อตัวแปรภาษาซี</h3>
-          <p>✅ ใช้ตัวอักษรอังกฤษ a–z, A–Z, ตัวเลข และ _ ได้<br>
-             ✅ ขึ้นต้นด้วยตัวอักษรหรือ _ เท่านั้น<br>
-             ❌ ขึ้นต้นด้วยตัวเลขไม่ได้ (<code style="color:#fca5a5">2score</code>)<br>
-             ❌ ห้ามเว้นวรรค ห้ามใช้ - และห้ามตัวอักษรไทย<br>
-             ❌ ห้ามซ้ำคำสงวน เช่น <code style="color:#fca5a5">int, return, if, for</code><br>
-             💡 ธรรมเนียมนิยม: ตัวเล็กคั่นด้วย _ เช่น <code style="color:var(--green)">total_price</code></p>
+          <div class="icon">🧱</div>
+          <h3>{ } คือขอบเขตของเงื่อนไข</h3>
+          <p>ภาษาซีใช้วงเล็บปีกกาบอกว่าบรรทัดไหนอยู่ใน if — ถ้ามีคำสั่งเดียวละ { } ได้
+          แต่มือใหม่ <b style="color:var(--cyan)">ควรใส่เสมอ</b> กันบั๊กตอนเพิ่มบรรทัดทีหลัง</p>
+        </div>
+        <div class="card reveal" data-delay="0.05">
+          <div class="icon">☠️</div>
+          <h3>อย่าใส่ ; ท้าย if!</h3>
+          <p><code style="color:#fca5a5">if (speed &gt; 90);</code> — เซมิโคลอนตัวนั้นคือ "คำสั่งว่าง"
+          ทำให้เงื่อนไข <b style="color:#fca5a5">จบทันที</b> และบล็อกข้างล่างทำงานเสมอ!
+          คอมไพล์ผ่านด้วย — เป็นบั๊กเงียบสุดคลาสสิกของภาษาซี</p>
         </div>
         <div class="card reveal" data-delay="0.1">
-          <h3 style="margin-bottom:14px">🧪 เครื่องตรวจชื่อตัวแปร</h3>
-          <p style="margin-bottom:14px">พิมพ์ชื่อตัวแปรที่อยากใช้ แล้วดูว่าคอมไพเลอร์ซียอมรับไหม:</p>
-          <div class="widget" style="padding:20px;margin-top:0">
-            <div class="widget-controls" style="margin-bottom:14px">
-              <input type="text" id="nameInput" placeholder="เช่น total_price" style="width:100%;max-width:280px">
-            </div>
-            <div class="widget-result" id="nameResult" style="min-height:72px">— พิมพ์ชื่อตัวแปรเพื่อตรวจสอบ —</div>
-          </div>
+          <div class="icon">🔗</div>
+          <h3>ต่อจากคาบที่แล้วเป๊ะ ๆ</h3>
+          <p>ในวงเล็บใส่อะไรก็ได้ที่ให้ค่า 1/0: <code style="color:var(--green)">speed &gt; 90</code>,
+          <code style="color:var(--green)">n % 2 == 0</code>, <code style="color:var(--green)">a &gt; 0 &amp;&amp; b &gt; 0</code> — ทุกตัวจากคาบที่ 5 ใช้ได้หมด</p>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="section" id="printf">
+  <section class="section" id="ifelse">
     <div class="container">
-      <span class="section-tag reveal">Output with printf</span>
-      <h2 class="section-title reveal">🖨️ printf และตัวกำหนดรูปแบบข้อมูล — ปากเสียงของโปรแกรม</h2>
+      <span class="section-tag reveal">Two-way Selection</span>
+      <h2 class="section-title reveal">⚖️ if–else — สองทาง เลือกทางเดียวเสมอ</h2>
       <p class="section-sub reveal">
-        จะแสดงค่าตัวแปร ต้องบอก printf ว่าข้อมูลชนิดอะไร ผ่าน <b style="color:var(--cyan)">ตัวกำหนดรูปแบบข้อมูล (format specifier)</b>:
-        <b style="color:var(--amber)">%d</b> จำนวนเต็ม · <b style="color:var(--amber)">%f</b> ทศนิยม ·
-        <b style="color:var(--amber)">%c</b> ตัวอักษร · <b style="color:var(--amber)">%s</b> ข้อความ — และ <b style="color:var(--amber)">\n</b> ขึ้นบรรทัดใหม่
+        เมื่อต้องทำ "อย่างใดอย่างหนึ่ง" เสมอ ใช้ else รับกรณีที่เงื่อนไขเป็นเท็จ —
+        เหมือนผังงาน BMI ที่แตกสองทางจากข้าวหลามตัดแล้วไหลมารวมกันก่อนจบ
       </p>
 
       <div class="grid grid-2" style="align-items:start">
         <div class="code-card reveal" style="margin:0">
-          <div class="code-head"><span>ตัวอย่างที่ 4.4 — format.c</span><div class="dots"><span></span><span></span><span></span></div></div>
-          <pre><code><span style="color:#a78bfa">int</span> stock = <span style="color:#a78bfa">42</span>;
-<span style="color:#a78bfa">float</span> weight = <span style="color:#a78bfa">7.25</span>;
-<span style="color:#a78bfa">char</span> zone = <span style="color:#fbbf24">'B'</span>;
-<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"สินค้าคงเหลือ %d ชิ้น\n"</span>, stock);
-<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"น้ำหนักรวม %f กก.\n"</span>, weight);
-<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"น้ำหนักรวม %.2f กก.\n"</span>, weight);
-<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"เก็บที่โซน %c\n"</span>, zone);
-<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"%s\n"</span>, <span style="color:#fbbf24">"พร้อมจัดส่ง"</span>);</code></pre>
-          <button class="run-btn" data-output="สินค้าคงเหลือ 42 ชิ้น&#10;น้ำหนักรวม 7.250000 กก.&#10;น้ำหนักรวม 7.25 กก.&#10;เก็บที่โซน B&#10;พร้อมจัดส่ง">▶ คอมไพล์และรัน</button>
+          <div class="code-head"><span>ตัวอย่างที่ 6.2 — even_odd.c (สมมุติผู้ใช้พิมพ์ 7)</span><div class="dots"><span></span><span></span><span></span></div></div>
+          <pre><code><span style="color:#a78bfa">int</span> n;
+<span style="color:#22d3ee">scanf</span>(<span style="color:#fbbf24">"%d"</span>, &amp;n);
+<span style="color:#a78bfa">if</span> (n % <span style="color:#a78bfa">2</span> == <span style="color:#a78bfa">0</span>) {
+    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"%d เป็นเลขคู่\n"</span>, n);
+} <span style="color:#a78bfa">else</span> {
+    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"%d เป็นเลขคี่\n"</span>, n);
+}</code></pre>
+          <button class="run-btn" data-stdin="7" data-output="(ผู้ใช้พิมพ์: 7)&#10;7 เป็นเลขคี่">▶ คอมไพล์และรัน</button>
           <div class="code-output"></div>
         </div>
         <div class="card reveal" data-delay="0.1" style="margin:0">
-          <h3 style="margin-bottom:14px">🔬 เครื่องเลือกตัวกำหนดรูปแบบ</h3>
-          <p style="margin-bottom:14px">พิมพ์ค่าตามแบบภาษาซี (เช่น <code style="color:var(--amber)">42</code>, <code style="color:var(--amber)">3.5</code>, <code style="color:var(--amber)">'A'</code>, <code style="color:var(--amber)">"hello"</code>) แล้วดูว่าต้องประกาศชนิดอะไรและใช้ % ตัวไหน:</p>
-          <div class="widget" style="padding:20px;margin-top:0">
-            <div class="widget-controls" style="margin-bottom:14px">
-              <input type="text" id="typeInput" placeholder="เช่น 3.14 หรือ 'A'" style="width:100%;max-width:280px">
-            </div>
-            <div class="widget-result" id="typeResult" style="min-height:96px">— พิมพ์ค่าเพื่อตรวจ —</div>
+          <h3 style="margin-bottom:14px">🧠 สามกฎทองของ else</h3>
+          <p style="line-height:2">
+          1️⃣ else ไม่มีเงื่อนไขของตัวเอง — มันคือ "กรณีที่เหลือทั้งหมด" (เขียน else (x &lt; 50) ไม่ได้)<br>
+          2️⃣ else ต้องตามหลังบล็อก } ของ if คู่ของมันทันที<br>
+          3️⃣ สองบล็อกนี้ทำได้ "ทางเดียวเท่านั้น" ไม่มีทางทำทั้งคู่ —
+          เหมือนตัวจำลองผังงานคาบที่ 3 ที่เส้นทางจริง/เท็จ ไม่เคยถูกเดินพร้อมกัน</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" id="elif">
+    <div class="container">
+      <span class="section-tag reveal">Multi-way Selection</span>
+      <h2 class="section-title reveal">🎓 if–else if–else — เลือกหลายทาง: เครื่องตัดเกรด</h2>
+      <p class="section-sub reveal">
+        เมื่อทางเลือกมีมากกว่าสอง ใช้ <b style="color:var(--cyan)">else if</b> ต่อกี่ชั้นก็ได้ —
+        คอมไพเลอร์ไล่ตรวจ <b style="color:var(--text)">จากบนลงล่าง เจอจริงตัวแรกทำแล้วออกจากโครงสร้างทันที</b>
+        ใส่คะแนนแล้วกด "ตรวจเกรด ▶" ดูการไล่เงื่อนไขแบบสด ๆ
+      </p>
+
+      <div class="flow-wrap reveal">
+        <div class="flow-panel" style="margin:0">
+          <h3>🎛️ แผงควบคุม</h3>
+          <div class="widget-controls" style="justify-content:flex-start">
+            <label>คะแนน (0–100) = <input type="number" id="gradeScore" value="75" min="0" max="100" style="width:90px"></label>
           </div>
+          <div class="btn-row" style="margin-bottom:8px">
+            <button class="btn btn-primary" id="gradeCheck">ตรวจเกรด ▶</button>
+          </div>
+          <div class="cond-list">
+            <div class="cond-item" data-grade="A">if (score &gt;= 80)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// เกรด A</div>
+            <div class="cond-item" data-grade="B">else if (score &gt;= 70)&nbsp;// เกรด B</div>
+            <div class="cond-item" data-grade="C">else if (score &gt;= 60)&nbsp;// เกรด C</div>
+            <div class="cond-item" data-grade="D">else if (score &gt;= 50)&nbsp;// เกรด D</div>
+            <div class="cond-item" data-grade="F">else&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// เกรด F</div>
+          </div>
+        </div>
+        <div class="flow-panel" style="margin:0;display:flex;flex-direction:column;justify-content:center">
+          <h3 style="text-align:center">ผลการตัดเกรด</h3>
+          <div class="grade-display grad-text" id="gradeDisplay">?</div>
+          <div class="flow-desc" id="gradeDesc">ใส่คะแนนแล้วกดตรวจ — สังเกตว่าเงื่อนไขที่เป็นเท็จจะจางลง และโปรแกรมหยุดที่เงื่อนไขจริงตัวแรก</div>
         </div>
       </div>
 
       <div class="card reveal" style="margin-top:30px">
-        <div class="icon">⚠️</div>
-        <h3>จับคู่ให้ถูก ไม่งั้นได้ค่ามั่ว</h3>
-        <p>ใช้ <code style="color:#fca5a5">%d</code> กับตัวแปร float (หรือสลับกัน) โปรแกรม "ไม่พัง" แต่แสดง <b style="color:#fca5a5">ค่ามั่ว</b> ออกมาเงียบ ๆ —
-        อันตรายกว่า error เพราะรายงานผิดโดยไม่มีใครเตือน จำง่าย ๆ: <b style="color:var(--text)">int→%d · float→%f · char→%c · ข้อความ→%s</b>
-        และคุมทศนิยมด้วย <code style="color:var(--green)">%.2f</code> (2 ตำแหน่ง)</p>
-      </div>
-
-      <div class="code-card reveal" style="margin-top:30px">
-        <div class="code-head"><span>ตัวอย่างที่ 4.5 — escape.c (อักขระพิเศษ \n และ \t)</span><div class="dots"><span></span><span></span><span></span></div></div>
-        <pre><code><span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"รายการ\tจำนวน\tราคา\n"</span>);
-<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"น็อต M6\t200\t150.00\n"</span>);
-<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"แหวนรอง\t500\t275.50\n"</span>);
-<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"--------------------------\n"</span>);
-<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"\\n คือขึ้นบรรทัดใหม่ \\t คือเว้นแท็บ\n"</span>);</code></pre>
-        <button class="run-btn" data-output="รายการ&#9;จำนวน&#9;ราคา&#10;น็อต M6&#9;200&#9;150.00&#10;แหวนรอง&#9;500&#9;275.50&#10;--------------------------&#10;\n คือขึ้นบรรทัดใหม่ \t คือเว้นแท็บ">▶ คอมไพล์และรัน</button>
-        <div class="code-output"></div>
+        <div class="icon">🚨</div>
+        <h3>ลำดับเงื่อนไขสำคัญมาก!</h3>
+        <p>ลองสลับเอา <code style="color:#fca5a5">if (score &gt;= 50)</code> ขึ้นบรรทัดแรกดูสิ — คนได้ 95 คะแนนจะโดนตัดเกรด D!
+        เพราะ 95 ≥ 50 เป็นจริง โปรแกรมเจอจริงตัวแรกก็หยุดเลย ไม่สนใจว่าข้างล่างมีเงื่อนไขที่ "จริงกว่า" รออยู่
+        — กฎ: <b style="color:var(--text)">เรียงจากเงื่อนไขที่แคบ/สูงสุดลงไปกว้างสุดเสมอ</b></p>
       </div>
     </div>
   </section>
 
-  <section class="section alt" id="bmi">
+  <section class="section" id="switch">
     <div class="container">
-      <span class="section-tag reveal">From Flowchart to Code</span>
-      <h2 class="section-title reveal">🧮 ตามสัญญา: ผังงาน BMI → โปรแกรมภาษาซี</h2>
+      <span class="section-tag reveal">The switch Statement</span>
+      <h2 class="section-title reveal">🎛️ switch–case — เมนูทางเลือกฉบับภาษาซี</h2>
       <p class="section-sub reveal">
-        สัปดาห์ที่แล้วเราวาดผังงาน BMI ไว้ วันนี้มันกลายเป็นภาษาซีแล้ว! ใส่น้ำหนัก–ส่วนสูง แล้วกด
-        <b style="color:var(--cyan)">"รันทีละบรรทัด ▶"</b> ดูโปรแกรมไล่ทำงานเหมือนเดินผังงานทีละกล่อง
-        (คำสั่ง scanf รับค่าและ if เลือกทาง จะเจาะลึกในบทที่ 5–6 — วันนี้ดูภาพรวมก่อน)
+        เมื่อทางเลือกเป็น "ค่าตายตัว" (เมนู 1 2 3, เกรด A B C) ภาษาซีมีเครื่องมือเฉพาะ:
+        <b style="color:var(--cyan)">switch (ตัวแปร)</b> กระโดดไป <b style="color:var(--cyan)">case</b> ที่ค่าตรงทันที
+        — แต่มีกติกาเหล็ก: <b style="color:#fca5a5">จบทุก case ด้วย break;</b> ไม่งั้นไหลทะลุลงไปทำ case ถัดไปด้วย!
       </p>
 
-      <div class="flow-wrap reveal">
-        <div class="code-card" style="margin:0">
-          <div class="code-head"><span>bmi.c</span><div class="dots"><span></span><span></span><span></span></div></div>
-          <div class="pycode" id="bmiCode">
-            <div class="pyline" data-line="1"><span class="ln">1</span>float weight, height, bmi;</div>
-            <div class="pyline" data-line="2"><span class="ln">2</span>scanf("%f", &amp;weight);</div>
-            <div class="pyline" data-line="3"><span class="ln">3</span>scanf("%f", &amp;height);</div>
-            <div class="pyline" data-line="4"><span class="ln">4</span>bmi = weight / (height * height);</div>
-            <div class="pyline" data-line="5"><span class="ln">5</span>printf("BMI = %.2f\n", bmi);</div>
-            <div class="pyline" data-line="6"><span class="ln">6</span>if (bmi &gt;= 25)</div>
-            <div class="pyline" data-line="7"><span class="ln">7</span>    printf("น้ำหนักเกิน\n");</div>
-            <div class="pyline" data-line="8"><span class="ln">8</span>else printf("น้ำหนักปกติ\n");</div>
-          </div>
+      <div class="grid grid-2" style="align-items:start">
+        <div class="code-card reveal" style="margin:0">
+          <div class="code-head"><span>ตัวอย่างที่ 6.3 — menu.c เครื่องดื่มอัตโนมัติ (ผู้ใช้กด 2)</span><div class="dots"><span></span><span></span><span></span></div></div>
+          <pre><code><span style="color:#a78bfa">int</span> menu;
+<span style="color:#22d3ee">scanf</span>(<span style="color:#fbbf24">"%d"</span>, &amp;menu);
+<span style="color:#a78bfa">switch</span> (menu) {
+    <span style="color:#a78bfa">case</span> <span style="color:#a78bfa">1</span>:
+        <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"กาแฟร้อน 35 บาท\n"</span>);
+        <span style="color:#a78bfa">break</span>;
+    <span style="color:#a78bfa">case</span> <span style="color:#a78bfa">2</span>:
+        <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"ชาเย็น 30 บาท\n"</span>);
+        <span style="color:#a78bfa">break</span>;
+    <span style="color:#a78bfa">case</span> <span style="color:#a78bfa">3</span>:
+        <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"โกโก้ 40 บาท\n"</span>);
+        <span style="color:#a78bfa">break</span>;
+    <span style="color:#a78bfa">default</span>:
+        <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"ไม่มีเมนูนี้\n"</span>);
+}</code></pre>
+          <button class="run-btn" data-stdin="2" data-output="(ผู้ใช้พิมพ์: 2)&#10;ชาเย็น 30 บาท">▶ คอมไพล์และรัน</button>
+          <div class="code-output"></div>
         </div>
-
-        <div class="flow-panel">
-          <h3>🎛️ แผงควบคุม</h3>
-          <div class="widget-controls" style="justify-content:flex-start">
-            <label>น้ำหนัก (กก.) <input type="number" id="bmiW" value="70" style="width:90px"></label>
-            <label>ส่วนสูง (ม.) <input type="number" id="bmiH" value="1.65" step="0.01" style="width:90px"></label>
+        <div class="reveal" data-delay="0.1">
+          <div class="card" style="margin-bottom:20px">
+            <h3 style="margin-bottom:14px">🆚 switch vs else if — เลือกอันไหน?</h3>
+            <p style="line-height:1.9"><b style="color:var(--cyan)">switch</b>: ค่าตายตัวเป๊ะ ๆ (เมนู 1 2 3, ตัวอักษร 'A' 'B') — อ่านง่าย เร็ว<br>
+            <b style="color:var(--violet)">else if</b>: เงื่อนไขเป็น "ช่วง" (score &gt;= 80) หรือซับซ้อน — switch ทำไม่ได้<br><br>
+            ⚠️ switch ใช้ได้กับ int และ char เท่านั้น — ใช้กับ float หรือช่วงค่าไม่ได้<br>
+            💡 <b style="color:var(--cyan)">default</b> คือ else ของ switch: รับทุกค่าที่ไม่ตรง case ไหนเลย</p>
           </div>
-          <div class="btn-row" style="margin-bottom:18px">
-            <button class="btn btn-primary" id="bmiStep">รันทีละบรรทัด ▶</button>
-            <button class="btn btn-ghost" id="bmiReset">↺ เริ่มใหม่</button>
+          <div class="card">
+            <div class="icon">🕳️</div>
+            <h3>ลืม break = ไหลทะลุ (fall-through)</h3>
+            <p>ถ้า case 2 ไม่มี break; โปรแกรมจะพิมพ์ "ชาเย็น" แล้ว <b style="color:#fca5a5">ไหลลงไปพิมพ์ "โกโก้" ต่อทันที</b>
+            โดยไม่ตรวจค่าอะไรอีก — ข้อสอบชอบหลอกจุดนี้ที่สุดในเรื่อง switch</p>
           </div>
-          <table class="trace-table">
-            <thead><tr><th>ตัวแปร</th><th>weight</th><th>height</th><th>bmi</th></tr></thead>
-            <tbody id="bmiVars"><tr><td>ค่า</td><td>—</td><td>—</td><td>—</td></tr></tbody>
-          </table>
-          <div class="widget-result" id="bmiConsole" style="margin-top:14px;min-height:84px">— หน้าจอผลลัพธ์ (Console) —</div>
-          <div class="flow-desc" id="bmiDesc">พร้อมรันโปรแกรม — บรรทัดที่กำลังทำงานจะสว่างขึ้นทางซ้าย</div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="section" id="quiz">
+  <section class="section alt" id="nested">
+    <div class="container">
+      <span class="section-tag reveal">Nested Conditions</span>
+      <h2 class="section-title reveal">🪆 เงื่อนไขซ้อนเงื่อนไข (Nested if)</h2>
+      <p class="section-sub reveal">
+        ใส่ if ไว้ "ข้างใน" { } ของ if อีกชั้นได้ — ใช้เมื่อการตัดสินใจมีลำดับขั้น
+        เช่น ตรวจสิทธิ์เช่ารถ: ต้องอายุถึง "ก่อน" แล้วค่อยดูใบขับขี่
+      </p>
+
+      <div class="grid grid-2" style="align-items:start">
+        <div class="code-card reveal" style="margin:0">
+          <div class="code-head"><span>ตัวอย่างที่ 6.4 — rental.c อายุ 20 / มีใบขับขี่ (license = 1)</span><div class="dots"><span></span><span></span><span></span></div></div>
+          <pre><code><span style="color:#a78bfa">int</span> age = <span style="color:#a78bfa">20</span>;
+<span style="color:#a78bfa">int</span> has_license = <span style="color:#a78bfa">1</span>;   <span style="color:#6b7280">// 1 = มี, 0 = ไม่มี</span>
+<span style="color:#a78bfa">if</span> (age &gt;= <span style="color:#a78bfa">18</span>) {
+    <span style="color:#a78bfa">if</span> (has_license) {
+        <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"เช่ารถได้\n"</span>);
+    } <span style="color:#a78bfa">else</span> {
+        <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"อายุถึง แต่ต้องมีใบขับขี่\n"</span>);
+    }
+} <span style="color:#a78bfa">else</span> {
+    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"อายุไม่ถึง 18 ปี\n"</span>);
+}</code></pre>
+          <button class="run-btn" data-output="เช่ารถได้">▶ คอมไพล์และรัน</button>
+          <div class="code-output"></div>
+        </div>
+        <div class="card reveal" data-delay="0.1" style="margin:0">
+          <h3 style="margin-bottom:14px">🆚 ซ้อน vs &amp;&amp; — เลือกอันไหน?</h3>
+          <p style="line-height:1.9">ถ้าผลลัพธ์ "ผ่าน/ไม่ผ่าน" เหมือนกันหมด ใช้ &amp;&amp; สั้นกว่า:<br>
+          <code style="color:var(--green)">if (age &gt;= 18 &amp;&amp; has_license)</code><br><br>
+          แต่ถ้าต้องการ <b style="color:var(--text)">ข้อความปฏิเสธต่างกัน</b> ในแต่ละกรณี
+          (อายุไม่ถึง vs ไม่มีใบขับขี่) ต้องซ้อนเพื่อแยกแขนงให้ครบ —
+          กฎง่าย ๆ: <b style="color:var(--cyan)">ผลเหมือนใช้ &amp;&amp; ผลต่างใช้ซ้อน</b><br><br>
+          💡 สังเกต <code style="color:var(--green)">if (has_license)</code> — ไม่ต้องเขียน == 1 เพราะ 1 ก็คือจริงอยู่แล้ว<br>
+          ⚠️ ซ้อนเกิน 3 ชั้นเริ่มอ่านยาก ควรคิดโครงสร้างใหม่</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="applied">
+    <div class="container">
+      <span class="section-tag reveal">Putting It Together</span>
+      <h2 class="section-title reveal">⚡ ใช้งานจริง: ค่าไฟฟ้าแบบขั้นบันได</h2>
+      <p class="section-sub reveal">
+        จำงานวาดผังงานค่าไฟในคาบที่ 3 ได้ไหม? วันนี้อัปเกรดเป็น 3 ขั้นบันไดด้วย else if —
+        ยิ่งใช้มาก หน่วยที่เกินมายิ่งแพง ลองเลื่อนจำนวนหน่วยแล้วดูว่าโปรแกรมเข้าเงื่อนไขไหน
+      </p>
+
+      <div class="grid grid-2" style="align-items:start">
+        <div class="code-card reveal" style="margin:0">
+          <div class="code-head"><span>ตัวอย่างที่ 6.5 — electric_bill.c</span><div class="dots"><span></span><span></span><span></span></div></div>
+          <pre><code><span style="color:#a78bfa">int</span> units;
+<span style="color:#a78bfa">float</span> bill;
+<span style="color:#22d3ee">scanf</span>(<span style="color:#fbbf24">"%d"</span>, &amp;units);
+<span style="color:#a78bfa">if</span> (units &lt;= <span style="color:#a78bfa">150</span>) {
+    bill = units * <span style="color:#a78bfa">3.25</span>;
+} <span style="color:#a78bfa">else</span> <span style="color:#a78bfa">if</span> (units &lt;= <span style="color:#a78bfa">400</span>) {
+    bill = <span style="color:#a78bfa">150</span> * <span style="color:#a78bfa">3.25</span> + (units - <span style="color:#a78bfa">150</span>) * <span style="color:#a78bfa">4.22</span>;
+} <span style="color:#a78bfa">else</span> {
+    bill = <span style="color:#a78bfa">150</span> * <span style="color:#a78bfa">3.25</span> + <span style="color:#a78bfa">250</span> * <span style="color:#a78bfa">4.22</span> + (units - <span style="color:#a78bfa">400</span>) * <span style="color:#a78bfa">4.42</span>;
+}
+<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"ค่าไฟ %.2f บาท\n"</span>, bill);</code></pre>
+          <button class="run-btn" data-stdin="220" data-output="ค่าไฟ 782.90 บาท">▶ คอมไพล์และรัน</button>
+          <div class="code-output"></div>
+        </div>
+        <div class="card reveal" data-delay="0.1" style="margin:0">
+          <h3 style="margin-bottom:14px">💡 ลองเครื่องจริง</h3>
+          <div class="widget" style="padding:20px;margin-top:0">
+            <div class="widget-controls" style="margin-bottom:6px">
+              <label>หน่วยไฟฟ้า = <input type="number" id="billUnits" value="220" min="0" style="width:110px"></label>
+            </div>
+            <input type="range" id="billSlider" min="0" max="600" value="220" style="width:100%;margin-bottom:14px">
+            <div class="widget-result" id="billResult" style="line-height:2">— กำลังคำนวณ —</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-3" style="margin-top:36px">
+        <div class="card reveal">
+          <div class="icon">🚚</div>
+          <h3>โลจิสติกส์</h3>
+          <p>ค่าส่งตามน้ำหนัก: ≤ 1 กก. 40 บาท, ≤ 5 กก. 60 บาท, เกินนั้น 60 + กก.ละ 10 —
+          โครงเดียวกับค่าไฟเป๊ะ แค่เปลี่ยนตัวเลข</p>
+        </div>
+        <div class="card reveal" data-delay="0.05">
+          <div class="icon">🏭</div>
+          <h3>อุตสาหการ</h3>
+          <p>คัดเกรดชิ้นงานจากค่าความคลาดเคลื่อน: &lt; 0.01 มม. เกรด A, &lt; 0.05 เกรด B, เกินนั้น Reject —
+          if–else if ตัวเดียวคุมเครื่อง QC ทั้งไลน์</p>
+        </div>
+        <div class="card reveal" data-delay="0.1">
+          <div class="icon">💻</div>
+          <h3>คอมพิวเตอร์</h3>
+          <p>เมนูทุกระบบคือ switch ยักษ์: กด 1 ฝากเงิน กด 2 ถอน กด 0 ออก — คาบที่ 13 โปรเจกต์ของคุณก็จะมีหน้าตาแบบนี้</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" id="quiz">
     <div class="container">
       <span class="section-tag reveal">Check Your Understanding</span>
-      <h2 class="section-title reveal">📝 แบบทดสอบท้ายบท (10 ข้อ)</h2>
-      <p class="section-sub reveal">สามจุดที่ข้อสอบชอบ: โครงสร้างโปรแกรม · จับคู่ชนิดข้อมูลกับ % · เซมิโคลอน</p>
+      <h2 class="section-title reveal">📝 แบบทดสอบท้ายคาบ (10 ข้อ)</h2>
+      <p class="section-sub reveal">จำหลักไว้: ไล่บนลงล่าง เจอจริงแล้วหยุด · ; ท้าย if คือหายนะ · switch ต้องมี break</p>
       <div class="prequiz reveal">
         <div class="prequiz-head">📘 อ่านก่อนสอบ · สรุปประเด็นสำคัญ</div>
-        <p class="prequiz-intro">สรุปก่อนทำแบบทดสอบ: ทบทวนโครงสร้างโปรแกรม ชนิดข้อมูล และตัวกำหนดรูปแบบ แล้วลองทำ 10 ข้อ</p>
+        <p class="prequiz-intro">คาบนี้เน้น "ลำดับเงื่อนไข" และกับดักไวยากรณ์ของ if/switch — ระวัง 2 กับดักคลาสสิก: ; หลัง if และลืม break</p>
         <div class="pq-item">
           <span class="pq-num">1</span>
-          <div class="pq-text"><h4>โครงสร้างโปรแกรมภาษาซี</h4><p>ทุกโปรแกรมเริ่มทำงานที่ฟังก์ชัน <code>main()</code> และต้องมี <code>#include &lt;stdio.h&gt;</code> เพื่อใช้ <code>printf</code>/<code>scanf</code></p><p><pre class="pq-code">#include &lt;stdio.h&gt;
-int main() {
-    printf("Hello");
-    return 0;
-}</pre></p></div>
+          <div class="pq-text"><h4>บล็อก { } กำหนดขอบเขตของ if</h4><p>คำสั่งที่อยู่ใน <code>{ }</code> เท่านั้นที่ถือเป็นบล็อกของ if ถ้าไม่ใส่ปีกกา จะคุมแค่บรรทัดเดียว</p></div>
         </div>
         <div class="pq-item">
           <span class="pq-num">2</span>
-          <div class="pq-text"><h4>ชนิดข้อมูลพื้นฐาน</h4><p><b>int</b> = จำนวนเต็ม · <b>float</b> = ทศนิยม · <b>char</b> = อักขระ 1 ตัว (ใช้ '...' ครอบ)</p><p><pre class="pq-code">int age = 25;
-float gpa = 3.45;
-char grade = 'A';</pre></p></div>
+          <div class="pq-text"><h4>กับดัก: ใส่ ; หลังเงื่อนไข if</h4><p><code>if (speed &gt; 90);</code> — เซมิโคลอนทำให้ if มี "บล็อกว่าง" บล็อกถัดมาจึงทำงาน<b>ทุกครั้ง</b>ไม่ว่าเงื่อนไขจริงหรือเท็จ</p><p><pre class="pq-code">if (speed &gt; 90);     <span class="cm">// ผิด! มี ; เกิน</span>
+{ printf("ใบสั่ง"); }  <span class="cm">// พิมพ์เสมอ</span></pre></p></div>
         </div>
         <div class="pq-item">
           <span class="pq-num">3</span>
-          <div class="pq-text"><h4>ตัวกำหนดรูปแบบ (format specifier)</h4><p>จับคู่ชนิดข้อมูลกับสัญลักษณ์ใน printf: <code>%d</code>=int, <code>%f</code>=float, <code>%c</code>=char · <code>%.2f</code> = ปัดทศนิยม 2 ตำแหน่ง</p><p><pre class="pq-code">float price = 49.987;
-printf("%.2f", price);   <span class="cm">// 49.99</span></pre></p></div>
+          <div class="pq-text"><h4>if–else if–else ทำงานบล็อกเดียว</h4><p>ทั้งชุดจะมีบล็อกถูกทำงาน <b>เพียง 1 บล็อก</b> · <b>ลำดับเงื่อนไขสำคัญมาก</b> เช่นตัดเกรด ถ้าเอา D (>=50) ขึ้นก่อน คน 95 คะแนนจะได้ D เพราะเข้าเงื่อนไขแรกที่จริง</p><p><pre class="pq-code">if (score &gt;= 80) ...  <span class="cm">// A — ต้องเช็คมากไปน้อย</span>
+else if (score &gt;= 70) ... <span class="cm">// 68 → ตกมาได้ C</span></pre></p></div>
         </div>
         <div class="pq-item">
           <span class="pq-num">4</span>
-          <div class="pq-text"><h4>เซมิโคลอน ; และกฎตั้งชื่อตัวแปร</h4><p>ทุกคำสั่งต้องจบด้วย <code>;</code> มิฉะนั้น <b>คอมไพล์ไม่ผ่าน</b> · ชื่อตัวแปร <b>ห้ามขึ้นต้นด้วยตัวเลข</b> และห้ามมีเว้นวรรค (เช่น <code>2name</code> ผิด, <code>name2</code> ถูก)</p></div>
+          <div class="pq-text"><h4>switch–case และ break</h4><p>เหมาะกับการเทียบค่า "เท่ากับ" หลายค่าแบบเจาะจง (เช่นเมนู 1/2/3) · <b>ลืม break</b> จะ "ไหลลง" ทำ case ถัดไปต่อ (fall-through)</p><p><pre class="pq-code">switch (menu) {
+  case 1: ...; break;   <span class="cm">// ขาด break = ไหลลง case 2</span>
+  default: ...;
+}</pre></p></div>
+        </div>
+        <div class="pq-item">
+          <span class="pq-num">5</span>
+          <div class="pq-text"><h4>เงื่อนไขซ้อนด้วย &&</h4><p>รวมหลายเงื่อนไขที่ต้องจริงพร้อมกัน เช่น <code>age &gt;= 18 &amp;&amp; has_license == 1</code></p></div>
         </div>
         <div class="pq-item tip">
           <span class="pq-num">💡</span>
-          <div class="pq-text"><h4>จุดที่ข้อสอบชอบถาม</h4><p>3 จุดยอดฮิต: ลืม <code>;</code> → error · จับคู่ <code>%</code> ผิดชนิด · ชื่อตัวแปรขึ้นต้นด้วยเลข — ระวังให้ดี</p></div>
+          <div class="pq-text"><h4>จุดที่ข้อสอบชอบถาม</h4><p>สองกับดักที่ออกบ่อย: <b>;</b> หลัง <code>if(...)</code> และ <b>ลืม break</b> ใน switch — กับโจทย์ "สลับลำดับเงื่อนไขแล้วผลเปลี่ยน"</p></div>
         </div>
       </div>
       <div id="quizWrap"></div>
@@ -385,44 +430,44 @@ printf("%.2f", price);   <span class="cm">// 49.99</span></pre></p></div>
     </div>
   </section>
 
-  <section class="section alt">
+  <section class="section">
     <div class="container">
       <span class="section-tag reveal">Summary & Assignment</span>
       <h2 class="section-title reveal">🎯 สรุปบทเรียน</h2>
       <div class="grid grid-2" style="margin-bottom:50px">
         <div class="card reveal">
-          <div class="icon">💻</div>
+          <div class="icon">🔶</div>
           <h3>สิ่งที่ได้เรียน</h3>
-          <p>ภาษาซีคอมไพล์ทั้งโปรแกรมก่อนรัน · โครงสร้าง: #include &lt;stdio.h&gt; → int main() → คำสั่งใน { } จบด้วย ; → return 0; · ตัวแปรต้องประกาศชนิดก่อนใช้: int / float / double / char · printf + ตัวกำหนดรูปแบบ %d %f %c %s และ %.2f คุมทศนิยม · = คือกำหนดค่า ไม่ใช่เท่ากับ</p>
+          <p>if (เงื่อนไข) { บล็อก } — เงื่อนไขใน ( ) บล็อกใน { } ห้ามใส่ ; ท้าย if · if–else เลือกหนึ่งจากสองทาง · else if ไล่บนลงล่าง เจอจริงแล้วหยุด ลำดับจึงสำคัญ · switch–case สำหรับค่าตายตัว ต้องมี break ไม่งั้นไหลทะลุ · ซ้อนเมื่อผลต่าง ใช้ &amp;&amp; เมื่อผลเหมือน</p>
         </div>
         <div class="card reveal" data-delay="0.1">
           <div class="icon">🔮</div>
-          <h3>เชื่อมไปสัปดาห์หน้า</h3>
-          <p>สัปดาห์ที่ 3 เพิ่มอีกครึ่งของวงจร: รับข้อมูลจากผู้ใช้ด้วย scanf (ระวังเครื่องหมาย &amp;!) และตัวดำเนินการครบชุด — รวมกับดักใหญ่ของภาษาซี: จำนวนเต็มหารจำนวนเต็ม ได้จำนวนเต็ม!</p>
+          <h3>เชื่อมไปคาบหน้า</h3>
+          <p>ครบสองโครงสร้างแล้ว: ลำดับ ✓ เงื่อนไข ✓ — คาบที่ 7 ปิดท้ายด้วยตัวสุดท้ายที่ทรงพลังที่สุด: การวนซ้ำ (for / while / do-while) สั่งงานซ้ำพันรอบด้วยโค้ดสามบรรทัด แล้วคาบที่ 8 สอบกลางภาค!</p>
         </div>
       </div>
       <div class="assign-box reveal">
-        <h3>📌 งานมอบหมายสัปดาห์ที่ 2</h3>
+        <h3>📌 งานมอบหมายคาบที่ 4</h3>
         <ol>
-          <li>สมัคร/เปิด onlinegdb.com (เลือกภาษา C) หรือติดตั้ง Code::Blocks แล้วเขียน hello.c ของตัวเอง: แสดงชื่อ รหัสนักศึกษา และสาขา (อย่างน้อย 3 บรรทัด ใช้ \n) แคปหน้าจอผลรันส่งใน LMS</li>
-          <li>เขียนโปรแกรมแนะนำตัวที่ประกาศตัวแปรครบ 3 ชนิด (int, float, char) แล้วแสดงผลด้วย printf ให้ใช้ %d %f %c ครบทุกตัว</li>
-          <li>พิมพ์โปรแกรม bmi.c จากบทเรียนลงเครื่องตัวเอง คอมไพล์รันด้วยข้อมูลจริง แล้วเทียบผลกับตัวจำลองในหน้านี้</li>
-          <li>ทดลอง "ทำให้พัง": ลองลบ ; หนึ่งตัว, เปลี่ยน printf เป็น Printf, ลบ #include — จดข้อความ error ที่คอมไพเลอร์ฟ้องในแต่ละกรณี เพื่อรู้จักหน้าตา error ไว้ก่อน</li>
-          <li>ทำแบบทดสอบท้ายบทให้ได้อย่างน้อย 8/10 แล้วแคปหน้าจอส่งใน LMS</li>
+          <li>เขียนโปรแกรมรับค่า BMI ต่อยอดจาก bmi.c คาบที่ 4: แยกผล 4 ระดับด้วย else if (&lt; 18.5 ผอม, &lt; 23 ปกติ, &lt; 25 ท้วม, ≥ 25 อ้วน) พร้อมคำแนะนำแต่ละระดับ</li>
+          <li>เขียนโปรแกรมตัดเกรดของจริงตามเกณฑ์รายวิชานี้ (A ≥ 80, B+ ≥ 75, B ≥ 70, C+ ≥ 65, C ≥ 60, D+ ≥ 55, D ≥ 50, F) — ระวังเรียงลำดับเงื่อนไขให้ถูก</li>
+          <li>เขียนเมนูร้านเครื่องดื่ม 4 เมนูด้วย switch–case (มี default รับเมนูผิด) แล้วลองลบ break ออกหนึ่งตัว สังเกตและอธิบายอาการไหลทะลุ</li>
+          <li>โจทย์สาขา: เขียนโปรแกรมคิดค่าบริการแบบขั้นบันไดของงานในสาขาตัวเอง (ค่าส่งพัสดุ, ค่าเช่าเครื่องจักร ฯลฯ) อย่างน้อย 3 ขั้น พร้อมผังงานประกอบ</li>
+          <li>ทำแบบทดสอบท้ายคาบให้ได้อย่างน้อย 8/10 แล้วแคปหน้าจอส่งใน LMS</li>
         </ol>
       </div>
       <div class="btn-row reveal" style="margin-top:46px;justify-content:center">
-        <a href="week03.html" class="btn btn-ghost">← บทที่ 3</a>
-        <a href="exercises.html#w04" class="btn btn-ghost">📚 แบบฝึกหัดบทนี้</a>
-        <a href="week05.html" class="btn btn-primary">สัปดาห์ที่ 3: ตัวดำเนินการและนิพจน์ →</a>
+        <a href="week03.html" class="btn btn-ghost">← คาบที่ 3</a>
+        <a href="exercises.html#w06" class="btn btn-ghost">📚 แบบฝึกหัดคาบนี้</a>
+        <a href="week05.html" class="btn btn-primary">คาบที่ 5: โครงสร้างควบคุมแบบวนซ้ำ →</a>
       </div>
     </div>
   </section>
 
   <footer class="footer">
     <div class="container">
-      <p>บทที่ 4: เริ่มต้นเขียนโปรแกรมแรกด้วยภาษาซี — รายวิชาการเขียนโปรแกรมคอมพิวเตอร์</p>
-      <p class="credits">จัดทำเพื่อการศึกษา · รูปภาพจาก Wikimedia Commons · อิงเอกสารประกอบการสอนบทที่ 1, 3, 4</p>
+      <p>คาบที่ 4: โครงสร้างควบคุมแบบเลือกทำ — รายวิชาการเขียนโปรแกรมคอมพิวเตอร์</p>
+      <p class="credits">จัดทำเพื่อการศึกษา · อิงเอกสารประกอบการสอนคาบที่ 6</p>
     </div>
   </footer>
 

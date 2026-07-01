@@ -44,40 +44,47 @@
   const page = location.pathname.split('/').pop() || 'index.html';
   if (page === 'index.html') return; // หน้าแรกมีการ์ด 14 บทครบอยู่แล้ว
 
+  // ชื่อไฟล์ตรงเลขคาบแล้ว: weekNN.html = คาบที่ NN
   const TITLES = [
     'ประวัติความเป็นมาของคอมพิวเตอร์',
     'องค์ประกอบของระบบคอมพิวเตอร์',
-    'อัลกอริทึมและผังงาน',
-    'เริ่มต้นเขียนโปรแกรมแรก',
-    'ตัวดำเนินการและนิพจน์',
+    'รู้จักการเขียนโปรแกรมภาษาซีและเริ่มต้นโปรแกรมแรก',
     'โครงสร้างควบคุมแบบเลือกทำ',
     'โครงสร้างควบคุมแบบวนซ้ำ',
     'สอบกลางภาค',
     'ฟังก์ชัน',
-    'อาร์เรย์และลิสต์',
+    'อาร์เรย์ (Array)',
+    'อัลกอริทึมและผังงาน',
     'สตริงและการประมวลผลข้อความ',
     'ไฟล์และการจัดการข้อมูล',
     'โปรเจกต์ประยุกต์ทางวิศวกรรม',
     'นำเสนอโปรเจกต์ + ทบทวนปลายภาค',
+    'เร็ว ๆ นี้',
   ];
 
-  // บท 1–3 รวมสอนในสัปดาห์ที่ 1 (คาบ 1-1/1-2/1-3) จากนั้นเลื่อนนับ: บท 4 = สัปดาห์ที่ 2 ...
-  const WEEK_LABEL = ['1-1', '1-2', '1-3'];          // ป้ายบนปุ่ม (index 0–2 = บท 1–3)
-  const WEEK_TITLE = ['สัปดาห์ที่ 1 · คาบที่ 1', 'สัปดาห์ที่ 1 · คาบที่ 2', 'สัปดาห์ที่ 1 · คาบที่ 3'];
-  const label = (i) => i <= 3 ? WEEK_LABEL[i - 1] : String(i - 2);
-  const weekText = (i) => i <= 3 ? WEEK_TITLE[i - 1] : 'สัปดาห์ที่ ' + (i - 2);
+  const m = page.match(/^week(\d+)\.html$/);
+  let curLabel = 'เลือกคาบ';
+  if (m) curLabel = 'คาบที่ ' + parseInt(m[1], 10);
+  else if (page === 'exercises.html') curLabel = 'แบบฝึกหัด';
 
   const row = document.createElement('div');
   row.className = 'container chapter-strip';
-  let html = '<span class="cs-label">ไปบทที่:</span>';
+  let links = '<span class="cs-label">ไปคาบที่:</span>';
   for (let i = 1; i <= 14; i++) {
     const file = 'week' + String(i).padStart(2, '0') + '.html';
-    const wide = i <= 3 ? ' wide' : '';
-    html += '<a class="cs-link' + wide + (file === page ? ' active' : '') + '" href="' + file + '" title="' + weekText(i) + ': ' + TITLES[i - 1] + '">' + label(i) + '</a>';
+    links += '<a class="cs-link' + (file === page ? ' active' : '') + '" href="' + file + '" title="คาบที่ ' + i + ': ' + TITLES[i - 1] + '">' + i + '</a>';
   }
-  html += '<a class="cs-link wide' + (page === 'exercises.html' ? ' active' : '') + '" href="exercises.html" title="คลังแบบฝึกหัด 110 ข้อ">แบบฝึกหัด</a>';
-  row.innerHTML = html;
+  links += '<a class="cs-link wide' + (page === 'exercises.html' ? ' active' : '') + '" href="exercises.html" title="คลังแบบฝึกหัด 110 ข้อ">แบบฝึกหัด</a>';
+  row.innerHTML =
+    '<button type="button" class="cs-toggle" aria-label="เลือกคาบเรียน" aria-expanded="false">' +
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg><span>' + curLabel + '</span></button>' +
+    '<div class="cs-links">' + links + '</div>';
   nav.appendChild(row);
+  const csToggle = row.querySelector('.cs-toggle');
+  csToggle.addEventListener('click', function () {
+    const open = row.classList.toggle('open');
+    csToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
 })();
 
 // ---------- Navbar เปลี่ยนพื้นหลังเมื่อ scroll + ปุ่มกลับขึ้นบน ----------

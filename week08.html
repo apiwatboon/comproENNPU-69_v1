@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>สัปดาห์ที่ 6: สอบกลางภาค | Computer Programming</title>
+  <title>คาบที่ 8: อาร์เรย์ | Computer Programming</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2322d3ee'/%3E%3Ctext x='50' y='68' font-size='48' text-anchor='middle' fill='%23071018' font-family='monospace'%3E%26lt;/%26gt;%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,11 +16,12 @@
     <div class="container">
       <a href="index.html" class="nav-logo"><span class="logo-dot">&lt;/&gt;</span> Computer Programming</a>
       <ul class="nav-links">
-        <li><a href="#info">ข้อมูลการสอบ</a></li>
-        <li><a href="#review">สรุป 7 บท</a></li>
-        <li><a href="#checklist">เช็คลิสต์</a></li>
-        <li><a href="#quiz">ข้อสอบจำลอง</a></li>
-        <li><a href="#tips">เทคนิคทำข้อสอบ</a></li>
+        <li><a href="#objectives">วัตถุประสงค์</a></li>
+        <li><a href="#basics">รู้จักอาร์เรย์</a></li>
+        <li><a href="#playground">สนามทดลอง</a></li>
+        <li><a href="#loop">อาร์เรย์ + ลูป</a></li>
+        <li><a href="#sort">จัดเรียงข้อมูล</a></li>
+        <li><a href="#quiz">แบบทดสอบ</a></li>
       </ul>
     </div>
   </nav>
@@ -28,169 +29,268 @@
   <header class="hero">
     <canvas id="binary-canvas"></canvas>
     <div class="container">
-      <div class="hero-kicker reveal">สัปดาห์ที่ 6</div>
-      <h1 class="reveal" data-delay="0.1">สอบกลางภาค<br><span class="grad-text">วัดผลบทที่ 1–7</span></h1>
+      <div class="hero-kicker reveal">คาบที่ 8</div>
+      <h1 class="reveal" data-delay="0.1"><span class="grad-text">อาร์เรย์ (Array)</span></h1>
       <p class="hero-desc reveal" data-delay="0.2">
-        ห้าสัปดาห์ที่ผ่านมา คุณเดินทางจากลูกคิดมาถึงลูป — สัปดาห์นี้ไม่มีเนื้อหาใหม่
-        มีแต่การเก็บเกี่ยว: สรุปแก่นทั้ง 7 บทในหน้าเดียว เช็คลิสต์วัดความพร้อม
-        และข้อสอบจำลองให้ซ้อมมือก่อนลงสนามจริง
+        ที่ผ่านมาตัวแปรหนึ่งตัวเก็บค่าได้ค่าเดียว — แต่งานจริงมีคะแนนนักศึกษา 40 คน
+        พัสดุ 10,000 ชิ้น อุณหภูมิ 24 ชั่วโมง วันนี้พบ "อาร์เรย์": ตัวแปรเดียวที่เก็บข้อมูลทั้งขบวน
+        และเป็นคู่หูที่ทำให้ลูปกับฟังก์ชันเปล่งพลังเต็มที่
       </p>
       <div class="hero-badges reveal" data-delay="0.3">
-        <span class="badge">📚 <b>ครอบคลุมบทที่ 1–7</b></span>
-        <span class="badge">✅ <b>เช็คลิสต์ความพร้อม 12 ข้อ</b></span>
-        <span class="badge">📝 <b>ข้อสอบจำลอง 10 ข้อ</b></span>
+        <span class="badge">⏱️ <b>ใช้เวลาเรียน ~2.5 ชั่วโมง</b></span>
+        <span class="badge">📊 <b>สนามทดลองอาร์เรย์ + เครื่องจัดเรียงข้อมูล</b></span>
+        <span class="badge">📝 <b>แบบทดสอบ 10 ข้อ</b></span>
       </div>
       <div class="btn-row reveal" data-delay="0.4">
-        <a href="#review" class="btn btn-primary">เริ่มทบทวน ↓</a>
-        <a href="week07.html" class="btn btn-ghost">← บทที่ 7</a>
+        <a href="#objectives" class="btn btn-primary">เริ่มบทเรียน ↓</a>
+        <a href="week07.html" class="btn btn-ghost">← คาบที่ 7</a>
       </div>
     </div>
-    <div class="scroll-hint">เลื่อนลงเพื่อเริ่มทบทวน<br>⌄</div>
+    <div class="scroll-hint">เลื่อนลงเพื่อเริ่มเรียน<br>⌄</div>
   </header>
 
-  <section class="section" id="info">
+  <section class="section" id="objectives">
     <div class="container">
-      <span class="section-tag reveal">Exam Info</span>
-      <h2 class="section-title reveal">📋 ข้อมูลการสอบกลางภาค</h2>
-      <div class="grid grid-3">
-        <div class="card reveal">
-          <div class="icon">🗺️</div>
-          <h3>ขอบเขตเนื้อหา</h3>
-          <p>บทที่ 1–7 ทั้งหมด: ประวัติคอมพิวเตอร์ · องค์ประกอบระบบและเลขฐาน · อัลกอริทึมและผังงาน · โครงสร้างภาษาซี ตัวแปร ชนิดข้อมูล printf · ตัวดำเนินการและ scanf · if–else if–else และ switch · for / while / do-while</p>
-        </div>
-        <div class="card reveal" data-delay="0.05">
-          <div class="icon">🧾</div>
-          <h3>รูปแบบข้อสอบ</h3>
-          <p>3 ส่วนหลัก: ปรนัยวัดความเข้าใจ · ไล่ค่าตัวแปร (Trace) ทำนายผลลัพธ์ของโค้ด · เขียนโค้ด/ผังงานสั้น ๆ แก้โจทย์ — น้ำหนักอยู่ที่ Trace และเขียนโค้ดมากที่สุด</p>
-        </div>
-        <div class="card reveal" data-delay="0.1">
-          <div class="icon">🎒</div>
-          <h3>สิ่งที่ควรเตรียม</h3>
-          <p>ปากกา ดินสอ ยางลบ บัตรนักศึกษา และ "กระดาษทดในหัว": ฝึกไล่ trace ด้วยมือจนคล่อง เพราะในห้องสอบไม่มีคอมไพเลอร์ให้รัน — สมองคุณคือคอมไพเลอร์</p>
-        </div>
-      </div>
-      <p class="section-sub reveal" style="margin-top:24px">📌 วัน เวลา และห้องสอบ เป็นไปตามประกาศของมหาวิทยาลัย — ตรวจสอบใน LMS อีกครั้ง</p>
-    </div>
-  </section>
-
-  <section class="section alt" id="review">
-    <div class="container">
-      <span class="section-tag reveal">7-Week Recap</span>
-      <h2 class="section-title reveal">🧠 แก่นของทั้ง 7 บท ในหน้าเดียว</h2>
-      <p class="section-sub reveal">การ์ดละบท สรุปเฉพาะที่ข้อสอบชอบถาม — คลิก "ทบทวนบทเต็ม →" เพื่อกลับไปเล่นตัวจำลองของบทนั้นอีกรอบ</p>
-      <div class="grid grid-2">
-        <div class="card reveal">
-          <div class="icon">🏛️</div>
-          <h3>บทที่ 1: ประวัติคอมพิวเตอร์</h3>
-          <p>วิวัฒนาการ 5 ยุค (หลอดสุญญากาศ → ทรานซิสเตอร์ → IC → ไมโครโพรเซสเซอร์ → AI) · กฎของมัวร์: ทรานซิสเตอร์เพิ่ม 2 เท่าทุก ~2 ปี · คอมพิวเตอร์ = เครื่อง "ประมวลผลตามคำสั่ง" ไม่ใช่เครื่องคิดเอง</p>
-          <p style="margin-top:14px"><a href="week01.html" style="color:var(--cyan)">ทบทวนบทเต็ม →</a></p>
-        </div>
-        <div class="card reveal" data-delay="0.05">
-          <div class="icon">🖥️</div>
-          <h3>บทที่ 2: องค์ประกอบระบบคอมพิวเตอร์</h3>
-          <p>ครบ 4 ส่วน: ฮาร์ดแวร์ ซอฟต์แวร์ บุคลากร ข้อมูล · CPU = CU + ALU + Register · RAM ลบเลือน / ROM ถาวร · เลขฐานสอง: 1 Byte = 8 bit เก็บได้ 0–255 — ฝึกแปลงฐานให้คล่อง!</p>
-          <p style="margin-top:14px"><a href="week02.html" style="color:var(--cyan)">ทบทวนบทเต็ม →</a></p>
-        </div>
-        <div class="card reveal" data-delay="0.1">
-          <div class="icon">🧭</div>
-          <h3>บทที่ 3: อัลกอริทึมและผังงาน</h3>
-          <p>คุณสมบัติ 5 ข้อ (เน้น Definiteness ชัดเจน + Finiteness ต้องจบ) · สัญลักษณ์: วงรีเริ่ม/จบ, ด้านขนาน I/O, สี่เหลี่ยมประมวลผล, ข้าวหลามตัดตัดสินใจ · ฝึก Trace ตามผังงานพร้อมตารางค่าตัวแปร</p>
-          <p style="margin-top:14px"><a href="week03.html" style="color:var(--cyan)">ทบทวนบทเต็ม →</a></p>
-        </div>
-        <div class="card reveal" data-delay="0.15">
-          <div class="icon">🐍</div>
-          <h3>บทที่ 4: เริ่มต้นเขียนโปรแกรมแรก</h3>
-          <p>โครงสร้าง: #include &lt;stdio.h&gt; → int main() → { } จบทุกคำสั่งด้วย ; · ตัวแปรต้องประกาศชนิดก่อนใช้: int float double char · printf + ตัวกำหนดรูปแบบ %d %f %c %s และ %.2f · = คือกำหนดค่า ไม่ใช่เท่ากับ · ชื่อห้ามขึ้นต้นตัวเลข/เว้นวรรค/ภาษาไทย</p>
-          <p style="margin-top:14px"><a href="week04.html" style="color:var(--cyan)">ทบทวนบทเต็ม →</a></p>
-        </div>
-        <div class="card reveal" data-delay="0.2">
-          <div class="icon">🧮</div>
-          <h3>บทที่ 5: ตัวดำเนินการและนิพจน์</h3>
-          <p>กับดักใหญ่: int หาร int ตัดเศษทิ้ง (5/9 = 0!) แก้ด้วย 5.0/9.0 · % เอาเศษ (n % 2 == 0 = เลขคู่) · ลำดับ: ( ) → * / % → + − · scanf ต้องมี &amp; หน้าตัวแปรเสมอ · เปรียบเทียบให้ค่า 1/0 เชื่อมด้วย &amp;&amp; || ! · == เปรียบเทียบ, = กำหนดค่า</p>
-          <p style="margin-top:14px"><a href="week05.html" style="color:var(--cyan)">ทบทวนบทเต็ม →</a></p>
-        </div>
-        <div class="card reveal" data-delay="0.25">
-          <div class="icon">🔶</div>
-          <h3>บทที่ 6: เลือกทำ if–else if–else และ switch</h3>
-          <p>เงื่อนไขใน ( ) บล็อกใน { } — ห้ามใส่ ; ท้าย if! · ไล่บนลงล่าง เจอจริงตัวแรกทำแล้วหยุด → เรียงเงื่อนไขจากสูงลงต่ำ · else คือกรณีที่เหลือ ไม่มีเงื่อนไข · switch ใช้กับค่าตายตัว int/char ทุก case ต้องมี break ไม่งั้นไหลทะลุ</p>
-          <p style="margin-top:14px"><a href="week06.html" style="color:var(--cyan)">ทบทวนบทเต็ม →</a></p>
-        </div>
-        <div class="card reveal" data-delay="0.3">
-          <div class="icon">🔁</div>
-          <h3>บทที่ 7: วนซ้ำ for / while</h3>
-          <p>for (เริ่มต้น; เงื่อนไข; ปรับค่า) — อ่านหัวลูปให้ครบสามช่อง · i++ คือ i = i + 1 · ท่าตัวสะสม total = total + i · while ตรวจก่อนทำ / do-while ทำก่อนตรวจ (อย่างน้อย 1 รอบ) · ลูปต้องขยับเข้าจุดจบ ไม่งั้นวนไม่รู้จบ · ลูปซ้อน: รอบรวม = นอก × ใน</p>
-          <p style="margin-top:14px"><a href="week07.html" style="color:var(--cyan)">ทบทวนบทเต็ม →</a></p>
-        </div>
-        <div class="card reveal" data-delay="0.35" style="border-color:rgba(167,139,250,0.4)">
-          <div class="icon">🔗</div>
-          <h3>เส้นเรื่องที่ข้อสอบชอบ</h3>
-          <p>ทุกอย่างต่อกันเป็นเรื่องเดียว: ผังงาน (บท 3) → โค้ด (บท 4) · นิพจน์ bool (บท 5) → เงื่อนไข if (บท 6) → เงื่อนไข while (บท 7) · ข้าวหลามตัด = if · ข้อสอบบูรณาการชอบให้ "แปลงผังงานเป็นโค้ด" และ "ไล่โค้ดที่มีทั้งลูปและ if"</p>
-        </div>
+      <span class="section-tag reveal">Learning Objectives</span>
+      <h2 class="section-title reveal">วัตถุประสงค์การเรียนรู้</h2>
+      <div class="obj-list">
+        <div class="obj-item reveal">ประกาศอาร์เรย์ กำหนดค่าเริ่มต้น และเข้าถึงสมาชิกด้วยดัชนี (เริ่มที่ 0!) ได้</div>
+        <div class="obj-item reveal" data-delay="0.05">อธิบายข้อจำกัดของอาร์เรย์ภาษาซี: ขนาดตายตัว และอันตรายของการอ้างเกินขอบเขต</div>
+        <div class="obj-item reveal" data-delay="0.1">วนอ่านอาร์เรย์ด้วย for เพื่อหาผลรวม ค่าเฉลี่ย และค่าสูงสุดได้</div>
+        <div class="obj-item reveal" data-delay="0.15">เขียนฟังก์ชันที่รับอาร์เรย์เป็นพารามิเตอร์มาประมวลผลได้</div>
+        <div class="obj-item reveal" data-delay="0.2">อธิบายแนวคิดการจัดเรียงข้อมูล (Bubble Sort) และการสลับค่าด้วยตัวแปร temp ได้</div>
       </div>
     </div>
   </section>
 
-  <section class="section" id="checklist">
+  <section class="section alt" id="basics">
     <div class="container">
-      <span class="section-tag reveal">Readiness Checklist</span>
-      <h2 class="section-title reveal">✅ เช็คลิสต์ความพร้อม 12 ข้อ</h2>
+      <span class="section-tag reveal">Array Basics</span>
+      <h2 class="section-title reveal">🚃 อาร์เรย์ = ขบวนรถไฟของข้อมูลชนิดเดียวกัน</h2>
       <p class="section-sub reveal">
-        ติ๊กเฉพาะข้อที่ "ทำได้จริงโดยไม่เปิดดูเฉลย" — รายการจะถูกจำไว้ในเครื่อง
-        กลับมาติ๊กเพิ่มได้เรื่อย ๆ จนกว่าจะครบก่อนวันสอบ
+        ประกาศด้วยวงเล็บเหลี่ยม <b style="color:var(--cyan)">int scores[4] = {80, 65, 90, 72};</b> —
+        ทุกโบกี้เป็นชนิดเดียวกัน เรียงติดกันในหน่วยความจำ และกติกาที่สำคัญที่สุดของคาบนี้:
+        <b style="color:var(--amber)">ดัชนีเริ่มนับที่ 0 ไม่ใช่ 1!</b>
       </p>
-      <div class="checklist reveal" id="examChecklist">
-        <label class="check-item"><input type="checkbox" data-ck="0"><span>อธิบายกฎของมัวร์ และเรียงวิวัฒนาการคอมพิวเตอร์ 5 ยุคได้</span></label>
-        <label class="check-item"><input type="checkbox" data-ck="1"><span>บอกหน้าที่ CPU (CU / ALU / Register) และความต่าง RAM–ROM ได้</span></label>
-        <label class="check-item"><input type="checkbox" data-ck="2"><span>แปลงเลขฐานสอง ↔ ฐานสิบได้ทั้งสองทาง (เช่น 1011₂ = ?)</span></label>
-        <label class="check-item"><input type="checkbox" data-ck="3"><span>ท่องคุณสมบัติ 5 ข้อของอัลกอริทึมที่ดี พร้อมยกตัวอย่างได้</span></label>
-        <label class="check-item"><input type="checkbox" data-ck="4"><span>วาดผังงานที่มีทั้งเงื่อนไขและวนซ้ำ ด้วยสัญลักษณ์ที่ถูกต้องได้</span></label>
-        <label class="check-item"><input type="checkbox" data-ck="5"><span>แยกชนิดข้อมูล int / float / str / bool ของค่าใด ๆ ได้ (รวมตัวลวงอย่าง "42")</span></label>
-        <label class="check-item"><input type="checkbox" data-ck="6"><span>คำนวณนิพจน์ที่มี ** * / // % + − ตามลำดับความสำคัญได้ถูกต้อง</span></label>
-        <label class="check-item"><input type="checkbox" data-ck="7"><span>เขียน scanf รับ int และ float ได้ถูกต้อง และอธิบายได้ว่าทำไมต้องมี &amp; หน้าตัวแปร</span></label>
-        <label class="check-item"><input type="checkbox" data-ck="8"><span>เขียน if–else if–else ตัดเกรดเรียงเงื่อนไขถูกลำดับ และเขียน switch พร้อม break ครบได้</span></label>
-        <label class="check-item"><input type="checkbox" data-ck="9"><span>อ่านหัวลูป for ทั้งสามช่องแล้วบอกได้ว่าวนกี่รอบ ค่าตัวนับเป็นอะไรบ้าง</span></label>
-        <label class="check-item"><input type="checkbox" data-ck="10"><span>ไล่ trace ลูปสะสมค่า (total += i) พร้อมทำตารางค่าตัวแปรได้</span></label>
-        <label class="check-item"><input type="checkbox" data-ck="11"><span>ชี้จุดที่ทำให้ while กลายเป็นลูปไม่รู้จบ และแก้ได้</span></label>
+
+      <div class="code-card reveal">
+        <div class="code-head"><span>ตัวอย่างที่ 10.1 — scores.c</span><div class="dots"><span></span><span></span><span></span></div></div>
+        <pre><code><span style="color:#a78bfa">int</span> scores[<span style="color:#a78bfa">4</span>] = {<span style="color:#a78bfa">80</span>, <span style="color:#a78bfa">65</span>, <span style="color:#a78bfa">90</span>, <span style="color:#a78bfa">72</span>};
+<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"%d\n"</span>, scores[<span style="color:#a78bfa">0</span>]);   <span style="color:#6b7280">// ตัวแรก</span>
+<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"%d\n"</span>, scores[<span style="color:#a78bfa">2</span>]);   <span style="color:#6b7280">// ตัวที่สาม (ดัชนี 2!)</span>
+scores[<span style="color:#a78bfa">1</span>] = <span style="color:#a78bfa">70</span>;              <span style="color:#6b7280">// เขียนทับโบกี้ที่สอง</span>
+<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"%d\n"</span>, scores[<span style="color:#a78bfa">1</span>]);</code></pre>
+        <button class="run-btn" data-output="80&#10;90&#10;70">▶ คอมไพล์และรัน</button>
+        <div class="code-output"></div>
       </div>
-      <div class="progress-bar"><div class="progress-fill" id="ckFill"></div></div>
-      <div class="progress-text" id="ckText">พร้อมสอบ 0 จาก 12 ข้อ</div>
+
+      <div class="grid grid-3" style="margin-top:36px">
+        <div class="card reveal">
+          <div class="icon">0️⃣</div>
+          <h3>ดัชนีเริ่มที่ 0</h3>
+          <p>อาร์เรย์ 4 ช่อง มีดัชนี 0, 1, 2, 3 — ตัวสุดท้ายคือ <code style="color:var(--green)">scores[3]</code>
+          ไม่ใช่ scores[4]! และภาษาซี <b style="color:#fca5a5">ไม่มีดัชนีติดลบ</b> แบบภาษาอื่น</p>
+        </div>
+        <div class="card reveal" data-delay="0.05">
+          <div class="icon">💀</div>
+          <h3>เกินขอบเขต = ไม่มีใครเตือน</h3>
+          <p>อ้าง <code style="color:#fca5a5">scores[10]</code> ภาษาซี "ไม่ฟ้อง error" — มันไปอ่าน/เขียนหน่วยความจำข้างเคียงเฉย ๆ
+          ได้ค่าขยะหรือโปรแกรมพังแบบสุ่ม (undefined behavior) — อันตรายที่สุดในคาบนี้ ผู้เขียนต้องคุมขอบเขตเอง</p>
+        </div>
+        <div class="card reveal" data-delay="0.1">
+          <div class="icon">📏</div>
+          <h3>ขนาดตายตัว</h3>
+          <p>ประกาศ 4 ช่องได้ 4 ช่องตลอดชีพ ยืด-หดไม่ได้ — งานจริงจึงประกาศเผื่อ (เช่น 100 ช่อง)
+          แล้วใช้ตัวแปร <code style="color:var(--green)">int n</code> นับว่า "ใช้จริงกี่ช่อง"</p>
+        </div>
+      </div>
+
+      <div class="code-card reveal" style="margin-top:36px">
+        <div class="code-head"><span>ตัวอย่างที่ 10.2 — reverse.c (วนอ่านถอยหลังด้วย i--)</span><div class="dots"><span></span><span></span><span></span></div></div>
+        <pre><code><span style="color:#a78bfa">int</span> t[<span style="color:#a78bfa">5</span>] = {<span style="color:#a78bfa">10</span>, <span style="color:#a78bfa">20</span>, <span style="color:#a78bfa">30</span>, <span style="color:#a78bfa">40</span>, <span style="color:#a78bfa">50</span>};
+<span style="color:#a78bfa">for</span> (<span style="color:#a78bfa">int</span> i = <span style="color:#a78bfa">4</span>; i &gt;= <span style="color:#a78bfa">0</span>; i--) {   <span style="color:#6b7280">// เริ่มท้าย (ขนาด-1) ถอยถึง 0</span>
+    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"%d "</span>, t[i]);
+}</code></pre>
+        <button class="run-btn" data-output="50 40 30 20 10">▶ คอมไพล์และรัน</button>
+        <div class="code-output"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="playground">
+    <div class="container">
+      <span class="section-tag reveal">Interactive Playground</span>
+      <h2 class="section-title reveal">🧪 สนามทดลองอาร์เรย์ — เพิ่ม ลบ เข้าถึง เห็นผลทันที</h2>
+      <p class="section-sub reveal">
+        อาร์เรย์ <b style="color:var(--cyan)">int arr[8]</b> (ความจุ 8 ช่อง) กับตัวนับ <b style="color:var(--violet)">n</b> บอกจำนวนที่ใช้จริง —
+        ท่ามาตรฐานของภาษาซี: เพิ่มท้ายด้วย <b style="color:var(--amber)">arr[n] = ค่า; n++;</b>
+        ลบตัวท้ายด้วย <b style="color:var(--amber)">n--;</b> — สังเกตเลขดัชนีใต้กล่องทุกครั้งที่ข้อมูลเปลี่ยน
+      </p>
+
+      <div class="widget reveal">
+        <div class="machine" id="listBoxes" style="margin-top:0;min-height:90px"></div>
+        <div class="progress-text" id="lpLen" style="margin-top:6px"></div>
+        <div class="widget-controls" style="margin-top:18px">
+          <label>ค่า = <input type="number" id="lpValue" value="42" style="width:80px"></label>
+          <button class="btn btn-primary" id="lpAppend">arr[n] = ค่า; n++;</button>
+          <button class="btn btn-ghost" id="lpPop">n--; (ลบตัวท้าย)</button>
+          <label>ดัชนี = <input type="number" id="lpIndex" value="0" style="width:70px"></label>
+          <button class="btn btn-ghost" id="lpGet">ดู arr[ดัชนี]</button>
+        </div>
+        <div class="flow-desc" id="lpDesc">เริ่มต้น: int arr[8] = {12, 7, 25}; n = 3 — ลองกดปุ่มต่าง ๆ ได้เลย</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" id="loop">
+    <div class="container">
+      <span class="section-tag reveal">Arrays + Loops + Functions</span>
+      <h2 class="section-title reveal">🤝 สามประสาน: อาร์เรย์ + ลูป + ฟังก์ชัน</h2>
+      <p class="section-sub reveal">
+        ภาษาซี <b style="color:var(--amber)">ไม่มี sum / max / len สำเร็จรูป</b> — เราเขียนเองด้วยลูปจากคาบที่ 7
+        ซึ่งเป็นเรื่องดี: คุณจะเข้าใจไส้ในที่ภาษาอื่นซ่อนไว้ และนี่คือหน้าตาโปรแกรมระดับใช้งานจริง:
+        ข้อมูลอยู่ในอาร์เรย์ → ฟังก์ชันรับอาร์เรย์ไปประมวลผล
+      </p>
+
+      <div class="grid grid-2" style="align-items:start">
+        <div class="code-card reveal" style="margin:0">
+          <div class="code-head"><span>ตัวอย่างที่ 10.3 — class_report.c</span><div class="dots"><span></span><span></span><span></span></div></div>
+          <pre><code><span style="color:#a78bfa">float</span> <span style="color:#22d3ee">average</span>(<span style="color:#a78bfa">int</span> scores[], <span style="color:#a78bfa">int</span> n) {
+    <span style="color:#a78bfa">int</span> sum = <span style="color:#a78bfa">0</span>;
+    <span style="color:#a78bfa">for</span> (<span style="color:#a78bfa">int</span> i = <span style="color:#a78bfa">0</span>; i &lt; n; i++)
+        sum = sum + scores[i];
+    <span style="color:#a78bfa">return</span> (<span style="color:#a78bfa">float</span>) sum / n;   <span style="color:#6b7280">// กัน int หาร int!</span>
+}
+
+<span style="color:#a78bfa">int</span> <span style="color:#22d3ee">main</span>() {
+    <span style="color:#a78bfa">int</span> points[<span style="color:#a78bfa">5</span>] = {<span style="color:#a78bfa">72</span>, <span style="color:#a78bfa">85</span>, <span style="color:#a78bfa">61</span>, <span style="color:#a78bfa">90</span>, <span style="color:#a78bfa">77</span>};
+    <span style="color:#a78bfa">for</span> (<span style="color:#a78bfa">int</span> i = <span style="color:#a78bfa">0</span>; i &lt; <span style="color:#a78bfa">5</span>; i++)
+        <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"คะแนน %d → %s\n"</span>, points[i],
+               points[i] &gt;= <span style="color:#a78bfa">70</span> ? <span style="color:#fbbf24">"ผ่าน"</span> : <span style="color:#fbbf24">"ไม่ผ่าน"</span>);
+    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"เฉลี่ย = %.2f\n"</span>, average(points, <span style="color:#a78bfa">5</span>));
+    <span style="color:#a78bfa">return</span> <span style="color:#a78bfa">0</span>;
+}</code></pre>
+          <button class="run-btn" data-output="คะแนน 72 → ผ่าน&#10;คะแนน 85 → ผ่าน&#10;คะแนน 61 → ไม่ผ่าน&#10;คะแนน 90 → ผ่าน&#10;คะแนน 77 → ผ่าน&#10;เฉลี่ย = 77.00">▶ คอมไพล์และรัน</button>
+          <div class="code-output"></div>
+        </div>
+        <div class="card reveal" data-delay="0.1" style="margin:0">
+          <h3 style="margin-bottom:14px">🛠️ ท่ามาตรฐานที่ต้องเขียนเองให้คล่อง</h3>
+          <div style="overflow-x:auto">
+            <table class="data-table op-table">
+              <thead><tr><th>งาน</th><th>ท่าภาษาซี</th></tr></thead>
+              <tbody>
+                <tr><td>วนอ่านครบทุกตัว</td><td>for (i = 0; i &lt; n; i++)</td></tr>
+                <tr><td>ผลรวม</td><td>sum = sum + arr[i];</td></tr>
+                <tr><td>นับตามเงื่อนไข</td><td>if (arr[i] &gt;= 70) count++;</td></tr>
+                <tr><td>ค่าสูงสุด</td><td>if (arr[i] &gt; max) max = arr[i];</td></tr>
+                <tr><td>ส่งเข้าฟังก์ชัน</td><td>average(points, 5) — ส่งชื่อ + จำนวน</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p style="margin-top:14px">จำได้ไหมคาบที่ 7 เราเขียนลูปหาค่าสูงสุดเอง? — ในภาษาซีนั่นไม่ใช่แบบฝึกหัด แต่คือ "วิธีทำงานจริง"
+          สังเกตด้วยว่าฟังก์ชันรับอาร์เรย์ต้องรับ "จำนวนสมาชิก n" ติดมาด้วยเสมอ เพราะตัวอาร์เรย์ไม่ได้พกขนาดของตัวเองไว้</p>
+        </div>
+      </div>
+
+      <div class="code-card reveal" style="margin-top:36px">
+        <div class="code-head"><span>ตัวอย่างที่ 10.4 — count.c (นับตามเงื่อนไข: ท่าประจำของงานสรุปข้อมูล)</span><div class="dots"><span></span><span></span><span></span></div></div>
+        <pre><code><span style="color:#a78bfa">int</span> scores[<span style="color:#a78bfa">6</span>] = {<span style="color:#a78bfa">72</span>, <span style="color:#a78bfa">45</span>, <span style="color:#a78bfa">88</span>, <span style="color:#a78bfa">90</span>, <span style="color:#a78bfa">51</span>, <span style="color:#a78bfa">77</span>};
+<span style="color:#a78bfa">int</span> count = <span style="color:#a78bfa">0</span>;
+<span style="color:#a78bfa">for</span> (<span style="color:#a78bfa">int</span> i = <span style="color:#a78bfa">0</span>; i &lt; <span style="color:#a78bfa">6</span>; i++) {
+    <span style="color:#a78bfa">if</span> (scores[i] &gt;= <span style="color:#a78bfa">70</span>) count++;
+}
+<span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"ผ่านเกณฑ์ %d คน จาก 6 คน\n"</span>, count);</code></pre>
+        <button class="run-btn" data-output="ผ่านเกณฑ์ 4 คน จาก 6 คน">▶ คอมไพล์และรัน</button>
+        <div class="code-output"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="sort">
+    <div class="container">
+      <span class="section-tag reveal">Sorting</span>
+      <h2 class="section-title reveal">🫧 เครื่องจัดเรียงข้อมูล: Bubble Sort ทีละขั้น</h2>
+      <p class="section-sub reveal">
+        อัลกอริทึมจัดเรียงที่เข้าใจง่ายที่สุด: <b style="color:var(--text)">เทียบคู่ที่ติดกัน ใครใหญ่กว่าสลับไปขวา
+        วนซ้ำจนไม่มีอะไรให้สลับ</b> — ตัวใหญ่จะค่อย ๆ "ลอย" ไปขวาเหมือนฟองอากาศ
+        กดเทียบทีละคู่เอง หรือกดเล่นอัตโนมัติก็ได้
+      </p>
+
+      <div class="widget reveal">
+        <div class="bars" id="sortBars"></div>
+        <div class="widget-controls">
+          <button class="btn btn-primary" id="sortStep">เทียบคู่ถัดไป ▶</button>
+          <button class="btn btn-primary" id="sortAuto">⏩ เล่นอัตโนมัติ</button>
+          <button class="btn btn-ghost" id="sortReset">↺ เริ่มใหม่</button>
+        </div>
+        <div class="flow-desc" id="sortDesc">ข้อมูลตั้งต้น: {5, 2, 8, 3, 7, 1} — สีเหลือง = คู่ที่กำลังเทียบ, สีเขียว = เข้าที่แล้ว</div>
+      </div>
+
+      <div class="grid grid-2" style="margin-top:36px">
+        <div class="code-card reveal" style="margin:0">
+          <div class="code-head"><span>ตัวอย่างที่ 10.5 — bubble_sort.c (หัวใจคือการสลับด้วย temp)</span><div class="dots"><span></span><span></span><span></span></div></div>
+          <pre><code><span style="color:#a78bfa">int</span> arr[<span style="color:#a78bfa">6</span>] = {<span style="color:#a78bfa">5</span>, <span style="color:#a78bfa">2</span>, <span style="color:#a78bfa">8</span>, <span style="color:#a78bfa">3</span>, <span style="color:#a78bfa">7</span>, <span style="color:#a78bfa">1</span>};
+<span style="color:#a78bfa">int</span> n = <span style="color:#a78bfa">6</span>;
+<span style="color:#a78bfa">for</span> (<span style="color:#a78bfa">int</span> i = <span style="color:#a78bfa">0</span>; i &lt; n - <span style="color:#a78bfa">1</span>; i++) {
+    <span style="color:#a78bfa">for</span> (<span style="color:#a78bfa">int</span> j = <span style="color:#a78bfa">0</span>; j &lt; n - i - <span style="color:#a78bfa">1</span>; j++) {
+        <span style="color:#a78bfa">if</span> (arr[j] &gt; arr[j + <span style="color:#a78bfa">1</span>]) {
+            <span style="color:#a78bfa">int</span> temp = arr[j];     <span style="color:#6b7280">// สลับค่า 3 จังหวะ</span>
+            arr[j] = arr[j + <span style="color:#a78bfa">1</span>];
+            arr[j + <span style="color:#a78bfa">1</span>] = temp;
+        }
+    }
+}
+<span style="color:#a78bfa">for</span> (<span style="color:#a78bfa">int</span> i = <span style="color:#a78bfa">0</span>; i &lt; n; i++)
+    <span style="color:#22d3ee">printf</span>(<span style="color:#fbbf24">"%d "</span>, arr[i]);</code></pre>
+          <button class="run-btn" data-output="1 2 3 5 7 8">▶ คอมไพล์และรัน</button>
+          <div class="code-output"></div>
+        </div>
+        <div class="card reveal" data-delay="0.1" style="margin:0">
+          <h3 style="margin-bottom:14px">🤔 ทำไมสลับต้องมี temp?</h3>
+          <p style="line-height:1.9">เขียน <code style="color:#fca5a5">arr[j] = arr[j+1]; arr[j+1] = arr[j];</code> ตรง ๆ —
+          ค่าแรกถูกทับหายไปก่อนจะย้าย! เหมือนเทน้ำสองแก้วสลับกัน ต้องมี "แก้วพักชั่วคราว" (temp) เสมอ<br><br>
+          นี่คือแบบฝึก trace ลูปซ้อนที่ดีที่สุด และเป็นคำถามยอดนิยมทั้งในข้อสอบปลายภาคและห้องสัมภาษณ์งาน —
+          ข้อสอบชอบให้ "ไล่ผลหลังจบรอบที่ 1" ลองกดเครื่องจัดเรียงดูให้เห็นกับตา</p>
+        </div>
+      </div>
     </div>
   </section>
 
   <section class="section alt" id="quiz">
     <div class="container">
-      <span class="section-tag reveal">Mock Exam</span>
-      <h2 class="section-title reveal">📝 ข้อสอบจำลอง 10 ข้อ (คละบทที่ 1–7)</h2>
-      <p class="section-sub reveal">โจทย์ชุดใหม่ทั้งหมด ไม่ซ้ำกับแบบทดสอบท้ายบท — ทำเหมือนสอบจริง: ไม่เปิดสมุด ไม่ใช้คอมไพเลอร์ และจับเวลา 15 นาที</p>
+      <span class="section-tag reveal">Check Your Understanding</span>
+      <h2 class="section-title reveal">📝 แบบทดสอบท้ายคาบ (10 ข้อ)</h2>
+      <p class="section-sub reveal">ท่องไว้ก่อนทำ: ดัชนีเริ่มที่ 0 · ช่องสุดท้ายคือ [ขนาด−1] · เกินขอบเขตไม่มีใครเตือน</p>
       <div class="prequiz reveal">
         <div class="prequiz-head">📘 อ่านก่อนสอบ · สรุปประเด็นสำคัญ</div>
-        <p class="prequiz-intro">สอบกลางภาคครอบคลุมสัปดาห์ที่ 1–5 (บทที่ 1–7) นี่คือแผนที่ทบทวนแบบรวบยอด — กดกลับไปเล่นตัวจำลองของแต่ละบทได้</p>
+        <p class="prequiz-intro">กุญแจของคาบนี้คือ "ดัชนีเริ่มที่ 0" และตัวนับ n — เข้าใจแล้วเรื่องผลรวม/เฉลี่ย/Bubble Sort จะตามมาเอง</p>
         <div class="pq-item">
           <span class="pq-num">1</span>
-          <div class="pq-text"><h4>บทที่ 1–2 · ประวัติ + ฮาร์ดแวร์ + เลขฐาน</h4><p>จำยุค–อุปกรณ์, บุคคลสำคัญ, RAM/ROM, และฝึกแปลงเลขฐาน</p><p><pre class="pq-code">1101₂ = 8+4+0+1 = <b>13</b>₁₀</pre></p></div>
+          <div class="pq-text"><h4>ประกาศอาร์เรย์ + ดัชนีเริ่มที่ 0</h4><p>สมาชิกตัวแรกคือดัชนี <b>0</b> ตัวสุดท้ายคือ <b>n-1</b></p><p><pre class="pq-code">int items[3] = {10, 20, 30};
+items[0]=10  items[1]=20  items[2]=30
+<span class="cm">// scores[5] ตัวสุดท้าย = scores[4]</span></pre></p></div>
         </div>
         <div class="pq-item">
           <span class="pq-num">2</span>
-          <div class="pq-text"><h4>บทที่ 3 · อัลกอริทึมและผังงาน</h4><p>สัญลักษณ์ผังงาน (ข้าวหลามตัด=ตัดสินใจ, ด้านขนาน=รับ/แสดงผล), คุณสมบัติอัลกอริทึมที่ดี (ต้องมีจุดจบ), และการ trace</p></div>
+          <div class="pq-text"><h4>อ้างเกินขอบเขต (out of bounds)</h4><p>อ้าง <code>scores[10]</code> ทั้งที่มี 5 ช่อง ภาษาซี<b>ไม่เตือน</b>แต่อ่านหน่วยความจำมั่ว → ผลลัพธ์เพี้ยน/โปรแกรมพัง</p></div>
         </div>
         <div class="pq-item">
           <span class="pq-num">3</span>
-          <div class="pq-text"><h4>บทที่ 4 · โครงสร้างโปรแกรม + ชนิดข้อมูล</h4><p>main(), #include, ชนิด int/float/char, ตัวกำหนดรูปแบบ · ตัวที่ทำให้คอมไพล์ไม่ผ่านแน่นอน = ลืม <code>;</code> / ชื่อตัวแปรผิดกฎ</p></div>
+          <div class="pq-text"><h4>ตัวนับ n: จำนวนที่ใช้จริง</h4><p>ประกาศเผื่อใหญ่ (เช่น <code>int arr[100]</code>) แต่ใช้จริงแค่บางช่อง — <code>n</code> บอกว่าใช้ไปกี่ตัว และใช้คุมลูป</p><p><pre class="pq-code">arr[n] = x;   <span class="cm">// เพิ่มต่อท้าย</span>
+n++;          <span class="cm">// แล้วเลื่อนตัวนับ</span></pre></p></div>
         </div>
         <div class="pq-item">
           <span class="pq-num">4</span>
-          <div class="pq-text"><h4>บทที่ 5 · ตัวดำเนินการ + scanf</h4><p>กับดัก int division (<code>7/2=3</code>, <code>7.0/2=3.5</code>) และ scanf ต้องมี <code>&amp;</code> — ลืม <code>&amp;</code> โปรแกรมพังตอนรัน</p></div>
+          <div class="pq-text"><h4>วนหาผลรวม/เฉลี่ย + ส่ง n เข้าฟังก์ชัน</h4><p>ภาษาซีไม่มีคำสั่งรวมอัตโนมัติ ต้องวนบวกเอง · ส่งฟังก์ชันต้องส่ง n ไปด้วยเพราะอาร์เรย์<b>ไม่รู้ขนาดตัวเอง</b></p><p><pre class="pq-code">float average(int s[], int n) { ... }</pre></p></div>
         </div>
         <div class="pq-item">
           <span class="pq-num">5</span>
-          <div class="pq-text"><h4>บทที่ 6–7 · เงื่อนไข + ลูป</h4><p>if–else if (ทำบล็อกเดียว, ลำดับสำคัญ), switch+break, การนับรอบ for/while</p><p><pre class="pq-code">int count = 0;
-for (int i=1; i&lt;=6; i++)
-  if (i % 2 == 0) count++;
-<span class="cm">// count = 3 (i=2,4,6)</span></pre></p></div>
+          <div class="pq-text"><h4>สลับค่า + Bubble Sort</h4><p>การสลับต้องใช้ตัวแปรพัก temp · Bubble Sort เทียบคู่ติดกันแล้วสลับถ้าผิดลำดับ</p><p><pre class="pq-code">int t = a[j]; a[j] = a[j+1]; a[j+1] = t;
+<span class="cm">// {5,2,8} คู่แรก (5,2) → สลับเป็น {2,5,8}</span></pre></p></div>
         </div>
         <div class="pq-item tip">
           <span class="pq-num">💡</span>
-          <div class="pq-text"><h4>จุดที่ข้อสอบชอบถาม</h4><p>ข้อสอบกลางภาคชอบ "ไล่โค้ด (trace)" — ฝึกเดินทีละบรรทัดด้วยมือให้คล่อง โดยเฉพาะลูปกับเงื่อนไขผสมกัน</p></div>
+          <div class="pq-text"><h4>จุดที่ข้อสอบชอบถาม</h4><p>จำให้ขึ้นใจ: ดัชนีเริ่ม 0, ตัวสุดท้าย = <b>n-1</b> · โจทย์ trace อาร์เรย์ (เช่น <code>a[1]=a[3]</code> แล้วบวกกัน) ออกบ่อย</p></div>
         </div>
       </div>
       <div id="quizWrap"></div>
@@ -198,72 +298,44 @@ for (int i=1; i&lt;=6; i++)
     </div>
   </section>
 
-  <section class="section" id="tips">
+  <section class="section">
     <div class="container">
-      <span class="section-tag reveal">Exam Strategy</span>
-      <h2 class="section-title reveal">🎯 เทคนิคทำข้อสอบให้ได้คะแนนเต็มศักยภาพ</h2>
-      <div class="grid grid-3">
-        <div class="card reveal">
-          <div class="icon">⏱️</div>
-          <h3>กวาดง่ายก่อน</h3>
-          <p>รอบแรกทำเฉพาะข้อที่มั่นใจให้หมด รอบสองค่อยกลับมาเก็บข้อยาก — อย่าจมกับข้อเดียวเกิน 3 นาที ทุกข้อคะแนนเท่ากัน</p>
-        </div>
-        <div class="card reveal" data-delay="0.05">
-          <div class="icon">📝</div>
-          <h3>Trace บนกระดาษเสมอ</h3>
-          <p>ข้อไล่โค้ด ห้ามไล่ในหัว! เขียนตารางค่าตัวแปรแบบที่ฝึกกับตัวจำลองทุกบท — ช้ากว่า 30 วินาที แต่ถูกเกือบ 100%</p>
-        </div>
-        <div class="card reveal" data-delay="0.1">
-          <div class="icon">🔍</div>
-          <h3>ระวังกับดักคลาสสิก</h3>
-          <p>สามจุดที่คนพลาดมากที่สุด: int หาร int ตัดเศษ (5/9 = 0) · scanf ลืม &amp; · switch ลืม break ไหลทะลุ — เจอโจทย์แนวนี้ให้ช้าลงหนึ่งจังหวะ</p>
-        </div>
-        <div class="card reveal" data-delay="0.15">
-          <div class="icon">✍️</div>
-          <h3>ข้อเขียนโค้ด: โครงก่อนสวย</h3>
-          <p>เขียนโครงให้ครบก่อน (รับค่า → แปลงชนิด → คำนวณ/เงื่อนไข → แสดงผล) แล้วค่อยเก็บรายละเอียด — โครงถูกได้คะแนนส่วนใหญ่แม้พลาดจุดเล็ก</p>
-        </div>
-        <div class="card reveal" data-delay="0.2">
-          <div class="icon">😴</div>
-          <h3>คืนก่อนสอบ</h3>
-          <p>นอนให้พอสำคัญกว่าโต้รุ่ง — สมองล้าไล่ trace พลาดง่ายมาก ทบทวนรอบสุดท้ายแค่การ์ดสรุป 7 ใบข้างบน แล้วปิดหนังสือ</p>
-        </div>
-        <div class="card reveal" data-delay="0.25">
-          <div class="icon">🧘</div>
-          <h3>ในห้องสอบ</h3>
-          <p>อ่านโจทย์ให้จบก่อนเขียน — ครึ่งหนึ่งของคะแนนที่หายไปมาจาก "ตอบไม่ตรงคำถาม" ไม่ใช่ "ไม่รู้" เช็คอีกรอบว่าโจทย์ถามหน่วยอะไร ปัดทศนิยมไหม</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section alt">
-    <div class="container">
-      <span class="section-tag reveal">After the Exam</span>
-      <h2 class="section-title reveal">🚀 หลังสอบ: ครึ่งหลังที่สนุกกว่าเดิม</h2>
+      <span class="section-tag reveal">Summary & Assignment</span>
+      <h2 class="section-title reveal">🎯 สรุปบทเรียน</h2>
       <div class="grid grid-2" style="margin-bottom:50px">
         <div class="card reveal">
-          <div class="icon">🏁</div>
-          <h3>สิ่งที่คุณมีแล้วตอนนี้</h3>
-          <p>สามโครงสร้างพื้นฐานครบมือ: ลำดับ เงื่อนไข วนซ้ำ — ในทางทฤษฎี คุณเขียน "ทุกโปรแกรมในโลก" ได้แล้ว ที่เหลือของคอร์สคือเครื่องมือที่ทำให้เขียนได้ "เร็วและเป็นระเบียบ" ขึ้น</p>
+          <div class="icon">🚃</div>
+          <h3>สิ่งที่ได้เรียน</h3>
+          <p>int arr[ขนาด] = { } เก็บข้อมูลชนิดเดียวกันทั้งชุด · ดัชนี 0 ถึง ขนาด−1, ไม่มีติดลบ, เกินขอบเขต = undefined behavior · ขนาดตายตัว ใช้ n นับของจริง · sum/max/นับ เขียนเองด้วยลูป · ฟังก์ชันรับอาร์เรย์ต้องส่ง n ติดไปด้วย · Bubble Sort: เทียบคู่–สลับด้วย temp–วนซ้ำ</p>
         </div>
         <div class="card reveal" data-delay="0.1">
           <div class="icon">🔮</div>
-          <h3>ครึ่งหลังของคอร์ส</h3>
-          <p>สัปดาห์ที่ 7 เริ่มด้วย "ฟังก์ชัน" — แบ่งโปรแกรมใหญ่เป็นชิ้นเล็กที่ใช้ซ้ำได้ ตามด้วยลิสต์ สตริง ไฟล์ และปิดท้ายด้วยโปรเจกต์จริงของแต่ละสาขา</p>
+          <h3>เชื่อมไปคาบหน้า</h3>
+          <p>คาบหน้าเปลี่ยนมุมมอง: “อัลกอริทึมและผังงาน” — ถอยออกมาออกแบบวิธีแก้ปัญหาเป็นลำดับขั้นและผังงานอย่างเป็นระบบ ก่อนต่อยอดสู่สตริงและไฟล์ในคาบถัด ๆ ไป</p>
         </div>
       </div>
-      <div class="btn-row reveal" style="margin-top:10px;justify-content:center">
-        <a href="week07.html" class="btn btn-ghost">← บทที่ 7</a>
-        <a href="week09.html" class="btn btn-primary">สัปดาห์ที่ 7: ฟังก์ชัน →</a>
+      <div class="assign-box reveal">
+        <h3>📌 งานมอบหมายคาบที่ 8</h3>
+        <ol>
+          <li>สร้างอาร์เรย์คะแนน 10 ค่า แล้วเขียนฟังก์ชัน void report(int scores[], int n) แสดงจำนวน ผลรวม เฉลี่ย สูงสุด ต่ำสุด — เขียนลูปเองทั้งหมด (ระวัง int หาร int ตอนคิดเฉลี่ย!)</li>
+          <li>เขียนโปรแกรมรับคะแนนจากผู้ใช้ทีละค่าเก็บลงอาร์เรย์ (เผื่อ 100 ช่อง ใช้ n นับ) ป้อน -1 เมื่อจบ แล้วแสดงรายการทั้งหมดพร้อมลำดับที่ (ดัชนี + 1)</li>
+          <li>ไล่ Bubble Sort ของ {4, 1, 3, 2} ด้วยมือบนกระดาษ: เขียนสถานะอาร์เรย์หลังการเทียบทุกครั้งจนเรียงเสร็จ แล้วเขียนโค้ดจริงตรวจคำตอบ</li>
+          <li>โจทย์สาขา: อาร์เรย์น้ำหนักพัสดุ 8 ชิ้น — เขียนโปรแกรมหาว่ามีกี่ชิ้นที่เกิน 5 กก., ชิ้นที่หนักสุดคือดัชนีไหน และน้ำหนักรวมเกินพิกัดรถ 50 กก. หรือไม่</li>
+          <li>ทำแบบทดสอบท้ายคาบให้ได้อย่างน้อย 8/10 แล้วแคปหน้าจอส่งใน LMS</li>
+        </ol>
+      </div>
+      <div class="btn-row reveal" style="margin-top:46px;justify-content:center">
+        <a href="week07.html" class="btn btn-ghost">← คาบที่ 7</a>
+        <a href="exercises.html#w10" class="btn btn-ghost">📚 แบบฝึกหัดคาบนี้</a>
+        <a href="week09.html" class="btn btn-primary">คาบที่ 9: อัลกอริทึมและผังงาน →</a>
       </div>
     </div>
   </section>
 
   <footer class="footer">
     <div class="container">
-      <p>สัปดาห์ที่ 6: สอบกลางภาค — รายวิชาการเขียนโปรแกรมคอมพิวเตอร์</p>
-      <p class="credits">จัดทำเพื่อการศึกษา</p>
+      <p>คาบที่ 8: อาร์เรย์ — รายวิชาการเขียนโปรแกรมคอมพิวเตอร์</p>
+      <p class="credits">จัดทำเพื่อการศึกษา · อิงเอกสารประกอบการสอนคาบที่ 1 (ตัวแปรแบบอาร์เรย์)</p>
     </div>
   </footer>
 
@@ -273,6 +345,7 @@ for (int i=1; i&lt;=6; i++)
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
   <script src="js/main.js"></script>
   <script src="js/week08.js"></script>
+  <script src="js/runner.js"></script>
   <script src="js/quiz.js"></script>
 </body>
 </html>
